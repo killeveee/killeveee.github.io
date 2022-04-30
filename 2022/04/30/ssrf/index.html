@@ -26,17 +26,17 @@
 <meta property="og:site_name" content="Ja1e">
 <meta property="og:description" content="Weblogic SSRF漏洞Weblogic中存在一个SSRF漏洞，利用该漏洞可以发送任意HTTP请求，进而攻击内网中redis、fastcgi等脆弱组件。 测试环境搭建编译及启动测试环境 1docker-compose up -d  访问http:&#x2F;&#x2F;your-ip:7001&#x2F;uddiexplorer&#x2F;，无需登录即可查看uddiexplorer应用。  SSRF漏洞测试SSRF漏洞存在于htt">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ja1e.github.io/img%5Cweblogic_ssrf.png">
-<meta property="og:image" content="https://ja1e.github.io/img%5Cweblogic_ssrf2.png">
-<meta property="og:image" content="https://ja1e.github.io/img%5Cweblogic_ssrf3.png">
-<meta property="og:image" content="https://ja1e.github.io/img%5Cweblogic_ssrf4.png">
-<meta property="og:image" content="https://ja1e.github.io/public/img%5Cweblogic_ssrf5.png">
-<meta property="og:image" content="https://ja1e.github.io/img%5Cweblogic_ssrf6.png">
+<meta property="og:image" content="https://ja1e.github.io/img/weblogic_ssrf.png">
+<meta property="og:image" content="https://ja1e.github.io/img/weblogic_ssrf2.png">
+<meta property="og:image" content="https://ja1e.github.io/img/weblogic_ssrf3.png">
+<meta property="og:image" content="https://ja1e.github.io/img/weblogic_ssrf4.png">
+<meta property="og:image" content="https://ja1e.github.io/img/weblogic_ssrf5.png">
+<meta property="og:image" content="https://ja1e.github.io/img/weblogic_ssrf6.png">
 <meta property="article:published_time" content="2022-04-30T07:14:27.863Z">
-<meta property="article:modified_time" content="2022-04-30T09:23:31.816Z">
+<meta property="article:modified_time" content="2022-04-30T10:54:13.489Z">
 <meta property="article:author" content="Ja1e">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ja1e.github.io/img%5Cweblogic_ssrf.png">
+<meta name="twitter:image" content="https://ja1e.github.io/img/weblogic_ssrf.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/2.ico">
@@ -497,20 +497,20 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
 
 <p>访问<code>http://your-ip:7001/uddiexplorer/</code>，无需登录即可查看uddiexplorer应用。</p>
-<p><img src="/img%5Cweblogic_ssrf.png" alt="weblogic_ssrf"></p>
+<p><img src="/img/weblogic_ssrf.png" alt="weblogic_ssrf"></p>
 <h2 id="SSRF漏洞测试"><a href="#SSRF漏洞测试" class="headerlink" title="SSRF漏洞测试"></a>SSRF漏洞测试</h2><p>SSRF漏洞存在于<code>http://your-ip:7001/uddiexplorer/SearchPublicRegistries.jsp</code>，我们在brupsuite下测试该漏洞。</p>
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/uddiexplorer/SearchPublicRegistries.jsp</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.43.145:7001</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:98.0) Gecko/20100101 Firefox/98.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>166</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://192.168.43.145:7001</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://192.168.43.145:7001/uddiexplorer/SearchPublicRegistries.jsp</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>publicinquiryurls=http://www-3.ibm.com/services/uddi/inquiryapi!IBM|http://www-3.ibm.com/services/uddi/v2beta/inquiryapi!IBM V2|http://uddi.rte.microsoft.com/inquire!Microsoft|http://services.xmethods.net/glue/inquire/uddi!XMethods|; JSESSIONID=7xnDvLrfYWKJzGWcG5VhyDtJc3gBG5kTmCKY7QHyV5hmTGRlQKcN!-571508965</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"></span><br><span class="line"><span class="language-apache"><span class="attribute">operator</span>=http%<span class="number">3</span>A%<span class="number">2</span>F%<span class="number">2</span>Fwww-<span class="number">3</span>.ibm.com%<span class="number">2</span>Fservices%<span class="number">2</span>Fuddi%<span class="number">2</span>Finquiryapi&amp;rdoSearch=name&amp;txtSearchname=&amp;txtSearchkey=&amp;txtSearchfor=&amp;selfor=Business+location&amp;btnSubmit=Search</span></span><br></pre></td></tr></table></figure>
 
 <p>operator的值是一个url，我们可以利用这个点进行ssrf</p>
 <h2 id="探测内网"><a href="#探测内网" class="headerlink" title="探测内网"></a>探测内网</h2><p>可访问的端口将会得到错误，一般是返回status code（如下图），如果访问的非http协议，则会返回<code>did not have a valid SOAP content-type</code>。</p>
-<p><img src="/img%5Cweblogic_ssrf2.png" alt="weblogic_ssrf2"></p>
+<p><img src="/img/weblogic_ssrf2.png" alt="weblogic_ssrf2"></p>
 <p>修改为一个不存在的端口，将会返回<code>could not connect over HTTP to server</code>。</p>
-<p><img src="/img%5Cweblogic_ssrf3.png" alt="weblogic_ssrf3"></p>
+<p><img src="/img/weblogic_ssrf3.png" alt="weblogic_ssrf3"></p>
 <p>通过错误的不同，即可探测内网状态。</p>
 <p>为了快速得到内网可用ip</p>
 <p>我们直接进入ubuntu靶机的docker内</p>
-<p><img src="/img%5Cweblogic_ssrf4.png" alt="weblogic_ssrf4"></p>
-<p><img src="/../../public/img%5Cweblogic_ssrf5.png" alt="weblogic_ssrf5"></p>
+<p><img src="/img/weblogic_ssrf4.png" alt="weblogic_ssrf4"></p>
+<p><img src="/img/weblogic_ssrf5.png" alt="weblogic_ssrf5"></p>
 <h2 id="利用Redis反弹shell"><a href="#利用Redis反弹shell" class="headerlink" title="利用Redis反弹shell"></a>利用Redis反弹shell</h2><p>Weblogic的SSRF有一个比较大的特点，其虽然是一个“GET”请求，但是我们可以通过传入<code>%0a%0d</code>来注入换行符，而某些服务（如redis）是通过换行符来分隔每条命令，也就说我们可以通过该SSRF攻击内网中的redis服务器。</p>
 <p>首先，通过ssrf探测内网中的redis服务器（docker环境的网段一般是172.*），发现<code>172.18.0.2:6379</code>可以连通：</p>
 <p>发送redis命令，将弹shell脚本写入<code>/etc/crontab</code>(crontab就是计划)：</p>
@@ -525,7 +525,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvvp 777</span><br></pre></td></tr></table></figure>
 
 <p>成功反弹，拿到root权限：</p>
-<p><img src="/img%5Cweblogic_ssrf6.png" alt="weblogic_ssrf6"></p>
+<p><img src="/img/weblogic_ssrf6.png" alt="weblogic_ssrf6"></p>
 <p>最后补充一下，可进行利用的cron有如下几个地方：</p>
 <ul>
 <li>&#x2F;etc&#x2F;crontab 这个是肯定的</li>
@@ -541,7 +541,7 @@
             <p>原文作者：<a href="https://ja1e.github.io">Ja1e</a>
             <p>原文链接：<a href="https://ja1e.github.io/2022/04/30/ssrf/">https://ja1e.github.io/2022/04/30/ssrf/</a>
             <p>发表日期：<a href="https://ja1e.github.io/2022/04/30/ssrf/">April 30th 2022, 3:14:27 pm</a>
-            <p>更新日期：<a href="https://ja1e.github.io/2022/04/30/ssrf/">April 30th 2022, 5:23:31 pm</a>
+            <p>更新日期：<a href="https://ja1e.github.io/2022/04/30/ssrf/">April 30th 2022, 6:54:13 pm</a>
             <p>版权声明：本文采用<a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
