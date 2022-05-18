@@ -428,6 +428,71 @@
             
         
         <article class="index-post">
+            <a class="abstract-title" href="/2022/05/18/%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
+                
+                <span class="abstract-title-text">PHP7.0文件包含崩溃卡临时文件</span>
+            </a>
+            <div class="abstract-content">
+                PHP7.0文件包含崩溃卡临时文件https://www.anquanke.com/post/id/201136
+使用条件
+php7.0版本
+有完整的包含点
+&#x2F;tmp目录可写
+
+基本原理php脚本运行时，会自动给超全局变量赋值
+如果我们向一个 php 脚本发送文件上传表单， php 会将上传的文件存放在一个临时目录，等待 php 脚本处理，脚本运行结束后，无论 php 脚本是否处理这个上传文件，都会删除这个临时上传文件
+
+php 为什么要这么做呢？其实是为了解决文件上传的问题，由于 php 代码是可以动态执行的， php 解释器是不知道哪个请求有文件上传，哪个请求没有文件上传。...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/05/18">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/05/18</span>
+                </div>
+                <!-- tags -->
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/05/18/open_basedir%E7%BB%95%E8%BF%87/">
+                
+                <span class="abstract-title-text">php绕过open_basedir</span>
+            </a>
+            <div class="abstract-content">
+                php绕过open_basediropen_basedir是php.ini中的一个配置选项，它可将用户访问文件的活动范围限制在指定的区域
+假设 open_basedir&#x3D;&#x2F;home&#x2F;wwwroot&#x2F;home&#x2F;web1&#x2F;:&#x2F;tmp&#x2F;，那么通过web1访问服务器的用户就无法获取服务器上除了&#x2F;home&#x2F;wwwroot&#x2F;home&#x2F;web1&#x2F;和&#x2F;tmp&#x2F;这两个目录以外的文件。
+注意用open_basedir指定的限制实际上是前缀,而不是目录名。举例来...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/05/18">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/05/18</span>
+                </div>
+                <!-- tags -->
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
             <a class="abstract-title" href="/2022/05/01/OSI/">
                 
                 <span class="abstract-title-text">OSI与TCP-IP5层协议</span>
@@ -623,7 +688,29 @@ co...
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -634,7 +721,7 @@ co...
     
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 3
+        Total : 5
         </div>
         <!-- search  -->
         
@@ -648,6 +735,18 @@ co...
             <div class="archive-year"> 2022 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/18</span>
+            <a class="archive-post-title" href="/2022/05/18/%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">PHP7.0文件包含崩溃卡临时文件</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/18</span>
+            <a class="archive-post-title" href="/2022/05/18/open_basedir%E7%BB%95%E8%BF%87/">php绕过open_basedir</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">05/01</span>
