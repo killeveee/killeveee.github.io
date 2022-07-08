@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="翻墙记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从电脑小白到实现科学上网">
+<meta property="og:url" content="https://ja1e.github.io/2022/07/08/%E7%BF%BB%E5%A2%99%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Ja1e">
+<meta property="og:description" content="翻墙记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ja1e.github.io/img/fq1.png">
+<meta property="og:image" content="https://ja1e.github.io/2022/07/08/%E7%BF%BB%E5%A2%99%E8%AE%B0/img/fq2.png">
+<meta property="article:published_time" content="2022-07-08T05:10:33.000Z">
+<meta property="article:modified_time" content="2022-07-08T08:15:17.952Z">
+<meta property="article:author" content="Ja1e">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ja1e.github.io/img/fq1.png">
+
+<link rel="canonical" href="https://ja1e.github.io/2022/07/08/%E7%BF%BB%E5%A2%99%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从电脑小白到实现科学上网 | Ja1e</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ja1e</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ja1e的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/07/08/%E7%BF%BB%E5%A2%99%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ja1e">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ja1e">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从电脑小白到实现科学上网
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-07-08 13:10:33 / 修改时间：16:15:17" itemprop="dateCreated datePublished" datetime="2022-07-08T13:10:33+08:00">2022-07-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" itemprop="url" rel="index"><span itemprop="name">科学上网</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">翻墙记</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h2><p>说实话，作为一个守法好公民，我从来都没有接触过翻墙、vpn、ss、ssr这些概念，只是知道国外有的网站进不去。说来我真的是out了，穷人家的孩子😭，手机还是高中才有的，高中还是封闭式管理，根本玩不了，电脑上大学才有一台win10家庭版……</p>
+<p>基于前一天学习了frp的使用，用来做内网穿透，可以实现两个内网的通信，那我想是不是可以利用一台海外的vps使用frp技术实现翻墙🤔。但是我还不是很会使用frp，没有深入理解其原理，于是上网搜索。但是涉及frp的大多是内网穿透，没有找到教程是说搭梯子的。但是有利用订阅机场翻墙的。但是我都不知道机场是什么，难道就是飞机场？？😵 。然后我找了蛮多博客学习。其中有一个是教搭梯子的，和我之前的设想差不多，只是用的不是frp，好像是啥v2ray。我心想这啥玩意😣 。但是我当时就感觉搭建一个属于自己的梯子很牛，然后很安全，就决定硬着头皮跟博客步骤做。</p>
+<p>一开始就得先购买一台vps了，我是在<a target="_blank" rel="noopener" href="https://www.vultr.com/">vultr</a>上买的，60块钱😭。然后连接xshell进行操作。vps上搭建的是v2ray，我的本地电脑下载的是v2rayN。</p>
+<p>一顿操作下来，妹的😠根本访问不了外网，浪费了我大半天的时间，换来了教训。</p>
+<p>因为在搭建过程中你会遇到很多很多问题，比如 时间不一致、ip被封禁、速度慢……</p>
+<p>这对于一个小白来说是非常不友好的，所以不建议自己搭梯子。 你可以选择购买vpn或者大型的机场(小的容易跑路)。其实vpn翻墙会被GWF(中国国家防火墙)检测到，很容易被封，商家就会跑路，你的钱就打水漂了。而机场采用的是ss、ssr等协议实现的，在过墙的时候数据是加密的，被探测到的几率没那么大。有一些小机场就是自建的(上面说的利用vps搭建)，所以不稳定，大多也没有专业人员维护，特别容易跑路，所以还是建议使用大机场，比较稳定。</p>
+<p>那么我最终也是通过机场翻墙的。</p>
+<h2 id="订阅机场"><a href="#订阅机场" class="headerlink" title="订阅机场"></a>订阅机场</h2><p>这里说的机场是指一些提供特殊的、以私密方式上网的服务商（或平台）。这些服务商多采用SS或SSR协议提供服务。之所以被称为机场，是因为这种服务的客户端有一个小飞机的图标。</p>
+<p>大机场测速：<a target="_blank" rel="noopener" href="https://www.duyaoss.com/archives/3/">https://www.duyaoss.com/archives/3/</a>  选择一个合适的机场，注册。</p>
+<p>然后你需要一个客户端，我下载的是v2rayN。</p>
+<p>然后在机场网站购买订阅，复制。</p>
+<p>打开v2rayN，订阅-&gt;订阅设置：</p>
+<p><img src="/img/fq1.png" alt="fq1"></p>
+<p>备注随便写，地址就是刚刚订阅的连接，然后确定。</p>
+<img src="img/fq2.png" alt="fq2" style="zoom: 50%;" />
+
+<p>过一会就有很多节点了，可以选择速度快的节点进行使用。最后右击菜单栏的v2ray图标，选择http代理，全局模式。然后就可以愉快地科学上网了。手机端科学上网也差不多，先下载一个客户端比如clash，然后把订阅连接丢进去，一键科学上网。</p>
+<h2 id="一些理解"><a href="#一些理解" class="headerlink" title="一些理解"></a>一些理解</h2><p>翻墙后，我终于能看Youtub了，然后为了能长期有效翻墙，我找了几个视频学习（孩子听人话才能听懂），不然网上资料晦涩难懂。</p>
+<p>首先就是了解<strong>GWF</strong>(中国国家防火墙)的起源，据说是2008年奥运会期间国外的恐怖组织在某海外社交软件计划在中国西部进行恐怖袭击，中国政府想要和某海外社交软件进行合作，调出用户信息找到恐怖分子。但是某海外社交软件称以保护用户隐私为由拒绝了。从此中国建立了审查制度，有了GWF。</p>
+<p>GWF会对国内流量进行检测，比如你要访问<a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a> ，会先经过DNS解析成ip地址，然后经过GWF的时候，GWF发现这个ip是不允许大陆内访问的，就会指向一个错误的ip，导致我们访问错误。</p>
+<p>一开始应对GWF是使用<strong>VPN</strong>，但是现在GWF能够很精准的检测到vpn，所以很容易翻车了现在。</p>
+<p>然后<strong>ss、ssr</strong>协议是个啥呢，在我理解看来，就是在数据过墙的时候是加密的，让墙墙很难检测出来，然后就通过了。至于后面出现的v2ray、vmess、websocket+tls+web、trojan就理解为加密算法就行。</p>
+<p>这个<strong>过程</strong>大致就是，我们发送数据包然后本地在这些软件上就进行了加密，过墙后发到节点，节点解密后找到我们真实想要访问的网站，然后返回数据包给我们。</p>
+<p>那么<strong>VPN和机场的区别</strong>是什么呢，根据我们之前学过的OSI协议，其实机场实现是靠软件，也就是运行在应用层，接管的流量只有一部分应用层的流量；而VPN运行在网络层，能接管更多的流量。</p>
+<p>翻墙还可以通过<strong>路由器</strong>实现，那么就可以接管整个内网的流量全部科学上网。可是别忘了，翻墙考的是加密解密，这是要消耗算力的，路由器的算力能不能支撑起还是个问题，所以有时候上网更慢。当然有钱解决一切问题🙏。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/" rel="prev" title="DNS欺骗、ARP攻击及钓鱼">
+      <i class="fa fa-chevron-left"></i> DNS欺骗、ARP攻击及钓鱼
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%8E%E7%A2%8E%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">碎碎念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A2%E9%98%85%E6%9C%BA%E5%9C%BA"><span class="nav-number">2.</span> <span class="nav-text">订阅机场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%90%86%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">一些理解</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ja1e</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ja1e" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ja1e" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ja1e428@163.com" title="E-Mail → mailto:ja1e428@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ja1e</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
