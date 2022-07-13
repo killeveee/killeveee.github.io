@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://ja1e.github.io/images/msic3.png">
 <meta property="og:image" content="https://ja1e.github.io/images/misc4.png">
 <meta property="article:published_time" content="2022-03-23T11:20:33.000Z">
-<meta property="article:modified_time" content="2022-07-13T08:22:06.044Z">
+<meta property="article:modified_time" content="2022-07-13T08:32:43.951Z">
 <meta property="article:author" content="Ja1e">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-13 16:22:06" itemprop="dateModified" datetime="2022-07-13T16:22:06+08:00">2022-07-13</time>
+                <time title="修改时间：2022-07-13 16:32:43" itemprop="dateModified" datetime="2022-07-13T16:32:43+08:00">2022-07-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -717,7 +717,7 @@
 <h4 id="HITCON-2017-SSRFme"><a href="#HITCON-2017-SSRFme" class="headerlink" title="[HITCON 2017]SSRFme"></a>[HITCON 2017]SSRFme</h4><p>[perl脚本中GET命令执行漏洞（<a target="_blank" rel="noopener" href="https://www.codenong.com/cs105868449/">HITCON 2017]SSRFme） | 码农家园 (codenong.com)</a></p>
 <p>[刷题<a target="_blank" rel="noopener" href="https://www.cnblogs.com/karsa/p/14111891.html">HITCON 2017]SSRFme - kar3a - 博客园 (cnblogs.com)</a></p>
 <p>这道题的考点是 <code>GET</code> 这个命令的一个命令执行漏洞，主要是 perl 的 feature，在 open 可以执行命令：</p>
-<p><img src="/images/ssrfme.png" alt="屏幕截图 2022-03-15 201949"></p>
+<p><img src="/images/ssrfme.png" alt="ssrfme.png"></p>
 <p>首先它会进入sandbox&#x2F;文件夹然后进入一个 把 “orange118.239.16.215” md5摘要命名的文件夹。再然后执行一个“GET +我们传入的url参数” 这个命令。最后把执行的命令写入我们传入以我们传入的filename为文件名的文件内。<br> 了解了基本流程和上面说的漏洞后，我的思路是：</p>
 <ol>
 <li><p>先创建一个以我们要执行的命令为文件名的文件</p>
@@ -736,7 +736,7 @@
 </li>
 </ol>
 <p><code>bash -c</code>可以执行命令</p>
-<p><img src="/images/ssrfme2.png" alt="屏幕截图 2022-03-15 202152"></p>
+<p><img src="/images/ssrfme2.png" alt="ssrfme2.png"></p>
 <hr>
 <h1 id="GIT泄露"><a href="#GIT泄露" class="headerlink" title="GIT泄露"></a>GIT泄露</h1><h4 id="BJDCTF2020-Mark-loves-cat"><a href="#BJDCTF2020-Mark-loves-cat" class="headerlink" title="[BJDCTF2020]Mark loves cat"></a>[BJDCTF2020]Mark loves cat</h4><p>dirsearch扫到git 泄露。</p>
 <p>flag.php</p>
