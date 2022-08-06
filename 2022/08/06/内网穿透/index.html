@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://ja1e.github.io/images/frp.png">
 <meta property="og:image" content="https://ja1e.github.io/images/xd12.png">
 <meta property="article:published_time" content="2022-08-06T08:11:33.000Z">
-<meta property="article:modified_time" content="2022-08-06T09:41:46.404Z">
+<meta property="article:modified_time" content="2022-08-06T12:42:03.710Z">
 <meta property="article:author" content="Ja1e">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ja1e.github.io/images/frp.png">
@@ -188,7 +188,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-08-06 16:11:33 / 修改时间：17:41:46" itemprop="dateCreated datePublished" datetime="2022-08-06T16:11:33+08:00">2022-08-06</time>
+              <time title="创建时间：2022-08-06 16:11:33 / 修改时间：20:42:03" itemprop="dateCreated datePublished" datetime="2022-08-06T16:11:33+08:00">2022-08-06</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +302,11 @@
 
 
 
-<h2 id="网络层ICMP"><a href="#网络层ICMP" class="headerlink" title="网络层ICMP"></a>网络层ICMP</h2><p>工具：老版本：<a target="_blank" rel="noopener" href="https://github.com/f1vefour/ptunnel">ptunnel</a> (需自行编译)<br>            新版本：<a target="_blank" rel="noopener" href="https://github.com/esrrhs/pingtunnel">pingtunnel</a> (二次开发版)</p>
+<h2 id="网络层ICMP"><a href="#网络层ICMP" class="headerlink" title="网络层ICMP"></a>网络层ICMP</h2><p>工具：</p>
+<ul>
+<li>老版本：<a target="_blank" rel="noopener" href="https://github.com/f1vefour/ptunnel">ptunnel</a> (需自行编译)</li>
+<li>新版本：<a target="_blank" rel="noopener" href="https://github.com/esrrhs/pingtunnel">pingtunnel</a> (二次开发版)</li>
+</ul>
 <p>pingtunnel 是把 tcp&#x2F;udp&#x2F;sock5 流量伪装成 icmp 流量进行转发的工具。</p>
 <p>首先我们是控制了webserver的，要使用这个工具就先下载，在控制机命令行执行：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装libpcap的依赖环境</span></span><br><span class="line">apt-get install byacc</span><br><span class="line">apt-get install flex bison</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装libpcap依赖库</span></span><br><span class="line">wget http://www.tcpdump.org/release/libpcap-1.9.0.tar.gz</span><br><span class="line">tar -xzvf libpcap-1.9.0.tar.gz</span><br><span class="line">cd libpcap-1.9.0</span><br><span class="line">./configure</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">打开 /etc目录下的文件ld.so.conf ，添加两行</span><br><span class="line">/usr/local/lib</span><br><span class="line">/usr/lib</span><br><span class="line">然后在终端下执行从新加载配置的命令：</span><br><span class="line">ldconfig</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装PingTunnel</span></span><br><span class="line">wget http://www.cs.uit.no/~daniels/PingTunnel/PingTunnel-0.72.tar.gz</span><br><span class="line">tar -xzvf PingTunnel-0.72.tar.gz</span><br><span class="line">cd PingTunnel</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"></span><br><span class="line">注：部分出错原因：</span><br><span class="line">安装make： yum -y install gcc automake autoconf libtool make</span><br></pre></td></tr></table></figure>
