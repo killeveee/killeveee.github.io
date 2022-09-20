@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="VScode+phpStudy搭建php代码调试环境">
+  <meta name="description" content="PhpStorm+phpStudy搭建thinkphp代码调试环境">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VScode+phpStudy搭建php代码调试环境">
-<meta property="og:url" content="https://ja1e.github.io/2022/05/16/vscode%E8%B0%83%E8%AF%95php/index.html">
+<meta property="og:title" content="PhpStorm+phpStudy搭建thinkphp代码调试环境">
+<meta property="og:url" content="https://ja1e.github.io/2022/09/19/phpstorm+phpstudy%E8%B0%83%E8%AF%95/index.html">
 <meta property="og:site_name" content="Ja1e">
-<meta property="og:description" content="VScode+phpStudy搭建php代码调试环境">
+<meta property="og:description" content="PhpStorm+phpStudy搭建thinkphp代码调试环境">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-16T05:10:33.000Z">
-<meta property="article:modified_time" content="2022-08-30T09:28:33.772Z">
+<meta property="article:published_time" content="2022-09-19T05:10:33.000Z">
+<meta property="article:modified_time" content="2022-09-19T06:56:35.149Z">
 <meta property="article:author" content="Ja1e">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://ja1e.github.io/2022/05/16/vscode%E8%B0%83%E8%AF%95php/">
+<link rel="canonical" href="https://ja1e.github.io/2022/09/19/phpstorm+phpstudy%E8%B0%83%E8%AF%95/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>VScode+phpStudy搭建php代码调试环境 | Ja1e</title>
+  <title>PhpStorm+phpStudy搭建thinkphp代码调试环境 | Ja1e</title>
   
 
 
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/05/16/vscode%E8%B0%83%E8%AF%95php/">
+    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/09/19/phpstorm+phpstudy%E8%B0%83%E8%AF%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          VScode+phpStudy搭建php代码调试环境
+          PhpStorm+phpStudy搭建thinkphp代码调试环境
         </h1>
 
         <div class="post-meta">
@@ -183,16 +183,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-05-16 13:10:33" itemprop="dateCreated datePublished" datetime="2022-05-16T13:10:33+08:00">2022-05-16</time>
+              <time title="创建时间：2022-09-19 13:10:33 / 修改时间：14:56:35" itemprop="dateCreated datePublished" datetime="2022-09-19T13:10:33+08:00">2022-09-19</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-30 17:28:33" itemprop="dateModified" datetime="2022-08-30T17:28:33+08:00">2022-08-30</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -216,7 +210,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>669</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -225,7 +219,7 @@
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>1 分钟</span>
             </span>
-            <div class="post-description">VScode+phpStudy搭建php代码调试环境</div>
+            <div class="post-description">PhpStorm+phpStudy搭建thinkphp代码调试环境</div>
 
         </div>
       </header>
@@ -236,30 +230,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <ol>
-<li><p>vscode下载三个插件：中文插件、PHP Debug、PHP lntelliSense。</p>
-</li>
-<li><p>打开phpstudy–&gt;找到软件管理–&gt;找到对应的php版本–&gt;设置按钮–&gt;扩展组件–&gt;<br>打开XDebug调试组件，下面Profiler输出、Trace输出都勾选上。</p>
-</li>
-<li><p>phpstudy设置–&gt;配置文件–&gt;找到对应php版本，点击打开配置文件<br>ctrl+f找xDebug<br>加上这句：xdebug.remote_autostart&#x3D;1<br>更改这句：xdebug.remote_enable&#x3D;1<br>重启一下Apache</p>
-</li>
-<li><p>然后php加入环境变量：我的电脑右击–&gt;属性–&gt;高级系统设置–&gt;环境变量–&gt;双击Path，新增，然后复制php对应版本的绝对路径进去，确定。</p>
-</li>
-<li><p>vscode–&gt;点击界面左边的插件–&gt;找到PHP Debug插件，点击它右下角的齿轮，点击然后扩展设置–&gt;在setting.json中编辑–&gt;加上一条：</p>
-<blockquote>
-<p>“php.validate.executablePath”: “D:\phpstudy_pro\Extensions\php\php7.1.9nts”</p>
-</blockquote>
-</li>
-<li><p>然后就导入工作文件夹，点击界面左边的调试，然后点击&quot;创建 launch.json文件&quot;–&gt;把里面的端口9003改成php配置文件里一样的端口(9000)。</p>
-</li>
-<li><p>开启调试：点击界面上方的运行–&gt;启动调试；F5。</p>
-</li>
-</ol>
-<hr>
-<p>一些快捷键：<br>ctrl+&#x2F;	单行注释</p>
-<p>Alt+Shift+A	多行注释</p>
-<p>……</p>
-<hr>
+        <p>phpstorm+phpstudy调试tp5：<br>  -php版本：7.3<br>  -apache版本：2.4.39</p>
+<p>1、打开phpstudy–&gt;找到软件管理–&gt;找到对应的php版本–&gt;设置按钮–&gt;扩展组件–&gt;<br>打开XDebug调试组件，下面Profiler输出、Trace输出都勾选上。<br>2、打开phpstudy–&gt;设置–&gt;配置文件–&gt;找到对应php版本打开<br>phpstudy设置–&gt;配置文件–&gt;找到对应php版本，点击打开配置文件<br>ctrl+f找xDebug<br>加上这句：xdebug.remote_autostart&#x3D;1<br>更改这句：xdebug.remote_enable&#x3D;1<br>加上这句：xdebug.ideakey&#x3D;”PHPSTORM”<br>重启一下Apache</p>
+<p>3、phpstorm导入tp5的源代码<br>4、点击file–&gt;settings–&gt;搜索并点击PHP–&gt;点servers–&gt;点加号–&gt;Name填127.0.0.1、Host填127.0.0.1–&gt;点Apply<br>5、点击Debug下的DBGp Proxy–&gt;填写：[IDE key：PHPSTORM]、[Host：localhost]、[Port：9000]–&gt;点Apply<br>6、点PHP–&gt;PHP language level选择7.3版本–&gt;点第二行后面的…–&gt;点+号，点Local Path……–&gt;PHP executable选择对应版本(7.3)的php.exe文件路径–&gt;点ok</p>
+<p>7、开启调试<br>url访问：<a target="_blank" rel="noopener" href="http://127.0.0.1/code_audit/thinkphp5.0/public/">http://127.0.0.1/code_audit/thinkphp5.0/public/</a><br>可以正常访问就行<br>打开\application\index\controller\index.php文件，下一个断点<br>然后点击右上角的”小电话”开启调试模式<br>最后浏览器访问，若phpstorm有反应，则配置成功。</p>
+<p>附加：解决时间过长，调试自动结束的问题。<br>参考链接：<a target="_blank" rel="noopener" href="https://www.moonsec.com/1881.html">https://www.moonsec.com/1881.html</a><br>1、找到对应apache版本的文件夹–&gt;打开&#x2F;conf&#x2F;httpd.conf文件<br>2、ctrl+f查找”Include conf&#x2F;extra&#x2F;httpd-default.conf”，删除前面的#号；<br>下面加上一行：Include conf&#x2F;extra&#x2F;httpd-fcgid.conf 。<br>3、打开&#x2F;conf&#x2F;extra&#x2F;httpd-defaulte.conf文件<br>Timeout 改成 3600<br>MaxKeepAliveRequests 改成 0<br>KeepAliveTimeout 改成 3600<br>4、打开php.ini文件，ctrl+f查找”max_execution_time”，它的值改为3600<br>5、在apache的&#x2F;conf&#x2F;extra文件夹下，新建文件httpd-fcgid.conf，内容：<br>ProcessLifeTime 3600<br>FcgidIOTimeout 3600<br>FcgidConnectTimeout 3600<br>FcgidOutputBufferSize 128<br>FcgidMaxRequestsPerProcess 1000<br>FcgidMinProcessesPerClass 0<br>FcgidMaxProcesses 16<br>FcgidMaxRequestLen 268435456<br>FcgidInitialEnv PHP_FCGI_MAX_REQUESTS 1000<br>IPCConnectTimeout 3600<br>IPCCommTimeout 3600<br>FcgidIdleTimeout 3600<br>FcgidBusyTimeout 60000<br>FcgidBusyScanInterval 120<br>FcgidInitialEnv PHPRC “D:\phpstudy_pro\Extensions\php\php7.3.4nts”<br>AddHandler fcgid-script .php</p>
 
     </div>
 
@@ -275,7 +250,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://ja1e.github.io/2022/05/16/vscode%E8%B0%83%E8%AF%95php/" title="VScode+phpStudy搭建php代码调试环境">https://ja1e.github.io/2022/05/16/vscode调试php/</a>
+    <a href="https://ja1e.github.io/2022/09/19/phpstorm+phpstudy%E8%B0%83%E8%AF%95/" title="PhpStorm+phpStudy搭建thinkphp代码调试环境">https://ja1e.github.io/2022/09/19/phpstorm+phpstudy调试/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -292,13 +267,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/05/10/ARP%E6%94%BB%E5%87%BB%E4%B8%8E%E6%AC%BA%E9%AA%97/" rel="prev" title="ARP攻击与欺骗">
-      <i class="fa fa-chevron-left"></i> ARP攻击与欺骗
+    <a href="/2022/09/11/ctfshowssti/" rel="prev" title="ctfshow_web入门_ssti">
+      <i class="fa fa-chevron-left"></i> ctfshow_web入门_ssti
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/05/18/open_basedir%E7%BB%95%E8%BF%87/" rel="next" title="php绕过open_basedir">
-      php绕过open_basedir <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
