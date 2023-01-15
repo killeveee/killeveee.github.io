@@ -1,530 +1,486 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.1.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
 
-<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Source Code Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ja1e.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
+  
+  <title>本地信息搜集</title>
+  
+  <link rel="canonical" href="https://ja1e.github.io/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+  
+  <meta name="description" content="Windows系统相关#查看系统信息 systeminfo  #查看系统架构 echo %PROCESSOR_ARCHITECTURE%  #机器名 hostname  #查看操作系统版本 ver  #查看补丁列表 wmic qfe get Caption,Description,HotFixID,">
+  
+  
+  <meta name="author" content="Ja1e">
+  
+  
+  
+  <meta property="og:site_name" content="Ja1e" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="本地信息搜集" />
+  
+  <meta property="og:description" content="Windows系统相关#查看系统信息 systeminfo  #查看系统架构 echo %PROCESSOR_ARCHITECTURE%  #机器名 hostname  #查看操作系统版本 ver  #查看补丁列表 wmic qfe get Caption,Description,HotFixID,">
+  
+  <meta property="og:url" content="https://ja1e.github.io/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" />
 
-  <meta name="description" content="Linux和Windows下各种本地信息收集命令">
-<meta property="og:type" content="article">
-<meta property="og:title" content="本地信息搜集">
-<meta property="og:url" content="https://ja1e.github.io/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/index.html">
-<meta property="og:site_name" content="Ja1e">
-<meta property="og:description" content="Linux和Windows下各种本地信息收集命令">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-08-06T05:10:33.000Z">
-<meta property="article:modified_time" content="2022-08-06T07:49:30.682Z">
-<meta property="article:author" content="Ja1e">
-<meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="本地信息搜集">
+  
+  <meta name="twitter:description" content="Windows系统相关#查看系统信息 systeminfo  #查看系统架构 echo %PROCESSOR_ARCHITECTURE%  #机器名 hostname  #查看操作系统版本 ver  #查看补丁列表 wmic qfe get Caption,Description,HotFixID,">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://ja1e.github.io/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" />
 
-<link rel="canonical" href="https://ja1e.github.io/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
 
-  <title>本地信息搜集 | Ja1e</title>
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/css/user.css">
+
   
 
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
 
-
-
-
-
-  <noscript>
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
   }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
 
-</head>
+  
+  <script src="/js/pic.min.js" defer></script>
+  
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+  
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">🌑</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>☀️</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
   </div>
 
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Ja1e</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">Ja1e的博客</p>
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      Hi Folks.
+    </h1>
   </div>
 
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">Home</a>
+        
+          
+          <a href="/About" class="ml">About</a>
+          
+        
+        
+      </div>
     </div>
+    <hr style="margin-bottom: 2.6rem">
   </div>
 </div>
+<link rel="stylesheet" href="/js/prism/prism.css">
+        <div class="trans">
+            <h2>本地信息搜集</h2>
+
+  <h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><h2 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment">#查看系统信息</span>
+systeminfo
+
+<span class="token comment">#查看系统架构</span>
+<span class="token function">echo</span> <span class="token operator">%</span>PROCESSOR_ARCHITECTURE%
+
+<span class="token comment">#机器名</span>
+hostname
+
+<span class="token comment">#查看操作系统版本</span>
+ver
+
+<span class="token comment">#查看补丁列表</span>
+wmic qfe get Caption<span class="token punctuation">,</span>Description<span class="token punctuation">,</span>HotFixID<span class="token punctuation">,</span>InstalledOn
+
+<span class="token comment">#查看主机开机时间</span>
+net statistics workstation
+
+<span class="token comment">#查看计划任务</span>
+schtasks <span class="token operator">/</span>query <span class="token operator">/</span>fo LIST <span class="token operator">/</span>v             <span class="token comment">#query显示所有计划任务</span>
+
+<span class="token comment">#开启远程桌面</span>
+REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal<span class="token string">" "</span>Server <span class="token operator">/</span>v fDenyTSConnections <span class="token operator">/</span>t REG_DWORD <span class="token operator">/</span>d 00000000 <span class="token operator">/</span>f
+
+<span class="token comment">#关闭远程桌面</span>
+REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal<span class="token string">" "</span>Server <span class="token operator">/</span>v fDenyTSConnections <span class="token operator">/</span>t REG_DWORD <span class="token operator">/</span>d 11111111 <span class="token operator">/</span>f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="用户相关"><a href="#用户相关" class="headerlink" title="用户相关"></a>用户相关</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment">#检查当前用户，权限</span>
+whoami <span class="token operator">/</span>user &amp;&amp; whoami <span class="token operator">/</span>priv
+whoami <span class="token operator">/</span>all        <span class="token comment">#查看当前域并获取域SID</span>
+
+<span class="token comment">#查看在线用户信息</span>
+quser
+query user <span class="token punctuation">|</span><span class="token punctuation">|</span> qwinsta
 
 
+net user         <span class="token comment">#查看本机用户</span>
+net user XXX     <span class="token comment">#查看用户详细信息</span>
+net user username password <span class="token operator">/</span>add  <span class="token comment">#增加用户，修改密码</span>
+net user username <span class="token operator">/</span><span class="token function">del</span>		<span class="token comment">#删除用户</span>
 
+net localgroup    <span class="token comment">#查看管理员组成员</span>
+net localgroup administrators  <span class="token comment">#查看本机管理员</span>
+net localgroup administrators <span class="token operator">/</span>domain  <span class="token comment">#登录本机的域管理员</span>
+net localgroup workgroup\user001 <span class="token operator">/</span>add   <span class="token comment">#域用户添加到本机</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
+<h2 id="程序相关"><a href="#程序相关" class="headerlink" title="程序相关"></a>程序相关</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment">#查看杀毒软件</span>
+wmic <span class="token operator">/</span>Node:localhost <span class="token operator">/</span>Namespace:\\root\SecurityCenter2 Path AntivirusProduct Get displayName <span class="token operator">/</span>Format:List
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+<span class="token comment">#查看安装的程序和版本</span>
+wmic product get name<span class="token punctuation">,</span>version
 
-  </li>
-        <li class="menu-item menu-item-tags">
+<span class="token comment">#查询运行的进程</span>
+tasklist
+wmic <span class="token keyword">process</span> list brief
+wmic <span class="token keyword">process</span> get processid<span class="token punctuation">,</span>executablepath<span class="token punctuation">,</span>name      <span class="token comment">#显示进程的路径、名称、pid</span>
+wmic service list brief                             <span class="token comment">#查看本机服务</span>
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+<span class="token comment">#远程桌面连接历史记录</span>
+cmdkey <span class="token operator">/</span>l
 
-  </li>
-        <li class="menu-item menu-item-categories">
+<span class="token comment">#查看自启动程序列表</span>
+wmic startuo get command<span class="token punctuation">,</span>caption
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+<span class="token comment">####防护墙相关操作</span>
+netsh firewall show state                      <span class="token comment">#防火墙状态</span>
+netsh firewall show config                     <span class="token comment">#查看防火墙配置</span>
+netsh firewall <span class="token function">set</span> opmode disable              <span class="token comment">#关闭防火墙（windows server 2003及以前）</span>
+netsh advfirewall <span class="token function">set</span> allprofiles state off    <span class="token comment">#关闭防火墙（windows server 2003以后）</span>
 
-  </li>
-        <li class="menu-item menu-item-archives">
+<span class="token comment">####修改防火墙配置</span>
+netsh firewall add allowedprogram c:\\xxx\\xx<span class="token punctuation">.</span>exe <span class="token string">"allow xx"</span> enable    <span class="token comment">#允许指定程序的全部连接（windows server 2003及以前）</span>
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+<span class="token comment">#windows server 2003之后：</span>
+netsh advfirewall firewall add rule name=<span class="token string">"pass xx"</span> <span class="token function">dir</span>=in action=allow  program=<span class="token string">"C:\xxx\xx.exe"</span>         <span class="token comment">#允许某个程序连入</span>
+netsh advfirewall firewall add rule name=<span class="token string">"pass xx"</span> <span class="token function">dir</span>=out action=allow program=<span class="token string">"C:\xxx\xx.exe"</span>              <span class="token comment">#允许某个程序外连</span>
+netsh advfirewall firewall add rule name=<span class="token string">"Remote Desktop"</span> protocol=TCP <span class="token function">dir</span>=in localport=3389 action=allow         <span class="token comment">#开启3389端口，允许改端口放行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-  </li>
-  </ul>
-</nav>
+<h2 id="网络连接相关"><a href="#网络连接相关" class="headerlink" title="网络连接相关"></a>网络连接相关</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment">#tcp/udp网络连接状态，端口信息</span>
+netstat <span class="token operator">-</span>ano
 
+ipconfig <span class="token operator">/</span>all              <span class="token comment">#查询本机IP段，所在域等</span>
+route print                <span class="token comment">#打印路由信息</span>
+arp <span class="token operator">-</span>a                     <span class="token comment">#查看arp缓存，可以发现内网主机</span>
 
+<span class="token comment">#查看局域网信息</span>
+net view            <span class="token comment">#查看同一域内机器列表</span>
+net view \\ip       <span class="token comment">#查看某ip共享</span>
+net view \\GHQ      <span class="token comment">#查看GHQ计算机的共享资源列表</span>
+net view <span class="token operator">/</span>domain    <span class="token comment">#查看内网存在多少个域</span>
+net view <span class="token operator">/</span>domin:XYZ  <span class="token comment">#查看XYZ域的机器列表</span>
+net accounts <span class="token operator">/</span>domain  <span class="token comment">#查询域用户密码过期等信息</span>
 
+<span class="token comment">#查看本机共享</span>
+net share
+wmic share get name<span class="token punctuation">,</span>path<span class="token punctuation">,</span>status<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-</div>
-    </header>
+<h2 id="域相关"><a href="#域相关" class="headerlink" title="域相关"></a>域相关</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment">#判断是否存在域</span>
+net config workstation    <span class="token comment"># 查看当前计算机名，全名，用户名，系统版本，工作站域，登陆的域等</span>
+net view <span class="token operator">/</span>domain          <span class="token comment"># 查看域</span>
 
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
+<span class="token comment">#查看主域服务器</span>
+net time <span class="token operator">/</span>domain           <span class="token comment">#主域服务器会同时作为时间服务器</span>
 
+nltest <span class="token operator">/</span>DCLIST:god         <span class="token comment">#查看域控制器主机名，god为域名</span>
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
+<span class="token comment">#查看域用户相关信息</span>
+net user <span class="token operator">/</span>domain          <span class="token comment">#显示所在域的用户 </span>
+net user 域用户 <span class="token operator">/</span>domain    <span class="token comment">#获取域用户详细信息</span>
+net user <span class="token operator">/</span>domain XXX 123456   <span class="token comment">#修改用户密码，需要域管理员权限</span>
 
-          <div class="content post posts-expand">
-            
+net <span class="token function">group</span> <span class="token operator">/</span>domain       <span class="token comment">#查看域内用户组列表</span>
+net <span class="token function">group</span> <span class="token string">"domain admins"</span> <span class="token operator">/</span>domain       <span class="token comment">#获取域管理员列表</span>
+net <span class="token function">group</span> <span class="token string">"domain controllers"</span> <span class="token operator">/</span>domain  <span class="token comment">#查看域控制器组</span>
+net <span class="token function">group</span> <span class="token string">"domain computers"</span>  <span class="token operator">/</span>domain   <span class="token comment">#查看域机器</span>
 
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ja1e.github.io/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/">
+<span class="token comment">#列出域信任关系</span>
+nltest <span class="token operator">/</span>domain_trusts      <span class="token comment">#列出域与域之间的信任关系</span>
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Ja1e">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ja1e">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          本地信息搜集
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-08-06 13:10:33 / 修改时间：15:49:30" itemprop="dateCreated datePublished" datetime="2022-08-06T13:10:33+08:00">2022-08-06</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">内网渗透</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span><br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>109</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-            <div class="post-description">Linux和Windows下各种本地信息收集命令</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><h2 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看系统信息</span></span><br><span class="line">systeminfo</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看系统架构</span></span><br><span class="line"><span class="built_in">echo</span> %PROCESSOR_ARCHITECTURE%</span><br><span class="line"></span><br><span class="line"><span class="comment">#机器名</span></span><br><span class="line">hostname</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看操作系统版本</span></span><br><span class="line">ver</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看补丁列表</span></span><br><span class="line">wmic qfe get Caption,Description,HotFixID,InstalledOn</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看主机开机时间</span></span><br><span class="line">net statistics workstation</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看计划任务</span></span><br><span class="line">schtasks /query /fo LIST /v             <span class="comment">#query显示所有计划任务</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#开启远程桌面</span></span><br><span class="line">REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal<span class="string">&quot; &quot;</span>Server /v fDenyTSConnections /t REG_DWORD /d <span class="number">00000000</span> /f</span><br><span class="line"></span><br><span class="line"><span class="comment">#关闭远程桌面</span></span><br><span class="line">REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal<span class="string">&quot; &quot;</span>Server /v fDenyTSConnections /t REG_DWORD /d <span class="number">11111111</span> /f</span><br></pre></td></tr></table></figure>
-
-<h2 id="用户相关"><a href="#用户相关" class="headerlink" title="用户相关"></a>用户相关</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#检查当前用户，权限</span></span><br><span class="line">whoami /user &amp;&amp; whoami /priv</span><br><span class="line">whoami /all        <span class="comment">#查看当前域并获取域SID</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看在线用户信息</span></span><br><span class="line">quser</span><br><span class="line">query user || qwinsta</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">net user         <span class="comment">#查看本机用户</span></span><br><span class="line">net user XXX     <span class="comment">#查看用户详细信息</span></span><br><span class="line">net user username password /add  <span class="comment">#增加用户，修改密码</span></span><br><span class="line">net user username /<span class="built_in">del</span>		<span class="comment">#删除用户</span></span><br><span class="line"></span><br><span class="line">net localgroup    <span class="comment">#查看管理员组成员</span></span><br><span class="line">net localgroup administrators  <span class="comment">#查看本机管理员</span></span><br><span class="line">net localgroup administrators /domain  <span class="comment">#登录本机的域管理员</span></span><br><span class="line">net localgroup workgroup\user001 /add   <span class="comment">#域用户添加到本机</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="程序相关"><a href="#程序相关" class="headerlink" title="程序相关"></a>程序相关</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看杀毒软件</span></span><br><span class="line">wmic /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntivirusProduct Get displayName /Format:List</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看安装的程序和版本</span></span><br><span class="line">wmic product get name,version</span><br><span class="line"></span><br><span class="line"><span class="comment">#查询运行的进程</span></span><br><span class="line">tasklist</span><br><span class="line">wmic <span class="keyword">process</span> list brief</span><br><span class="line">wmic <span class="keyword">process</span> get processid,executablepath,name      <span class="comment">#显示进程的路径、名称、pid</span></span><br><span class="line">wmic service list brief                             <span class="comment">#查看本机服务</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#远程桌面连接历史记录</span></span><br><span class="line">cmdkey /l</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看自启动程序列表</span></span><br><span class="line">wmic startuo get command,caption</span><br><span class="line"></span><br><span class="line"><span class="comment">####防护墙相关操作</span></span><br><span class="line">netsh firewall show state                      <span class="comment">#防火墙状态</span></span><br><span class="line">netsh firewall show config                     <span class="comment">#查看防火墙配置</span></span><br><span class="line">netsh firewall <span class="built_in">set</span> opmode disable              <span class="comment">#关闭防火墙（windows server 2003及以前）</span></span><br><span class="line">netsh advfirewall <span class="built_in">set</span> allprofiles state off    <span class="comment">#关闭防火墙（windows server 2003以后）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####修改防火墙配置</span></span><br><span class="line">netsh firewall add allowedprogram c:\\xxx\\xx.exe <span class="string">&quot;allow xx&quot;</span> enable    <span class="comment">#允许指定程序的全部连接（windows server 2003及以前）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#windows server 2003之后：</span></span><br><span class="line">netsh advfirewall firewall add rule name=<span class="string">&quot;pass xx&quot;</span> <span class="built_in">dir</span>=<span class="keyword">in</span> action=allow  program=<span class="string">&quot;C:\xxx\xx.exe&quot;</span>         <span class="comment">#允许某个程序连入</span></span><br><span class="line">netsh advfirewall firewall add rule name=<span class="string">&quot;pass xx&quot;</span> <span class="built_in">dir</span>=out action=allow program=<span class="string">&quot;C:\xxx\xx.exe&quot;</span>              <span class="comment">#允许某个程序外连</span></span><br><span class="line">netsh advfirewall firewall add rule name=<span class="string">&quot;Remote Desktop&quot;</span> protocol=TCP <span class="built_in">dir</span>=<span class="keyword">in</span> localport=<span class="number">3389</span> action=allow         <span class="comment">#开启3389端口，允许改端口放行</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="网络连接相关"><a href="#网络连接相关" class="headerlink" title="网络连接相关"></a>网络连接相关</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#tcp/udp网络连接状态，端口信息</span></span><br><span class="line">netstat <span class="literal">-ano</span></span><br><span class="line"></span><br><span class="line">ipconfig /all              <span class="comment">#查询本机IP段，所在域等</span></span><br><span class="line">route print                <span class="comment">#打印路由信息</span></span><br><span class="line">arp <span class="literal">-a</span>                     <span class="comment">#查看arp缓存，可以发现内网主机</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看局域网信息</span></span><br><span class="line">net view            <span class="comment">#查看同一域内机器列表</span></span><br><span class="line">net view \\ip       <span class="comment">#查看某ip共享</span></span><br><span class="line">net view \\GHQ      <span class="comment">#查看GHQ计算机的共享资源列表</span></span><br><span class="line">net view /domain    <span class="comment">#查看内网存在多少个域</span></span><br><span class="line">net view /domin:XYZ  <span class="comment">#查看XYZ域的机器列表</span></span><br><span class="line">net accounts /domain  <span class="comment">#查询域用户密码过期等信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看本机共享</span></span><br><span class="line">net share</span><br><span class="line">wmic share get name,path,status</span><br></pre></td></tr></table></figure>
-
-<h2 id="域相关"><a href="#域相关" class="headerlink" title="域相关"></a>域相关</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#判断是否存在域</span></span><br><span class="line">net config workstation    <span class="comment"># 查看当前计算机名，全名，用户名，系统版本，工作站域，登陆的域等</span></span><br><span class="line">net view /domain          <span class="comment"># 查看域</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看主域服务器</span></span><br><span class="line">net time /domain           <span class="comment">#主域服务器会同时作为时间服务器</span></span><br><span class="line"></span><br><span class="line">nltest /DCLIST:god         <span class="comment">#查看域控制器主机名，god为域名</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看域用户相关信息</span></span><br><span class="line">net user /domain          <span class="comment">#显示所在域的用户 </span></span><br><span class="line">net user 域用户 /domain    <span class="comment">#获取域用户详细信息</span></span><br><span class="line">net user /domain XXX <span class="number">123456</span>   <span class="comment">#修改用户密码，需要域管理员权限</span></span><br><span class="line"></span><br><span class="line">net <span class="built_in">group</span> /domain       <span class="comment">#查看域内用户组列表</span></span><br><span class="line">net <span class="built_in">group</span> <span class="string">&quot;domain admins&quot;</span> /domain       <span class="comment">#获取域管理员列表</span></span><br><span class="line">net <span class="built_in">group</span> <span class="string">&quot;domain controllers&quot;</span> /domain  <span class="comment">#查看域控制器组</span></span><br><span class="line">net <span class="built_in">group</span> <span class="string">&quot;domain computers&quot;</span>  /domain   <span class="comment">#查看域机器</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#列出域信任关系</span></span><br><span class="line">nltest /domain_trusts      <span class="comment">#列出域与域之间的信任关系</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#获得域内用户详细信息</span></span><br><span class="line">wmic useraccount get /all   <span class="comment">#可以获取到域用户的用户名、描述信息、SID、域名、状态等。</span></span><br></pre></td></tr></table></figure>
+<span class="token comment">#获得域内用户详细信息</span>
+wmic useraccount get <span class="token operator">/</span>all   <span class="token comment">#可以获取到域用户的用户名、描述信息、SID、域名、状态等。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <hr>
-<h1 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h1><h2 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/issue         #查看系统名称</span><br><span class="line">cat /etc/Lsb-release   #查看系统名称,版本号</span><br><span class="line">cat /etc/*release      #查看linux发行信息</span><br><span class="line">uname -an              #查看内核版本</span><br><span class="line">cat /proc/version      #查看内核信息</span><br><span class="line">cat /proc/cpuinfo      #查看cpu信息</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看文件系统</span></span><br><span class="line">df -a </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看系统日志</span></span><br><span class="line">sudo cat /var/log/syslog</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看命令记录</span></span><br><span class="line">cat /root/.bash_history</span><br><span class="line">cat ~/.bash_history</span><br><span class="line"></span><br><span class="line">hostname             #查看主机名</span><br><span class="line">env                  #打印系统环境信息</span><br><span class="line">cat /etc/shells      #显示可用的shell</span><br></pre></td></tr></table></figure>
+<h1 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h1><h2 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">cat</span> /etc/issue         <span class="token comment">#查看系统名称</span>
+<span class="token function">cat</span> /etc/Lsb-release   <span class="token comment">#查看系统名称,版本号</span>
+<span class="token function">cat</span> /etc/*release      <span class="token comment">#查看linux发行信息</span>
+<span class="token function">uname</span> -an              <span class="token comment">#查看内核版本</span>
+<span class="token function">cat</span> /proc/version      <span class="token comment">#查看内核信息</span>
+<span class="token function">cat</span> /proc/cpuinfo      <span class="token comment">#查看cpu信息</span>
 
-<h2 id="用户相关-1"><a href="#用户相关-1" class="headerlink" title="用户相关"></a>用户相关</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">whoami     #查看当前shell权限</span><br><span class="line">id         #查看当前用户的权限和所在的管理组</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看登录信息</span></span><br><span class="line">w</span><br><span class="line">who</span><br><span class="line">last       #登入过的用户信息</span><br><span class="line">lastlog    #显示系统中所有用户最近一次登录信息</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看账号信息</span></span><br><span class="line">cat /etc/sudoers</span><br><span class="line">cat /etc/group</span><br><span class="line">cat /etc/passwd</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">列出目前用户可执行与无法执行的指令</span></span><br><span class="line">sudo -l</span><br></pre></td></tr></table></figure>
+<span class="token comment">#查看文件系统</span>
+<span class="token function">df</span> -a 
 
-<h2 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查询本机IP信息</span></span><br><span class="line">ifconfig</span><br><span class="line">ip a</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看端口信息</span></span><br><span class="line">netstat -anpt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看网卡配置</span></span><br><span class="line"> cat /etc/network/interfaces</span><br></pre></td></tr></table></figure>
+<span class="token comment">#查看系统日志</span>
+<span class="token function">sudo</span> <span class="token function">cat</span> /var/log/syslog
 
-<h2 id="程序相关-1"><a href="#程序相关-1" class="headerlink" title="程序相关"></a>程序相关</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看进程信息</span></span><br><span class="line">ps -ef  #标准格式显示</span><br><span class="line">ps aux  #BSD格式显示</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">资源占有情况</span></span><br><span class="line">top -c</span><br><span class="line"></span><br><span class="line">cat /etc/inetd.conf        #由inetd管理的服务列表</span><br><span class="line">cat /etc/xinetd.conf       #由xinetd管理的服务列表</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看安装的程序</span></span><br><span class="line">rpm -qa --last             #Redhat</span><br><span class="line">yum list | grep installed  #CentOS</span><br><span class="line">ls -l /etc/yum.repos.d/</span><br><span class="line">dpkg -l                    #Debian</span><br><span class="line">cat /etc/apt/sources.list  #Debian APT</span><br><span class="line">pkg_info                   #xBSD</span><br><span class="line">pkginfo                    #Solaris</span><br><span class="line">pacman -Q                  #Arch Linux</span><br><span class="line">emerge                     #Gentoo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看计划任务</span></span><br><span class="line">crontab -l</span><br><span class="line">ls -al /etc/cron*</span><br><span class="line">cat /etc/cron.allow</span><br><span class="line">cat /etc/cron.deny</span><br><span class="line">cat /etc/crontab</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看开机启动项</span></span><br><span class="line">/etc/rc.d/init.d/</span><br></pre></td></tr></table></figure>
+<span class="token comment">#查看命令记录</span>
+<span class="token function">cat</span> /root/.bash_history
+<span class="token function">cat</span> ~/.bash_history
 
-<h2 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">iptables –L   #查看防火墙配置（注意需要root权限）</span><br><span class="line">cat /etc/resolv.conf   #查看dns配置文件</span><br><span class="line">cat /etc/network/interfaces    #查看网卡配置文件</span><br><span class="line">cat /etc/apache2/apache2.conf   #查看apache配置文件</span><br><span class="line">cat /etc/my.conf               #mysql配置</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看suid文件</span></span><br><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">最近五天的文件</span></span><br><span class="line">find / -ctime +1 -ctime -5</span><br></pre></td></tr></table></figure>
+<span class="token function">hostname</span>             <span class="token comment">#查看主机名</span>
+<span class="token function">env</span>                  <span class="token comment">#打印系统环境信息</span>
+<span class="token function">cat</span> /etc/shells      <span class="token comment">#显示可用的shell</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="虚拟环境检测"><a href="#虚拟环境检测" class="headerlink" title="虚拟环境检测"></a>虚拟环境检测</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep -i &quot;vboxsf\|vboxguest&quot;</span><br><span class="line">lsmod | grep -i &quot;vmw_baloon\|vmxnet&quot;</span><br><span class="line">lsmod | grep -i &quot;xen-vbd\|xen-vnif&quot;</span><br><span class="line">lsmod | grep -i &quot;virtio_pci\|virtio_net&quot;</span><br><span class="line">lsmod | grep -i &quot;hv_vmbus\|hv_blkvsc\|hv_netvsc\|hv_utils\|hv_storvsc&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="用户相关-1"><a href="#用户相关-1" class="headerlink" title="用户相关"></a>用户相关</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">whoami</span>     <span class="token comment">#查看当前shell权限</span>
+<span class="token function">id</span>         <span class="token comment">#查看当前用户的权限和所在的管理组</span>
+
+<span class="token comment">#查看登录信息</span>
+w
+<span class="token function">who</span>
+last       <span class="token comment">#登入过的用户信息</span>
+lastlog    <span class="token comment">#显示系统中所有用户最近一次登录信息</span>
+
+<span class="token comment">#查看账号信息</span>
+<span class="token function">cat</span> /etc/sudoers
+<span class="token function">cat</span> /etc/group
+<span class="token function">cat</span> /etc/passwd
+
+<span class="token comment">#列出目前用户可执行与无法执行的指令</span>
+<span class="token function">sudo</span> -l<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="网络相关"><a href="#网络相关" class="headerlink" title="网络相关"></a>网络相关</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#查询本机IP信息</span>
+<span class="token function">ifconfig</span>
+<span class="token function">ip</span> a
+
+<span class="token comment">#查看端口信息</span>
+<span class="token function">netstat</span> -anpt
+
+<span class="token comment">#查看网卡配置</span>
+ <span class="token function">cat</span> /etc/network/interfaces<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="程序相关-1"><a href="#程序相关-1" class="headerlink" title="程序相关"></a>程序相关</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#查看进程信息</span>
+<span class="token function">ps</span> -ef  <span class="token comment">#标准格式显示</span>
+<span class="token function">ps</span> aux  <span class="token comment">#BSD格式显示</span>
+
+<span class="token comment">#资源占有情况</span>
+<span class="token function">top</span> -c
+
+<span class="token function">cat</span> /etc/inetd.conf        <span class="token comment">#由inetd管理的服务列表</span>
+<span class="token function">cat</span> /etc/xinetd.conf       <span class="token comment">#由xinetd管理的服务列表</span>
+
+<span class="token comment">#查看安装的程序</span>
+<span class="token function">rpm</span> -qa --last             <span class="token comment">#Redhat</span>
+yum list <span class="token operator">|</span> <span class="token function">grep</span> installed  <span class="token comment">#CentOS</span>
+<span class="token function">ls</span> -l /etc/yum.repos.d/
+dpkg -l                    <span class="token comment">#Debian</span>
+<span class="token function">cat</span> /etc/apt/sources.list  <span class="token comment">#Debian APT</span>
+pkg_info                   <span class="token comment">#xBSD</span>
+pkginfo                    <span class="token comment">#Solaris</span>
+pacman -Q                  <span class="token comment">#Arch Linux</span>
+emerge                     <span class="token comment">#Gentoo</span>
+
+
+<span class="token comment">#查看计划任务</span>
+<span class="token function">crontab</span> -l
+<span class="token function">ls</span> -al /etc/cron*
+<span class="token function">cat</span> /etc/cron.allow
+<span class="token function">cat</span> /etc/cron.deny
+<span class="token function">cat</span> /etc/crontab
+
+<span class="token comment">#查看开机启动项</span>
+/etc/rc.d/init.d/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">iptables –L   <span class="token comment">#查看防火墙配置（注意需要root权限）</span>
+<span class="token function">cat</span> /etc/resolv.conf   <span class="token comment">#查看dns配置文件</span>
+<span class="token function">cat</span> /etc/network/interfaces    <span class="token comment">#查看网卡配置文件</span>
+<span class="token function">cat</span> /etc/apache2/apache2.conf   <span class="token comment">#查看apache配置文件</span>
+<span class="token function">cat</span> /etc/my.conf               <span class="token comment">#mysql配置</span>
+
+<span class="token comment">#查看suid文件</span>
+<span class="token function">find</span> / -perm -u<span class="token operator">=</span>s -type f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null
+
+<span class="token comment">#最近五天的文件</span>
+<span class="token function">find</span> / -ctime +1 -ctime -5<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="虚拟环境检测"><a href="#虚拟环境检测" class="headerlink" title="虚拟环境检测"></a>虚拟环境检测</h2><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">lsmod <span class="token operator">|</span> <span class="token function">grep</span> -i <span class="token string">"vboxsf\|vboxguest"</span>
+lsmod <span class="token operator">|</span> <span class="token function">grep</span> -i <span class="token string">"vmw_baloon\|vmxnet"</span>
+lsmod <span class="token operator">|</span> <span class="token function">grep</span> -i <span class="token string">"xen-vbd\|xen-vnif"</span>
+lsmod <span class="token operator">|</span> <span class="token function">grep</span> -i <span class="token string">"virtio_pci\|virtio_net"</span>
+lsmod <span class="token operator">|</span> <span class="token function">grep</span> -i <span class="token string">"hv_vmbus\|hv_blkvsc\|hv_netvsc\|hv_utils\|hv_storvsc"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <hr>
 <p>转载自：<a target="_blank" rel="noopener" href="https://www.yisu.com/zixun/497551.html">Windows和linux中内网信息收集常用命令有哪些 - 网络安全 - 亿速云 (yisu.com)</a></p>
 
-    </div>
-
-    
-    
-    
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>Ja1e
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://ja1e.github.io/2022/08/06/%E6%9C%AC%E5%9C%B0%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" title="本地信息搜集">https://ja1e.github.io/2022/08/06/本地信息收集/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-
-      <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/08/01/linux%E6%8F%90%E6%9D%83/" rel="prev" title="linux提权">
-      <i class="fa fa-chevron-left"></i> linux提权
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/" rel="next" title="横向移动">
-      横向移动 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
+  <p> — 2022年8月6日</p>
   
 
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
 
         </div>
-          
+        <div class="row mt-2">
+  <h3>Search</h3>
+  <div><input id="search-text" title="search" class="search-text" type="text" placeholder="search......"></div>
+  <div style="margin-top: 1.5rem;">
+    <ul id="result"></ul>
+  </div>
+</div>
+        <div class="row mt-2">
   
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows"><span class="nav-number">1.</span> <span class="nav-text">Windows</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%9B%B8%E5%85%B3"><span class="nav-number">1.1.</span> <span class="nav-text">系统相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%9B%B8%E5%85%B3"><span class="nav-number">1.2.</span> <span class="nav-text">用户相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%9B%B8%E5%85%B3"><span class="nav-number">1.3.</span> <span class="nav-text">程序相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E7%9B%B8%E5%85%B3"><span class="nav-number">1.4.</span> <span class="nav-text">网络连接相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%9F%E7%9B%B8%E5%85%B3"><span class="nav-number">1.5.</span> <span class="nav-text">域相关</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux"><span class="nav-number">2.</span> <span class="nav-text">linux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.</span> <span class="nav-text">系统信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%9B%B8%E5%85%B3-1"><span class="nav-number">2.2.</span> <span class="nav-text">用户相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3"><span class="nav-number">2.3.</span> <span class="nav-text">网络相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E7%9B%B8%E5%85%B3-1"><span class="nav-number">2.4.</span> <span class="nav-text">程序相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="nav-number">2.5.</span> <span class="nav-text">配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E6%A3%80%E6%B5%8B"><span class="nav-number">2.6.</span> <span class="nav-text">虚拟环境检测</span></a></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Ja1e</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">32</span>
-          <span class="site-state-item-name">日志</span>
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
         </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">7</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://instagram.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/ja1e" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ja1e" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:eveee428@proton.me" title="E-Mail → mailto:eveee428@proton.me" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
-
-
-
+<script src="/js/prism/prism.js" async></script>
       </div>
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
 
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Ja1e</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-      <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">91k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">55 分钟</span>
-</div>
-
-
-<!-- 网站运行时间的设置 -->
-<span id="timeDate">载入天数...</span>
-<span id="times">载入时分秒...</span>
-<script>
-    var now = new Date();
-    function createtime() {
-        var grt= new Date("11/23/2021 15:54:40");//此处修改你的建站时间或者网站上线时间
-        now.setTime(now.getTime()+250);
-        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
-        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
-        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
-        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
-        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
-        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
-        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-    }
-setInterval("createtime()",250);
-</script>
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
   </div>
+  <script src="/js/nanobar.min.js"></script>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-  <script defer src="/lib/three/three.min.js"></script>
-    <script defer src="/lib/three/three-waves.min.js"></script>
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
 
 </body>
+
 </html>
