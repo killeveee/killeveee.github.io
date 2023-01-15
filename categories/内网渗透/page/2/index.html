@@ -180,6 +180,10 @@
         <a href="/">Home</a>
         
           
+          <a href="/tags" class="ml">Tags</a>
+          
+        
+          
           <a href="/about" class="ml">About</a>
           
         
@@ -191,59 +195,42 @@
 </div>
 <link rel="stylesheet" href="/js/prism/prism.css">
         <div class="trans">
-          
-<h2>All Posts</h2>
+          {% extends '_layout.swig' %}
+{% import '_macro/post-collapse.swig' as post_template with context %}
+{% import '_macro/sidebar.swig' as sidebar_template with context %}
 
+{% block title %}{{ __('title.category') }}: {{ page.category }} | {{ title }}{% endblock %}
 
-    <article>
-      <div class="row">
+{% block class %}category{% endblock %}
 
-        <div class="three columns left lit">
-          <p class="bottom">2022年5月19日</p>
-        </div>
-        <div class="nine columns left mb-3">
-          <a href="/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/" class="">
-            
-              DNS欺骗、ARP攻击及钓鱼
-            
-          </a>
-        </div>
+{% block content %}
+
+  {######################}
+  {### CATEGORY BLOCK ###}
+  {######################}
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">
+          {{- page.category }}
+          <small>{{ __('title.category') }}</small>
+        </h2>
       </div>
-    </article>
 
-    <article>
-      <div class="row">
+      {{ post_template.render(page.posts) }}
+    </div>
+  </div>
+  {##########################}
+  {### END CATEGORY BLOCK ###}
+  {##########################}
 
-        <div class="three columns left lit">
-          <p class="bottom">2022年5月10日</p>
-        </div>
-        <div class="nine columns left mb-3">
-          <a href="/2022/05/10/ARP%E6%94%BB%E5%87%BB%E4%B8%8E%E6%AC%BA%E9%AA%97/" class="">
-            
-              ARP攻击与欺骗
-            
-          </a>
-        </div>
-      </div>
-    </article>
+  {% include '_partials/pagination.swig' %}
 
-<div class="pagination-bar">
-  <ul class="pagination">
-    
+{% endblock %}
 
-    <a class="mr" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">
-      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
-      </svg>
-      <span>Recent</span>
-    </a>
-
-    
-    
-  </ul>
-</div>
-
+{% block sidebar %}
+  {{ sidebar_template.render(false) }}
+{% endblock %}
 
         </div>
         <div class="row mt-2">

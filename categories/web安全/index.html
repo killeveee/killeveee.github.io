@@ -180,6 +180,10 @@
         <a href="/">Home</a>
         
           
+          <a href="/tags" class="ml">Tags</a>
+          
+        
+          
           <a href="/about" class="ml">About</a>
           
         
@@ -191,81 +195,42 @@
 </div>
 <link rel="stylesheet" href="/js/prism/prism.css">
         <div class="trans">
-          
-<h2>All Posts</h2>
+          {% extends '_layout.swig' %}
+{% import '_macro/post-collapse.swig' as post_template with context %}
+{% import '_macro/sidebar.swig' as sidebar_template with context %}
 
+{% block title %}{{ __('title.category') }}: {{ page.category }} | {{ title }}{% endblock %}
 
-    <article>
-      <div class="row">
+{% block class %}category{% endblock %}
 
-        <div class="three columns left lit">
-          <p class="bottom">2021年12月25日</p>
-        </div>
-        <div class="nine columns left mb-3">
-          <a href="/2021/12/25/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" class="">
-            
-              信息搜集
-            
-          </a>
-        </div>
+{% block content %}
+
+  {######################}
+  {### CATEGORY BLOCK ###}
+  {######################}
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        <h2 class="collection-header">
+          {{- page.category }}
+          <small>{{ __('title.category') }}</small>
+        </h2>
       </div>
-    </article>
 
-    <article>
-      <div class="row">
+      {{ post_template.render(page.posts) }}
+    </div>
+  </div>
+  {##########################}
+  {### END CATEGORY BLOCK ###}
+  {##########################}
 
-        <div class="three columns left lit">
-          <p class="bottom">2021年12月8日</p>
-        </div>
-        <div class="nine columns left mb-3">
-          <a href="/2021/12/08/XSS/" class="">
-            
-              XSS
-            
-          </a>
-        </div>
-      </div>
-    </article>
+  {% include '_partials/pagination.swig' %}
 
-    <article>
-      <div class="row">
+{% endblock %}
 
-        <div class="three columns left lit">
-          <p class="bottom">2021年11月30日</p>
-        </div>
-        <div class="nine columns left mb-3">
-          <a href="/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="">
-            
-              文件上传
-            
-          </a>
-        </div>
-      </div>
-    </article>
-
-    <article>
-      <div class="row">
-
-        <div class="three columns left lit">
-          <p class="bottom">2021年11月23日</p>
-        </div>
-        <div class="nine columns left mb-3">
-          <a href="/2021/11/23/sql%E6%B3%A8%E5%85%A5/" class="">
-            
-              SQL注入
-            
-          </a>
-        </div>
-      </div>
-    </article>
-
-<div class="pagination-bar">
-  <ul class="pagination">
-    
-    
-  </ul>
-</div>
-
+{% block sidebar %}
+  {{ sidebar_template.render(false) }}
+{% endblock %}
 
         </div>
         <div class="row mt-2">
