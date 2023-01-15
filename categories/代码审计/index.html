@@ -180,7 +180,7 @@
         <a href="/">Home</a>
         
           
-          <a href="/About" class="ml">About</a>
+          <a href="/about" class="ml">About</a>
           
         
         
@@ -191,42 +191,33 @@
 </div>
 <link rel="stylesheet" href="/js/prism/prism.css">
         <div class="trans">
-          {% extends '_layout.swig' %}
-{% import '_macro/post-collapse.swig' as post_template with context %}
-{% import '_macro/sidebar.swig' as sidebar_template with context %}
+          
+<h2>All Posts</h2>
 
-{% block title %}{{ __('title.category') }}: {{ page.category }} | {{ title }}{% endblock %}
 
-{% block class %}category{% endblock %}
+    <article>
+      <div class="row">
 
-{% block content %}
-
-  {######################}
-  {### CATEGORY BLOCK ###}
-  {######################}
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">
-          {{- page.category }}
-          <small>{{ __('title.category') }}</small>
-        </h2>
+        <div class="three columns left lit">
+          <p class="bottom">2022年9月20日</p>
+        </div>
+        <div class="nine columns left mb-3">
+          <a href="/2022/09/20/thinkphp5.0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="">
+            
+              thinkphp5.0反序列化
+            
+          </a>
+        </div>
       </div>
+    </article>
 
-      {{ post_template.render(page.posts) }}
-    </div>
-  </div>
-  {##########################}
-  {### END CATEGORY BLOCK ###}
-  {##########################}
+<div class="pagination-bar">
+  <ul class="pagination">
+    
+    
+  </ul>
+</div>
 
-  {% include '_partials/pagination.swig' %}
-
-{% endblock %}
-
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
 
         </div>
         <div class="row mt-2">

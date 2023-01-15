@@ -15,7 +15,7 @@
   
   <link rel="canonical" href="https://ja1e.github.io/2022/09/20/thinkphp5.0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
   
-  <meta name="description" content="环境搭建thinkphp安装: composer create-project topthink&amp;#x2F;think&amp;#x3D;5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt">
+  <meta name="description" content="环境搭建thinkphp安装: composer create-project topthink/think=5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt;?php name">
   
   
   <meta name="author" content="Ja1e">
@@ -26,14 +26,14 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="thinkphp5.0反序列化" />
   
-  <meta property="og:description" content="环境搭建thinkphp安装: composer create-project topthink&amp;#x2F;think&amp;#x3D;5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt">
+  <meta property="og:description" content="环境搭建thinkphp安装: composer create-project topthink/think=5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt;?php name">
   
   <meta property="og:url" content="https://ja1e.github.io/2022/09/20/thinkphp5.0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" />
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="thinkphp5.0反序列化">
   
-  <meta name="twitter:description" content="环境搭建thinkphp安装: composer create-project topthink&amp;#x2F;think&amp;#x3D;5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt">
+  <meta name="twitter:description" content="环境搭建thinkphp安装: composer create-project topthink/think=5.0.* thinkphp5.0 --prefer-dist  在application/index/controller/Index.php添加漏洞测试代码： &amp;lt;?php name">
   
   
   
@@ -176,7 +176,7 @@
         <a href="/">Home</a>
         
           
-          <a href="/About" class="ml">About</a>
+          <a href="/about" class="ml">About</a>
           
         
         
@@ -190,7 +190,7 @@
             <h2>thinkphp5.0反序列化</h2>
 
   <h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>thinkphp安装:</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">composer create-project topthink&#x2F;think&#x3D;5.0.* thinkphp5.0 --prefer-dist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">composer</span> create-project topthink/think<span class="token operator">=</span><span class="token number">5.0</span>.* thinkphp5.0 --prefer-dist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>在<code>application/index/controller/Index.php</code>添加漏洞测试代码：</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>

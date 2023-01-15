@@ -180,7 +180,7 @@
         <a href="/">Home</a>
         
           
-          <a href="/About" class="ml">About</a>
+          <a href="/about" class="ml">About</a>
           
         
         
@@ -191,42 +191,81 @@
 </div>
 <link rel="stylesheet" href="/js/prism/prism.css">
         <div class="trans">
-          {% extends '_layout.swig' %}
-{% import '_macro/post-collapse.swig' as post_template with context %}
-{% import '_macro/sidebar.swig' as sidebar_template with context %}
+          
+<h2>All Posts</h2>
 
-{% block title %}{{ __('title.category') }}: {{ page.category }} | {{ title }}{% endblock %}
 
-{% block class %}category{% endblock %}
+    <article>
+      <div class="row">
 
-{% block content %}
-
-  {######################}
-  {### CATEGORY BLOCK ###}
-  {######################}
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">
-          {{- page.category }}
-          <small>{{ __('title.category') }}</small>
-        </h2>
+        <div class="three columns left lit">
+          <p class="bottom">2022年9月19日</p>
+        </div>
+        <div class="nine columns left mb-3">
+          <a href="/2022/09/19/phpstorm+phpstudy%E8%B0%83%E8%AF%95/" class="">
+            
+              PhpStorm+phpStudy搭建thinkphp代码调试环境
+            
+          </a>
+        </div>
       </div>
+    </article>
 
-      {{ post_template.render(page.posts) }}
-    </div>
-  </div>
-  {##########################}
-  {### END CATEGORY BLOCK ###}
-  {##########################}
+    <article>
+      <div class="row">
 
-  {% include '_partials/pagination.swig' %}
+        <div class="three columns left lit">
+          <p class="bottom">2022年8月30日</p>
+        </div>
+        <div class="nine columns left mb-3">
+          <a href="/2022/08/30/CTFd%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA/" class="">
+            
+              CTFd动态靶机搭建
+            
+          </a>
+        </div>
+      </div>
+    </article>
 
-{% endblock %}
+    <article>
+      <div class="row">
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+        <div class="three columns left lit">
+          <p class="bottom">2022年7月8日</p>
+        </div>
+        <div class="nine columns left mb-3">
+          <a href="/2022/07/08/%E7%BF%BB%E5%A2%99%E8%AE%B0/" class="">
+            
+              从电脑小白到实现科学上网
+            
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <article>
+      <div class="row">
+
+        <div class="three columns left lit">
+          <p class="bottom">2022年5月16日</p>
+        </div>
+        <div class="nine columns left mb-3">
+          <a href="/2022/05/16/vscode%E8%B0%83%E8%AF%95php/" class="">
+            
+              VScode+phpStudy搭建php代码调试环境
+            
+          </a>
+        </div>
+      </div>
+    </article>
+
+<div class="pagination-bar">
+  <ul class="pagination">
+    
+    
+  </ul>
+</div>
+
 
         </div>
         <div class="row mt-2">
