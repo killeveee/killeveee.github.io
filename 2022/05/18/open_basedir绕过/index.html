@@ -15,7 +15,7 @@
   
   <link rel="canonical" href="https://ja1e.github.io/2022/05/18/open_basedir%E7%BB%95%E8%BF%87/">
   
-  <meta name="description" content="php绕过open_basediropen_basedir是php.ini中的一个配置选项，它可将用户访问文件的活动范围限制在指定的区域 假设 open_basedir&amp;#x3D;&amp;#x2F;home&amp;#x2F;wwwroot&amp;#x2F;home&amp;#x2F;web1&amp;#x2F;:&amp;#x2F;tmp&amp;">
+  <meta name="description" content="open_basedir是php.ini中的一个配置选项，它可将用户访问文件的活动范围限制在指定的区域 假设 open_basedir&amp;#x3D;&amp;#x2F;home&amp;#x2F;wwwroot&amp;#x2F;home&amp;#x2F;web1&amp;#x2F;:&amp;#x2F;tmp&amp;#x2F;，那么通过web1访问服">
   
   
   <meta name="author" content="Ja1e">
@@ -26,14 +26,14 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="php绕过open_basedir" />
   
-  <meta property="og:description" content="php绕过open_basediropen_basedir是php.ini中的一个配置选项，它可将用户访问文件的活动范围限制在指定的区域 假设 open_basedir&amp;#x3D;&amp;#x2F;home&amp;#x2F;wwwroot&amp;#x2F;home&amp;#x2F;web1&amp;#x2F;:&amp;#x2F;tmp&amp;">
+  <meta property="og:description" content="open_basedir是php.ini中的一个配置选项，它可将用户访问文件的活动范围限制在指定的区域 假设 open_basedir&amp;#x3D;&amp;#x2F;home&amp;#x2F;wwwroot&amp;#x2F;home&amp;#x2F;web1&amp;#x2F;:&amp;#x2F;tmp&amp;#x2F;，那么通过web1访问服">
   
   <meta property="og:url" content="https://ja1e.github.io/2022/05/18/open_basedir%E7%BB%95%E8%BF%87/" />
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="php绕过open_basedir">
   
-  <meta name="twitter:description" content="php绕过open_basediropen_basedir是php.ini中的一个配置选项，它可将用户访问文件的活动范围限制在指定的区域 假设 open_basedir&amp;#x3D;&amp;#x2F;home&amp;#x2F;wwwroot&amp;#x2F;home&amp;#x2F;web1&amp;#x2F;:&amp;#x2F;tmp&amp;">
+  <meta name="twitter:description" content="open_basedir是php.ini中的一个配置选项，它可将用户访问文件的活动范围限制在指定的区域 假设 open_basedir&amp;#x3D;&amp;#x2F;home&amp;#x2F;wwwroot&amp;#x2F;home&amp;#x2F;web1&amp;#x2F;:&amp;#x2F;tmp&amp;#x2F;，那么通过web1访问服">
   
   
   
@@ -193,7 +193,7 @@
         <div class="trans">
             <h2>php绕过open_basedir</h2>
 
-  <h1 id="php绕过open-basedir"><a href="#php绕过open-basedir" class="headerlink" title="php绕过open_basedir"></a>php绕过open_basedir</h1><p>open_basedir是php.ini中的一个配置选项，它可<strong>将用户访问文件的活动范围限制在指定的区域</strong></p>
+  <p>open_basedir是php.ini中的一个配置选项，它可<strong>将用户访问文件的活动范围限制在指定的区域</strong></p>
 <p>假设 open_basedir&#x3D;&#x2F;home&#x2F;wwwroot&#x2F;home&#x2F;web1&#x2F;:&#x2F;tmp&#x2F;，那么通过web1访问服务器的用户就无法获取服务器上除了&#x2F;home&#x2F;wwwroot&#x2F;home&#x2F;web1&#x2F;和&#x2F;tmp&#x2F;这两个目录以外的文件。</p>
 <p>注意用open_basedir指定的限制实际上是前缀,而不是目录名。<br>举例来说: 若”open_basedir &#x3D; &#x2F;dir&#x2F;user”, 那么目录 “&#x2F;dir&#x2F;user” 和 “&#x2F;dir&#x2F;user1”都是可以访问的。所以如果要将访问限制在仅为指定的目录，请用斜线结束路径名。</p>
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>ctfshow-web805</p>
