@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    
+
+<script>!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-color-scheme")||"auto";("dark"===t||e&&"light"!==t)&&document.documentElement.classList.toggle("dark",!0)}()</script>
+
+<meta charset="utf-8" >
+
+<title>第4天 基础入门-app和小程序开发架构</title>
+<meta name="keywords" content="第4天 基础入门-app和小程序开发架构, R0seW1thH3r">
+<meta name="description" content="
+APP架构-封装&amp;原生态&amp;H5&amp;flutter等
+小程序架构-Web&amp;H5&amp;JS&amp;VUE框架等
+
+APP应用开发架构1、原生开发-原生态-IDEA
+安卓一般使用java语言开发，当然现在也有">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/style/main.css">
+
+
+<link rel="stylesheet" href="/style/jquery.fancybox.min.css">
+
+
+
+
+    <link rel="stylesheet" href="/style/prism.css"/>
+
+
+
+
+  <meta name="generator" content="Hexo 6.1.0"></head>
+  <body>
+    <div id="app" class="main">
+
+<div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://R0seW1thH3r.github.io/archives">
+        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
+      </a>
+      <a href="https://R0seW1thH3r.github.io/archives">
+        <h1 class="site-title">R0seW1thH3r</h1>
+      </a>
+    </div>
+    <div class="right">
+        <i class="icon menu-switch icon-menu-outline" ></i>
+    </div>
+  </div>
+</div>
+
+<div class="menu-container" style="height: 0;opacity: 0;">
+<nav class="menu-list">
+  
+    
+      <a href="/archives" class="menu purple-link">
+        首页
+      </a>
+    
+  
+    
+      <a href="/tags" class="menu purple-link">
+        标签
+      </a>
+    
+  
+    
+      <a href="/about" class="menu purple-link">
+        关于
+      </a>
+    
+  
+</nav>
+</div>
+
+
+
+  <div class="content-container">
+    <div class="post-detail">
+      
+      <h2 class="post-title">第4天 基础入门-app和小程序开发架构</h2>
+      <div class="post-info post-detail-info">
+        <span><i class="icon icon-calendar-outline"></i> 2023-02-27</span>
+        
+          <span>
+          <i class="icon icon-pricetags-outline"></i>
+            
+              <a href="/tags/V2023-1%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+              V2023-1小迪安全学习笔记
+                
+              </a>
+            
+          </span>
+        
+      </div>
+      <div class="post-content-wrapper">
+        <div class="post-content">
+          <ul>
+<li>APP架构-封装&amp;原生态&amp;H5&amp;flutter等</li>
+<li>小程序架构-Web&amp;H5&amp;JS&amp;VUE框架等</li>
+</ul>
+<h2 id="APP应用开发架构"><a href="#APP应用开发架构" class="headerlink" title="APP应用开发架构"></a>APP应用开发架构</h2><p>1、<strong>原生开发</strong>-原生态-IDEA</p>
+<p>安卓一般使用java语言开发，当然现在也有kotlin语言进行开发。如何开发就涉及到具体编程了。简单描述就是使用安卓提供的一系列控件来实现页面，复杂点的页面可以通过自定义控件来实现。</p>
+<blockquote>
+<p>安全影响：</p>
+<p>反编译 提取源码、提取源码中资产、提取资产进行常规测试。</p>
+<p>抓包 得到api接口或者url资产进行常规测试。</p>
+<p>或者逆向的角度去分析逻辑设计安全。</p>
+</blockquote>
+<p>2、使用<strong>H5&amp;Vue</strong>语言开发</p>
+<p>使用H5开发的好处有很多，可多端复用，比如浏览器端，ios端，当然H5开发的体验是没有原生好的。结合我做过的项目来说，一般是这个页面需要分享出去的话，就用H5开发。</p>
+<p>是 前后端分离 的。</p>
+<blockquote>
+<p>安全影响：API安全、JS框架安全问题、JS前端测试</p>
+</blockquote>
+<p>3、使用<strong>flutter</strong>开发</p>
+<p>flutter是近年来谷歌推出的一款UI框架，使用dart语言进行开发，支持跨平台，weight渲染直接操作硬件层，体验可媲美原生。但是flutter技术比较新，生态还不完善，开发起来效率相对偏低。</p>
+<p>4、常规Web开发-<strong>Web封装</strong>-封装平台</p>
+<p>Web App软件开发简单地说，就是开发一个网站，然后加入app的壳。Web App一般非常小，内容都是app内的网页展示，受制于网页技术本身，可实现功能少，而且每次打开，几乎所有的内容都需要重新加载，所以反应速度慢，内容加载过多就容易卡死，用户体验差，而且app内的交互设计等非常有效。但开发周期长端，需要的技术人员少，成本低。</p>
+<p>本身就是Web，只是套了app的壳。</p>
+<blockquote>
+<p>安全影响：常规Web安全测试</p>
+</blockquote>
+<h2 id="WX小程序开发架构"><a href="#WX小程序开发架构" class="headerlink" title="WX小程序开发架构"></a>WX小程序开发架构</h2><p>1、<strong>Web</strong>封装-平台</p>
+<p>演示：ShopXO源码程序+一门APP打包</p>
+<p>本身就是Web。</p>
+<blockquote>
+<p>安全影响：常规Web安全测试</p>
+</blockquote>
+<p>2、<strong>H5&amp;Vue</strong>-HBuilderX</p>
+<p>演示：HBuilderX案例</p>
+<p>是 前后端分离 的。</p>
+<blockquote>
+<p>安全影响：API安全、JS框架安全问题、JS前端测试</p>
+</blockquote>
+<hr>
+
+        </div>
+        <div class="top-div">
+          <ol class="top-box"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#APP%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%9E%B6%E6%9E%84"><span class="top-box-text">APP应用开发架构</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#WX%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E6%9E%B6%E6%9E%84"><span class="top-box-text">WX小程序开发架构</span></a></li></ol>
+        </div>
+      </div>
+    </div>
+
+    
+      <div class="next-post">
+        <a class="purple-link" href="/2023/02/25/%E7%AC%AC3%E5%A4%A9%20Web%E5%BA%94%E7%94%A8%E4%B9%8B%E6%8B%93%E5%B1%95%E6%A8%A1%E5%BC%8F/">
+          <h3 class="post-title">
+            下一篇：第3天 基础入门-Web应用之拓展模式
+          </h3>
+        </a>
+      </div>
+    
+  </div>
+
+
+
+
+<footer>
+<div class="site-footer">
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
+  
+  
+  
+  
+  
+  
+</div>
+</footer>
+
+
+      </div>
+      
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.fancybox.min.js"></script>
+
+
+<script id="hexo-configurations">
+    window.theme_config = {"image":{"lazyload_enable":false}};
+    window.is_post = true;
+  </script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+    </div>
+  </body>
+</html>
+

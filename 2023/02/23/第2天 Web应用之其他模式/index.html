@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    
+
+<script>!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-color-scheme")||"auto";("dark"===t||e&&"light"!==t)&&document.documentElement.classList.toggle("dark",!0)}()</script>
+
+<meta charset="utf-8" >
+
+<title>第2天 基础入门-Web应用之其他模式</title>
+<meta name="keywords" content="第2天 基础入门-Web应用之其他模式, R0seW1thH3r">
+<meta name="description" content="
+Web架构&amp;前后端分离站&amp;Docker容器站&amp;集成软件站&amp;建站分配
+
+一般：源码数据都在相同服务器
+
+站库分离：源码数据库不在相同服务器。可能存储在：其他服务器上数据库、云数据库产品
+影响：数据被单独存放，">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/style/main.css">
+
+
+<link rel="stylesheet" href="/style/jquery.fancybox.min.css">
+
+
+
+
+    <link rel="stylesheet" href="/style/prism.css"/>
+
+
+
+
+  <meta name="generator" content="Hexo 6.1.0"></head>
+  <body>
+    <div id="app" class="main">
+
+<div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://R0seW1thH3r.github.io/archives">
+        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
+      </a>
+      <a href="https://R0seW1thH3r.github.io/archives">
+        <h1 class="site-title">R0seW1thH3r</h1>
+      </a>
+    </div>
+    <div class="right">
+        <i class="icon menu-switch icon-menu-outline" ></i>
+    </div>
+  </div>
+</div>
+
+<div class="menu-container" style="height: 0;opacity: 0;">
+<nav class="menu-list">
+  
+    
+      <a href="/archives" class="menu purple-link">
+        首页
+      </a>
+    
+  
+    
+      <a href="/tags" class="menu purple-link">
+        标签
+      </a>
+    
+  
+    
+      <a href="/about" class="menu purple-link">
+        关于
+      </a>
+    
+  
+</nav>
+</div>
+
+
+
+  <div class="content-container">
+    <div class="post-detail">
+      
+      <h2 class="post-title">第2天 基础入门-Web应用之其他模式</h2>
+      <div class="post-info post-detail-info">
+        <span><i class="icon icon-calendar-outline"></i> 2023-02-23</span>
+        
+          <span>
+          <i class="icon icon-pricetags-outline"></i>
+            
+              <a href="/tags/V2023-1%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+              V2023-1小迪安全学习笔记
+                
+              </a>
+            
+          </span>
+        
+      </div>
+      <div class="post-content-wrapper">
+        <div class="post-content">
+          <ul>
+<li><strong>Web架构&amp;前后端分离站&amp;Docker容器站&amp;集成软件站&amp;建站分配</strong></li>
+</ul>
+<p><strong>一般</strong>：源码数据都在相同服务器</p>
+<hr>
+<p><strong>站库分离</strong>：源码数据库不在相同服务器。可能存储在：其他服务器上数据库、云数据库产品</p>
+<p>影响：数据被单独存放，<strong>能连接</strong>才可影响数据</p>
+<hr>
+<p><strong>前后端分离</strong>：前端JS框架，API传输数据</p>
+<p>影响：<br>1、前端页面大部分不存在漏洞<br>2、后端管理大部分不在同域名<br>3、获得权限有可能不影响后端</p>
+<hr>
+<p><strong>宝塔+Phpstudy</strong>：宝塔有权限配置或受控制，拿到shell后操作受限。phpstudy默认没有安全配置。</p>
+<hr>
+<p><strong>Docker容器</strong>：虚拟化技术独立磁盘空间，非真实物理环境</p>
+<hr>
+<p><strong>建站分配站</strong>：利用别人域名模版建立</p>
+<p>​	1.托管<br>​	2.申请</p>
+<p>影响：实质安全测试<u>非目标资产</u></p>
+<hr>
+<p><strong>静态Web</strong></p>
+<p>例子：大学学的html设计的网站<br>原理：数据没有传输性（js传输不算）<br>影响：无漏洞</p>
+<hr>
+<p><strong>伪静态</strong></p>
+<p>动态转为静态技术，<u>伪装的静态</u></p>
+
+        </div>
+        <div class="top-div">
+          
+        </div>
+      </div>
+    </div>
+
+    
+      <div class="next-post">
+        <a class="purple-link" href="/2023/02/21/%E7%AC%AC1%E5%A4%A9%20Web%E5%BA%94%E7%94%A8%E4%B9%8B%E5%B8%B8%E8%A7%84%E6%A8%A1%E5%BC%8F/">
+          <h3 class="post-title">
+            下一篇：第1天 基础入门-Web应用之常规模式
+          </h3>
+        </a>
+      </div>
+    
+  </div>
+
+
+
+
+<footer>
+<div class="site-footer">
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
+  
+  
+  
+  
+  
+  
+</div>
+</footer>
+
+
+      </div>
+      
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.fancybox.min.js"></script>
+
+
+<script id="hexo-configurations">
+    window.theme_config = {"image":{"lazyload_enable":false}};
+    window.is_post = true;
+  </script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+    </div>
+  </body>
+</html>
+
