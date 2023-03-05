@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    
+
+<script>!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-color-scheme")||"auto";("dark"===t||e&&"light"!==t)&&document.documentElement.classList.toggle("dark",!0)}()</script>
+
+<meta charset="utf-8" >
+
+<title>第6天 HTTP/S协议抓包</title>
+<meta name="keywords" content="第6天 HTTP/S协议抓包, R0seW1thH3r">
+<meta name="description" content="
+抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;WEB&amp;转发联动
+
+
+抓包工具：charles、fiddler、brupsuit
+
+首先是安装证书：
+下载charles证书：Help–&">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/style/main.css">
+
+
+<link rel="stylesheet" href="/style/jquery.fancybox.min.css">
+
+
+
+
+    <link rel="stylesheet" href="/style/prism.css"/>
+
+
+
+
+  <meta name="generator" content="Hexo 6.1.0"></head>
+  <body>
+    <div id="app" class="main">
+
+<div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://R0seW1thH3r.github.io/archives">
+        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
+      </a>
+      <a href="https://R0seW1thH3r.github.io/archives">
+        <h1 class="site-title">R0seW1thH3r</h1>
+      </a>
+    </div>
+    <div class="right">
+        <i class="icon menu-switch icon-menu-outline" ></i>
+    </div>
+  </div>
+</div>
+
+<div class="menu-container" style="height: 0;opacity: 0;">
+<nav class="menu-list">
+  
+    
+      <a href="/archives" class="menu purple-link">
+        Index
+      </a>
+    
+  
+    
+      <a href="/tags" class="menu purple-link">
+        Tags
+      </a>
+    
+  
+    
+      <a href="/about" class="menu purple-link">
+        About
+      </a>
+    
+  
+</nav>
+</div>
+
+
+
+  <div class="content-container">
+    <div class="post-detail">
+      
+      <h2 class="post-title">第6天 HTTP/S协议抓包</h2>
+      <div class="post-info post-detail-info">
+        <span><i class="icon icon-calendar-outline"></i> 2023-03-05</span>
+        
+          <span>
+          <i class="icon icon-pricetags-outline"></i>
+            
+              <a href="/tags/V2023-1%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+              V2023-1小迪安全学习笔记
+                
+              </a>
+            
+          </span>
+        
+      </div>
+      <div class="post-content-wrapper">
+        <div class="post-content">
+          <ul>
+<li><strong>抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;WEB&amp;转发联动</strong></li>
+</ul>
+<hr>
+<p><strong>抓包工具</strong>：charles、fiddler、brupsuit</p>
+<hr>
+<p>首先是<strong>安装证书</strong>：</p>
+<p>下载charles证书：Help–&gt;SSL Proxying–&gt;Save Charles Root Certificate，保存到桌面</p>
+<p>下载fiddler证书：工具–&gt;选项–&gt;HTTPS–&gt;动作–&gt;Export Root Certificate to Desktop，保存到桌面</p>
+<p>下载brupsuit证书：Proxy–&gt;Options–&gt;Import&#x2F;export CA certificate–&gt;选第一个–&gt;选择安装路径–&gt;一直next</p>
+<p>模拟器安装证书：把下载下来的证书拖到模拟器文件夹里，然后设置–&gt;安全–&gt;从SD卡安装，选择相应的证书下载即可。</p>
+<p>浏览器安装证书：设置–&gt;隐私设置和安全性–&gt;安全–&gt;管理设备证书–&gt;中间证书颁发机构–&gt;导入–&gt;下一步–&gt;选择相应的证书文件–&gt;一直下一步–&gt;安装完成。</p>
+<hr>
+<p>开始<strong>抓包</strong>：</p>
+<p>brupsuit默认是代理本机的8080端口，需要给浏览器配置代理到127.0.0.1:8080，才能抓到包。<br>模拟器也是一样设置代理，设置网络，长按，高级设置配置好代理，ip是本机的内网ip，端口是8080。</p>
+<p>charles、fiddler抓浏览器不需要设置代理，模拟器需要设置代理。</p>
+<p>fiddler–&gt;工具–&gt;选项–&gt;HTTPS–&gt;勾选解密HTTPS通信：从所有进程（抓本地浏览器）、从远程客户端（抓模拟器）。</p>
+<hr>
+<p><strong>转发抓包</strong></p>
+<p>用到工具Proxifier，由于有些PC应用没有网路代理的设置，就可以利用Proxifier和brup联动进行抓包。</p>
+<hr>
+<blockquote>
+<p>代理的设置也可以简单粗暴的使用win的系统代理设置成brup的8080端口代理，但是这样的话所有的数据包都走这个端口，会很杂乱，分析起来比较繁琐。所以会用到Proxifier软件，它可以在转发代理的基础上，筛选代理的应用、ip、域名、端口。</p>
+</blockquote>
+
+        </div>
+        <div class="top-div">
+          
+        </div>
+      </div>
+    </div>
+
+    
+      <div class="next-post">
+        <a class="purple-link" href="/2023/03/03/%E7%AC%AC5%E5%A4%A9%20%E5%91%BD%E4%BB%A4&%E5%8F%8D%E5%BC%B9&%E5%A4%96%E5%B8%A6/">
+          <h3 class="post-title">
+            下一篇：第5天 基础入门-命令&amp;反弹&amp;外带
+          </h3>
+        </a>
+      </div>
+    
+  </div>
+
+
+
+
+<footer>
+<div class="site-footer">
+  <div class="social-container">
+    
+      
+        <a href="https://github.com/" target="_blank">
+          <i class="icon icon-github"></i>
+        </a>
+      
+    
+      
+        <a href="https://twitter.com/" target="_blank">
+          <i class="icon icon-twitter"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
+  
+  
+  
+  
+  
+  
+</div>
+</footer>
+
+
+      </div>
+      
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.fancybox.min.js"></script>
+
+
+<script id="hexo-configurations">
+    window.theme_config = {"image":{"lazyload_enable":false}};
+    window.is_post = true;
+  </script>
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+    </div>
+  </body>
+</html>
+
