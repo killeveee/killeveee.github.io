@@ -7,16 +7,14 @@
 
 <meta charset="utf-8" >
 
-<title>第6天 HTTP/S协议抓包</title>
-<meta name="keywords" content="第6天 HTTP/S协议抓包, R0seW1thH3r">
+<title>第6天 基础入门-HTTP/S协议抓包</title>
+<meta name="keywords" content="第6天 基础入门-HTTP/S协议抓包, R0seW1thH3r">
 <meta name="description" content="
 抓包技术&amp;HTTPS协议&amp;APP&amp;小程序&amp;PC应用&amp;WEB&amp;转发联动
 
 
 抓包工具：charles、fiddler、brupsuit
-
-首先是安装证书：
-下载charles证书：Help–&">
+Fiddler：是一个http协议调试代理工具，它能够记">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -83,7 +81,7 @@
   <div class="content-container">
     <div class="post-detail">
       
-      <h2 class="post-title">第6天 HTTP/S协议抓包</h2>
+      <h2 class="post-title">第6天 基础入门-HTTP/S协议抓包</h2>
       <div class="post-info post-detail-info">
         <span><i class="icon icon-calendar-outline"></i> 2023-03-05</span>
         
@@ -105,13 +103,14 @@
 </ul>
 <hr>
 <p><strong>抓包工具</strong>：charles、fiddler、brupsuit</p>
+<p><a target="_blank" rel="noopener" href="https://www.telerik.com/fiddler">Fiddler</a>：是一个http协议调试代理工具，它能够记录并检查所有你的电脑和互联网之间的http通讯，设置断点，查看所有的“进出”Fiddler的数据（指cookie,html,js,css等文件）。 Fiddler 要比其他的网络调试器要更加简单，因为它不仅仅暴露http通讯还提供了一个用户友好的格式。</p>
+<p><a target="_blank" rel="noopener" href="https://www.charlesproxy.com/">Charles</a>：是一个HTTP代理服务器,HTTP监视器,反转代理服务器，当浏览器连接Charles的代理访问互联网时，Charles可以监控浏览器发送和接收的所有数据。它允许一个开发者查看所有连接互联网的HTTP通信，这些包括request, response和HTTP headers （包含cookies与caching信息）。</p>
+<p>BurpSuite：是用于攻击web 应用程序的集成平台，包含了许多工具。Burp Suite为这些工具设计了许多接口，以加快攻击应用程序的过程。所有工具都共享一个请求，并能处理对应的HTTP 消息、持久性、认证、代理、日志、警报。</p>
+<p>TCPDump(没讲)：是可以将网络中传送的数据包完全截获下来提供分析。它支持针对网络层、协议、主机、网络或端口的过滤，并提供and、or、not等逻辑语句来帮助你去掉无用的信息。</p>
 <hr>
 <p>首先是<strong>安装证书</strong>：</p>
-<p>下载charles证书：Help–&gt;SSL Proxying–&gt;Save Charles Root Certificate，保存到桌面</p>
-<p>下载fiddler证书：工具–&gt;选项–&gt;HTTPS–&gt;动作–&gt;Export Root Certificate to Desktop，保存到桌面</p>
-<p>下载brupsuit证书：Proxy–&gt;Options–&gt;Import&#x2F;export CA certificate–&gt;选第一个–&gt;选择安装路径–&gt;一直next</p>
-<p>模拟器安装证书：把下载下来的证书拖到模拟器文件夹里，然后设置–&gt;安全–&gt;从SD卡安装，选择相应的证书下载即可。</p>
-<p>浏览器安装证书：设置–&gt;隐私设置和安全性–&gt;安全–&gt;管理设备证书–&gt;中间证书颁发机构–&gt;导入–&gt;下一步–&gt;选择相应的证书文件–&gt;一直下一步–&gt;安装完成。</p>
+<p>下载charles证书：Help–&gt;SSL Proxying–&gt;Save Charles Root Certificate，保存到桌面<br>下载fiddler证书：工具–&gt;选项–&gt;HTTPS–&gt;动作–&gt;Export Root Certificate to Desktop，保存到桌面<br>下载brupsuit证书：Proxy–&gt;Options–&gt;Import&#x2F;export CA certificate–&gt;选第一个–&gt;选择安装路径–&gt;一直next</p>
+<p><u>模拟器</u>安装证书：把下载下来的证书拖到模拟器文件夹里，然后设置–&gt;安全–&gt;从SD卡安装，选择相应的证书下载即可。<br><u>浏览器</u>安装证书：设置–&gt;隐私设置和安全性–&gt;安全–&gt;管理设备证书–&gt;中间证书颁发机构–&gt;导入–&gt;下一步–&gt;选择相应的证书文件–&gt;一直下一步–&gt;安装完成。</p>
 <hr>
 <p>开始<strong>抓包</strong>：</p>
 <p>brupsuit默认是代理本机的8080端口，需要给浏览器配置代理到127.0.0.1:8080，才能抓到包。<br>模拟器也是一样设置代理，设置网络，长按，高级设置配置好代理，ip是本机的内网ip，端口是8080。</p>
