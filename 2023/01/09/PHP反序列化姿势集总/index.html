@@ -6,16 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="php魔法方法： __wakeup() &#x2F;&#x2F;执行unserialize()时，先会调用这个函数	★ __sleep() &#x2F;&#x2F;执行serialize()时，先会调用这个函数 __destruct() &#x2F;&#x2F;对象被销毁时触发	  ★ __call() &#x2F;&#x2F;在对象上下文中调用不可访问的方法时触发	★ __callStatic() &#x2F;&#x2F;在静态上下文中调用不可访问的方法时触发 __get() &#x2F;&#x2F;用于从不可访">
+    <meta name="description" content="session反序列化 反序列化字符串逃逸 字符增多 字符减少   phar反序列化 Phar基础 利用   原生类的利用 SoapClient Error&#x2F;Exception   绕过trick wakeup绕过      php魔法方法： __wakeup() &#x2F;&#x2F;执行unserialize()时，先会调用这个函数	★ __sleep() &#x2F;&#x2F;执行serialize()时，先会">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP反序列化姿势集总">
 <meta property="og:url" content="https://killeveee.github.io/archives/2023/01/09/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%A7%BF%E5%8A%BF%E9%9B%86%E6%80%BB/index.html">
 <meta property="og:site_name" content="killeveee">
-<meta property="og:description" content="php魔法方法： __wakeup() &#x2F;&#x2F;执行unserialize()时，先会调用这个函数	★ __sleep() &#x2F;&#x2F;执行serialize()时，先会调用这个函数 __destruct() &#x2F;&#x2F;对象被销毁时触发	  ★ __call() &#x2F;&#x2F;在对象上下文中调用不可访问的方法时触发	★ __callStatic() &#x2F;&#x2F;在静态上下文中调用不可访问的方法时触发 __get() &#x2F;&#x2F;用于从不可访">
+<meta property="og:description" content="session反序列化 反序列化字符串逃逸 字符增多 字符减少   phar反序列化 Phar基础 利用   原生类的利用 SoapClient Error&#x2F;Exception   绕过trick wakeup绕过      php魔法方法： __wakeup() &#x2F;&#x2F;执行unserialize()时，先会调用这个函数	★ __sleep() &#x2F;&#x2F;执行serialize()时，先会">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://killeveee.github.io/.io//img/2.png">
 <meta property="article:published_time" content="2023-01-09T04:23:18.000Z">
-<meta property="article:modified_time" content="2023-01-15T07:50:47.248Z">
+<meta property="article:modified_time" content="2023-12-14T13:43:30.786Z">
 <meta property="article:author" content="killeveee">
 <meta property="article:tag" content="web安全">
 <meta name="twitter:card" content="summary">
@@ -117,7 +117,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#session%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">session反序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%80%83%E9%80%B8"><span class="toc-number">2.</span> <span class="toc-text">反序列化字符串逃逸</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A2%9E%E5%A4%9A"><span class="toc-number">2.1.</span> <span class="toc-text">字符增多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%87%8F%E5%B0%91"><span class="toc-number">2.2.</span> <span class="toc-text">字符减少</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">phar反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Phar%E5%9F%BA%E7%A1%80"><span class="toc-number">3.1.</span> <span class="toc-text">Phar基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8"><span class="toc-number">3.2.</span> <span class="toc-text">利用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E7%94%9F%E7%B1%BB%E7%9A%84%E5%88%A9%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">原生类的利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SoapClient"><span class="toc-number">4.1.</span> <span class="toc-text">SoapClient</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Error-x2F-Exception"><span class="toc-number">4.2.</span> <span class="toc-text">Error&#x2F;Exception</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%95%E8%BF%87trick"><span class="toc-number">5.</span> <span class="toc-text">绕过trick</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#wakeup%E7%BB%95%E8%BF%87"><span class="toc-number">5.1.</span> <span class="toc-text">wakeup绕过</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">session反序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">反序列化字符串逃逸</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">字符增多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">字符减少</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">phar反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">Phar基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">利用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">原生类的利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">SoapClient</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">Error&#x2F;Exception</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">绕过trick</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">wakeup绕过</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -147,8 +147,12 @@
       
     </div>
 
-
       
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a>
+    </div>
+
 
       
     <div class="article-tag">
@@ -162,7 +166,33 @@
   
 
   <div class="content e-content" itemprop="articleBody">
-    <p>php<strong>魔法方法</strong>：</p>
+    <!-- toc -->
+
+<ul>
+<li><a href="#session%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96">session反序列化</a></li>
+<li><a href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%80%83%E9%80%B8">反序列化字符串逃逸</a><ul>
+<li><a href="#%E5%AD%97%E7%AC%A6%E5%A2%9E%E5%A4%9A">字符增多</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E5%87%8F%E5%B0%91">字符减少</a></li>
+</ul>
+</li>
+<li><a href="#phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96">phar反序列化</a><ul>
+<li><a href="#phar%E5%9F%BA%E7%A1%80">Phar基础</a></li>
+<li><a href="#%E5%88%A9%E7%94%A8">利用</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8E%9F%E7%94%9F%E7%B1%BB%E7%9A%84%E5%88%A9%E7%94%A8">原生类的利用</a><ul>
+<li><a href="#soapclient">SoapClient</a></li>
+<li><a href="#errorexception">Error&#x2F;Exception</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%95%E8%BF%87trick">绕过trick</a><ul>
+<li><a href="#wakeup%E7%BB%95%E8%BF%87">wakeup绕过</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<p>php<strong>魔法方法</strong>：</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token function">__wakeup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//执行unserialize()时，先会调用这个函数	★</span>
 <span class="token function">__sleep</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//执行serialize()时，先会调用这个函数</span>
 <span class="token function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//对象被销毁时触发	  ★</span>
@@ -175,7 +205,7 @@
 <span class="token function">__toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//把类当作字符串使用时触发		★</span>
 <span class="token function">__invoke</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//当尝试将对象调用为函数时触发	   ★</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h1 id="session反序列化"><a href="#session反序列化" class="headerlink" title="session反序列化"></a>session反序列化</h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6640">带你走进PHP session反序列化漏洞 - 先知社区 (aliyun.com)</a></p>
+<h1><span id="session反序列化">session反序列化</span></h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6640">带你走进PHP session反序列化漏洞 - 先知社区 (aliyun.com)</a></p>
 <p><strong>PHP session</strong> 的存储机制是由<code>session.serialize_handler</code>来定义<u>引擎</u>的，默认是以<strong>文件</strong>的方式存储。</p>
 <p>文件的内容始终是<strong>session值的序列化</strong>之后的内容。</p>
 <p><code>session.serialize_handler</code>定义的<u>引擎</u>有三种，如下表所示：</p>
@@ -253,8 +283,8 @@
 <p>在<code>php_serialize</code>引擎下控制传参更改session内容，用<code>|</code>起头，后面接poc；</p>
 <p>然后访问 使用<code>php</code>引擎 的页面。</p>
 </blockquote>
-<h1 id="反序列化字符串逃逸"><a href="#反序列化字符串逃逸" class="headerlink" title="反序列化字符串逃逸"></a>反序列化字符串逃逸</h1><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/285985.html">PHP反序列化字符逃逸详解 - FreeBuf网络安全行业门户</a></p>
-<h2 id="字符增多"><a href="#字符增多" class="headerlink" title="字符增多"></a>字符增多</h2><p>对我们输入的序列化后里的 关键字符串 <strong>替换成长度更长</strong>的字符串。</p>
+<h1><span id="反序列化字符串逃逸">反序列化字符串逃逸</span></h1><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/285985.html">PHP反序列化字符逃逸详解 - FreeBuf网络安全行业门户</a></p>
+<h2><span id="字符增多">字符增多</span></h2><p>对我们输入的序列化后里的 关键字符串 <strong>替换成长度更长</strong>的字符串。</p>
 <p>例子：</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token keyword">function</span> <span class="token function-definition function">filter</span><span class="token punctuation">(</span><span class="token variable">$str</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
@@ -298,7 +328,7 @@ O:4:"</span>Test<span class="token string double-quoted-string">":2:&#123;s:1:"<
 <pre class="line-numbers language-none"><code class="language-none">O:4:&quot;Test&quot;:2:&#123;s:1:&quot;k&quot;;s:186:&quot;hackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhackedhacked&quot;;s:3:&quot;cmd&quot;;s:10:&quot;phpinfo();&quot;;&#125;&quot;;s:3:&quot;cmd&quot;;s:13:&quot;echo &#39;nono~&#39;;&quot;;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>hacked的长度刚好是186。</p>
-<h2 id="字符减少"><a href="#字符减少" class="headerlink" title="字符减少"></a>字符减少</h2><p>对我们输入的序列化后里的 关键字符串 <strong>替换成长度更短</strong>的字符串。</p>
+<h2><span id="字符减少">字符减少</span></h2><p>对我们输入的序列化后里的 关键字符串 <strong>替换成长度更短</strong>的字符串。</p>
 <p>例子：</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token keyword">function</span> <span class="token function-definition function">filter</span><span class="token punctuation">(</span><span class="token variable">$str</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
@@ -361,8 +391,8 @@ O:4:"</span>Test<span class="token string double-quoted-string">":2:&#123;s:1:"<
 <p>​				O:4:”Test”:3:{s:1:”k”;s:5:”admin”;s:1:”p”;s:1:”a”;s:3:”cmd”;s:10:”phpinfo();”;}</p>
 <p>​             														  “;s:1:”p”;s:1:</p>
 </blockquote>
-<h1 id="phar反序列化"><a href="#phar反序列化" class="headerlink" title="phar反序列化"></a>phar反序列化</h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/680/">利用 phar 拓展 php 反序列化漏洞攻击面 (seebug.org)</a></p>
-<h2 id="Phar基础"><a href="#Phar基础" class="headerlink" title="Phar基础"></a>Phar基础</h2><blockquote>
+<h1><span id="phar反序列化">phar反序列化</span></h1><p><a target="_blank" rel="noopener" href="https://paper.seebug.org/680/">利用 phar 拓展 php 反序列化漏洞攻击面 (seebug.org)</a></p>
+<h2><span id="phar基础">Phar基础</span></h2><blockquote>
 <p>Phar是将 php文件 打包 而成的一种 <strong>压缩文档</strong>。</p>
 </blockquote>
 <p>Phar文件由四个部分组成（<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/phar.fileformat.ingredients.php">PHP: Manual</a>）：</p>
@@ -390,7 +420,7 @@ O:4:"</span>Test<span class="token string double-quoted-string">":2:&#123;s:1:"<
 </blockquote>
 <p>Phar文件内容有序列化数据必然会有反序列化操作，php一大部分的<a target="_blank" rel="noopener" href="http://php.net/manual/en/ref.filesystem.php">文件系统函数</a>在通过<code>phar://</code>伪协议解析phar文件时，都会将meta-data进行反序列化，测试后受影响的函数如下：</p>
 <p><img src="/.io//img/2.png"></p>
-<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><p>利用条件：</p>
+<h2><span id="利用">利用</span></h2><p>利用条件：</p>
 <ol>
 <li>phar文件要能够<u>上传</u>到服务器端。</li>
 <li>要有可用的魔术方法作为“跳板”。</li>
@@ -426,10 +456,10 @@ compress<span class="token operator">.</span>bzip<span class="token punctuation"
 
 
 
-<h1 id="原生类的利用"><a href="#原生类的利用" class="headerlink" title="原生类的利用"></a>原生类的利用</h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9293">PHP 原生类的利用小结 - 先知社区 (aliyun.com)</a></p>
+<h1><span id="原生类的利用">原生类的利用</span></h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9293">PHP 原生类的利用小结 - 先知社区 (aliyun.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/247647">浅谈PHP原生类反序列化-安全客 - 安全资讯平台 (anquanke.com)</a></p>
 <p>在CTF中常使用到的原生类有这几类<br>1、Error<br>2、Exception<br>3、SoapClient<br>4、DirectoryIterator<br>5、SimpleXMLElement<br>下面针对这几个类来进行总结。</p>
-<h2 id="SoapClient"><a href="#SoapClient" class="headerlink" title="SoapClient"></a>SoapClient</h2><p><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/class.soapclient.php">PHP: SoapClient - Manual</a></p>
+<h2><span id="soapclient">SoapClient</span></h2><p><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/class.soapclient.php">PHP: SoapClient - Manual</a></p>
 <blockquote>
 <p>soap是webServer的三要素之一(SOAP、WSDL、UDDI)</p>
 <p>WSDL用来描述如何访问具体的接口<br>UUDI用来管理、分发、查询webServer<br>SOAP是连接web服务和客户端的接口</p>
@@ -476,7 +506,7 @@ compress<span class="token operator">.</span>bzip<span class="token punctuation"
 <span class="token keyword">echo</span> <span class="token variable">$payload</span><span class="token punctuation">;</span>
 <span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="Error-x2F-Exception"><a href="#Error-x2F-Exception" class="headerlink" title="Error&#x2F;Exception"></a>Error&#x2F;Exception</h2><p><strong>Error</strong></p>
+<h2><span id="errorx2fexception">Error&#x2F;Exception</span></h2><p><strong>Error</strong></p>
 <p>使用条件：</p>
 <ul>
 <li>php7版本</li>
@@ -524,7 +554,7 @@ Stack trace<span class="token punctuation">:</span>
 <span class="token comment">#0 &#123;main&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>可见，报错信息一模一样。那么md5和sha后的结果也肯定是一样的。可以绕过md5强比较。</p>
-<h1 id="绕过trick"><a href="#绕过trick" class="headerlink" title="绕过trick"></a>绕过trick</h1><h2 id="wakeup绕过"><a href="#wakeup绕过" class="headerlink" title="wakeup绕过"></a>wakeup绕过</h2><p>低版本</p>
+<h1><span id="绕过trick">绕过trick</span></h1><h2><span id="wakeup绕过">wakeup绕过</span></h2><p>低版本</p>
 <ul>
 <li>PHP5 &lt; 5.6.25</li>
 <li>PHP7 &lt; 7.0.10</li>
@@ -579,7 +609,7 @@ Stack trace<span class="token punctuation">:</span>
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#session%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">session反序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%80%83%E9%80%B8"><span class="toc-number">2.</span> <span class="toc-text">反序列化字符串逃逸</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A2%9E%E5%A4%9A"><span class="toc-number">2.1.</span> <span class="toc-text">字符增多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%87%8F%E5%B0%91"><span class="toc-number">2.2.</span> <span class="toc-text">字符减少</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#phar%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">phar反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Phar%E5%9F%BA%E7%A1%80"><span class="toc-number">3.1.</span> <span class="toc-text">Phar基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8"><span class="toc-number">3.2.</span> <span class="toc-text">利用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E7%94%9F%E7%B1%BB%E7%9A%84%E5%88%A9%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">原生类的利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SoapClient"><span class="toc-number">4.1.</span> <span class="toc-text">SoapClient</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Error-x2F-Exception"><span class="toc-number">4.2.</span> <span class="toc-text">Error&#x2F;Exception</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%95%E8%BF%87trick"><span class="toc-number">5.</span> <span class="toc-text">绕过trick</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#wakeup%E7%BB%95%E8%BF%87"><span class="toc-number">5.1.</span> <span class="toc-text">wakeup绕过</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">session反序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">反序列化字符串逃逸</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">字符增多</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">字符减少</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">phar反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">Phar基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">利用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">原生类的利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">SoapClient</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">Error&#x2F;Exception</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">绕过trick</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">wakeup绕过</span></a></li></ol></li></ol>
       </div>
     
 

