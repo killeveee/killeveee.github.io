@@ -1,99 +1,173 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="内核溢出漏洞提权、系统配置错误提权、PassUAC提权、令牌窃取、烂土豆提权、LLMNR和NetBIOS欺骗攻击">
+<meta property="og:type" content="article">
+<meta property="og:title" content="权限提升分析及防御">
+<meta property="og:url" content="https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="内核溢出漏洞提权、系统配置错误提权、PassUAC提权、令牌窃取、烂土豆提权、LLMNR和NetBIOS欺骗攻击">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-19T15:11:33.000Z">
+<meta property="article:modified_time" content="2023-01-15T07:49:11.249Z">
+<meta property="article:author" content="killeveee">
+<meta property="article:tag" content="内网">
+<meta name="twitter:card" content="summary">
     
-
-<script>!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-color-scheme")||"auto";("dark"===t||e&&"light"!==t)&&document.documentElement.classList.toggle("dark",!0)}()</script>
-
-<meta charset="utf-8" >
-
-<title>权限提升分析及防御</title>
-<meta name="keywords" content="权限提升分析及防御, killeveee">
-<meta name="description" content="内核溢出漏洞提权、系统配置错误提权、PassUAC提权、令牌窃取、烂土豆提权、LLMNR和NetBIOS欺骗攻击">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="/favicon.ico">
-<link rel="stylesheet" href="/style/main.css">
-
-
-<link rel="stylesheet" href="/style/jquery.fancybox.min.css">
-
-
-
-
-    <link rel="stylesheet" href="/style/prism.css"/>
-
-
-
-
-  <meta name="generator" content="Hexo 6.1.0"></head>
-  <body>
-    <div id="app" class="main">
-
-<div class="site-header-container">
-  <div class="site-header">
-    <div class="left">
-      <a href="https://killeveee.github.io/archives">
-        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
-      </a>
-      <a href="https://killeveee.github.io/archives">
-        <h1 class="site-title">killeveee</h1>
-      </a>
-    </div>
-    <div class="right">
-        <i class="icon menu-switch icon-menu-outline" ></i>
-    </div>
-  </div>
-</div>
-
-<div class="menu-container" style="height: 0;opacity: 0;">
-<nav class="menu-list">
-  
     
-      <a href="/archives" class="menu purple-link">
-        Index
-      </a>
-    
-  
-    
-      <a href="/tags" class="menu purple-link">
-        Tags
-      </a>
-    
-  
-    
-      <a href="/about" class="menu purple-link">
-        About
-      </a>
-    
-  
-</nav>
-</div>
-
-
-
-  <div class="content-container">
-    <div class="post-detail">
       
-      <h2 class="post-title">权限提升分析及防御</h2>
-      <div class="post-info post-detail-info">
-        <span><i class="icon icon-calendar-outline"></i> 2022-08-19</span>
         
-          <span>
-          <i class="icon icon-pricetags-outline"></i>
-            
-              <a href="/tags/%E5%86%85%E7%BD%91/">
-              内网
-                
-              </a>
-            
-          </span>
+          <link rel="shortcut icon" href="/images/favicon.ico">
         
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>权限提升分析及防御</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2022/08/26/%E5%9F%9F%E5%86%85%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2022/08/09/ctfshowssrf/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&text=权限提升分析及防御"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&is_video=false&description=权限提升分析及防御"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=权限提升分析及防御&body=Check out this article: https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&name=权限提升分析及防御&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&t=权限提升分析及防御"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E6%8F%90%E6%9D%83"><span class="toc-number">1.</span> <span class="toc-text">内核溢出漏洞提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%BC%BA%E5%A4%B1%E8%A1%A5%E4%B8%81"><span class="toc-number">1.1.</span> <span class="toc-text">手动发现缺失补丁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Metasploit%E5%8F%91%E7%8E%B0%E7%BC%BA%E5%A4%B1%E8%A1%A5%E4%B8%81"><span class="toc-number">1.2.</span> <span class="toc-text">Metasploit发现缺失补丁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-Exploit-Suggester"><span class="toc-number">1.3.</span> <span class="toc-text">Windows Exploit Suggester</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PowerShell-%E4%B8%AD%E7%9A%84-Sherlock-%E8%84%9A%E6%9C%AC"><span class="toc-number">1.4.</span> <span class="toc-text">PowerShell 中的 Sherlock 脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="toc-number">2.</span> <span class="toc-text">系统配置错误</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="toc-number">2.1.</span> <span class="toc-text">系统服务权限配置错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E9%94%AEAlwaysInstallElevated"><span class="toc-number">2.2.</span> <span class="toc-text">注册表键AlwaysInstallElevated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E4%BF%A1%E4%BB%BB%E6%9C%8D%E5%8A%A1%E8%B7%AF%E5%BE%84%E6%BC%8F%E6%B4%9E%EF%BC%88Trusted-Service-Paths%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">可信任服务路径漏洞（Trusted Service Paths）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">自动安装配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.5.</span> <span class="toc-text">计划任务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%84%E7%AD%96%E7%95%A5%E9%A6%96%E9%80%89%E9%A1%B9%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.</span> <span class="toc-text">组策略首选项提权漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%95%E8%BF%87UAC%E6%8F%90%E6%9D%83"><span class="toc-number">4.</span> <span class="toc-text">绕过UAC提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bypassuac%E6%A8%A1%E5%9D%97"><span class="toc-number">4.1.</span> <span class="toc-text">bypassuac模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunAs%E6%A8%A1%E5%9D%97"><span class="toc-number">4.2.</span> <span class="toc-text">RunAs模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nishang%E4%B8%AD%E7%9A%84Invoke-PsUACme%E6%A8%A1%E5%9D%97"><span class="toc-number">4.3.</span> <span class="toc-text">Nishang中的Invoke-PsUACme模块</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96%E5%88%86%E6%9E%90"><span class="toc-number">5.</span> <span class="toc-text">令牌窃取分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96"><span class="toc-number">5.1.</span> <span class="toc-text">令牌窃取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rotten-Potato%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E5%88%86%E6%9E%90"><span class="toc-number">5.2.</span> <span class="toc-text">Rotten Potato本地提权分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%9F%9F%E7%AE%A1%E7%90%86%E5%91%98"><span class="toc-number">5.3.</span> <span class="toc-text">添加域管理员</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E5%87%AD%E8%AF%81%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%9D%83%E9%99%90%E8%8E%B7%E5%8F%96"><span class="toc-number">6.</span> <span class="toc-text">无凭证条件下的权限获取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LLMNR%E5%92%8CNetBIOS%E6%AC%BA%E9%AA%97%E6%94%BB%E5%87%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">6.1.</span> <span class="toc-text">LLMNR和NetBIOS欺骗攻击的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LLMNR%E5%8D%8F%E8%AE%AE"><span class="toc-number">6.1.1.</span> <span class="toc-text">LLMNR协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NetBIOS%E5%8D%8F%E8%AE%AE"><span class="toc-number">6.1.2.</span> <span class="toc-text">NetBIOS协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Net-NTLM-Hash"><span class="toc-number">6.1.3.</span> <span class="toc-text">Net-NTLM Hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LLMNR%E5%92%8CNetBIOS%E6%AC%BA%E9%AA%97%E6%94%BB%E5%87%BB%E5%88%86%E6%9E%90"><span class="toc-number">6.2.</span> <span class="toc-text">LLMNR和NetBIOS欺骗攻击分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Responder%E5%B7%A5%E5%85%B7"><span class="toc-number">6.2.1.</span> <span class="toc-text">Responder工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.2.2.</span> <span class="toc-text">监听模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="toc-number">6.2.3.</span> <span class="toc-text">渗透测试</span></a></li></ol></li></ol></li></ol>
       </div>
-      <div class="post-content-wrapper">
-        <div class="post-content">
-          <p>在windows中，权限大概分为四种：</p>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        权限提升分析及防御
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-08-19T15:11:33.000Z" class="dt-published" itemprop="datePublished">2022-08-19</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%86%85%E7%BD%91/" rel="tag">内网</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>在windows中，权限大概分为四种：</p>
 <ul>
 <li>User：普通用户权限</li>
 <li>Administrator：管理员权限</li>
@@ -345,80 +419,147 @@ add_group_user &quot;Domain Admins&quot; shuteer -h 域控IP地址<span aria-hid
 </ul>
 <hr>
 
-        </div>
-        <div class="top-div">
-          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E6%8F%90%E6%9D%83"><span class="top-box-text">内核溢出漏洞提权</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E6%89%8B%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%BC%BA%E5%A4%B1%E8%A1%A5%E4%B8%81"><span class="top-box-text">手动发现缺失补丁</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#Metasploit%E5%8F%91%E7%8E%B0%E7%BC%BA%E5%A4%B1%E8%A1%A5%E4%B8%81"><span class="top-box-text">Metasploit发现缺失补丁</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#Windows-Exploit-Suggester"><span class="top-box-text">Windows Exploit Suggester</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#PowerShell-%E4%B8%AD%E7%9A%84-Sherlock-%E8%84%9A%E6%9C%AC"><span class="top-box-text">PowerShell 中的 Sherlock 脚本</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="top-box-text">系统配置错误</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="top-box-text">系统服务权限配置错误</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E9%94%AEAlwaysInstallElevated"><span class="top-box-text">注册表键AlwaysInstallElevated</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%8F%AF%E4%BF%A1%E4%BB%BB%E6%9C%8D%E5%8A%A1%E8%B7%AF%E5%BE%84%E6%BC%8F%E6%B4%9E%EF%BC%88Trusted-Service-Paths%EF%BC%89"><span class="top-box-text">可信任服务路径漏洞（Trusted Service Paths）</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="top-box-text">自动安装配置文件</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="top-box-text">计划任务</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BB%84%E7%AD%96%E7%95%A5%E9%A6%96%E9%80%89%E9%A1%B9%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E"><span class="top-box-text">组策略首选项提权漏洞</span></a></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E7%BB%95%E8%BF%87UAC%E6%8F%90%E6%9D%83"><span class="top-box-text">绕过UAC提权</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#bypassuac%E6%A8%A1%E5%9D%97"><span class="top-box-text">bypassuac模块</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#RunAs%E6%A8%A1%E5%9D%97"><span class="top-box-text">RunAs模块</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#Nishang%E4%B8%AD%E7%9A%84Invoke-PsUACme%E6%A8%A1%E5%9D%97"><span class="top-box-text">Nishang中的Invoke-PsUACme模块</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96%E5%88%86%E6%9E%90"><span class="top-box-text">令牌窃取分析</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96"><span class="top-box-text">令牌窃取</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#Rotten-Potato%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E5%88%86%E6%9E%90"><span class="top-box-text">Rotten Potato本地提权分析</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E6%B7%BB%E5%8A%A0%E5%9F%9F%E7%AE%A1%E7%90%86%E5%91%98"><span class="top-box-text">添加域管理员</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E6%97%A0%E5%87%AD%E8%AF%81%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%9D%83%E9%99%90%E8%8E%B7%E5%8F%96"><span class="top-box-text">无凭证条件下的权限获取</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#LLMNR%E5%92%8CNetBIOS%E6%AC%BA%E9%AA%97%E6%94%BB%E5%87%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="top-box-text">LLMNR和NetBIOS欺骗攻击的基本概念</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#LLMNR%E5%8D%8F%E8%AE%AE"><span class="top-box-text">LLMNR协议</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#NetBIOS%E5%8D%8F%E8%AE%AE"><span class="top-box-text">NetBIOS协议</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#Net-NTLM-Hash"><span class="top-box-text">Net-NTLM Hash</span></a></li></ol></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#LLMNR%E5%92%8CNetBIOS%E6%AC%BA%E9%AA%97%E6%94%BB%E5%87%BB%E5%88%86%E6%9E%90"><span class="top-box-text">LLMNR和NetBIOS欺骗攻击分析</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#Responder%E5%B7%A5%E5%85%B7"><span class="top-box-text">Responder工具</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E7%9B%91%E5%90%AC%E6%A8%A1%E5%BC%8F"><span class="top-box-text">监听模式</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="top-box-text">渗透测试</span></a></li></ol></li></ol></li></ol>
-        </div>
-      </div>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/tags/">Tags</a></li>
+        
+      </ul>
     </div>
 
     
-      <div class="next-post">
-        <a class="purple-link" href="/2022/08/09/ctfshowssrf/">
-          <h3 class="post-title">
-            下一篇：ctfshow_web入门_ssrf
-          </h3>
-        </a>
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E6%8F%90%E6%9D%83"><span class="toc-number">1.</span> <span class="toc-text">内核溢出漏洞提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%8F%91%E7%8E%B0%E7%BC%BA%E5%A4%B1%E8%A1%A5%E4%B8%81"><span class="toc-number">1.1.</span> <span class="toc-text">手动发现缺失补丁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Metasploit%E5%8F%91%E7%8E%B0%E7%BC%BA%E5%A4%B1%E8%A1%A5%E4%B8%81"><span class="toc-number">1.2.</span> <span class="toc-text">Metasploit发现缺失补丁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Windows-Exploit-Suggester"><span class="toc-number">1.3.</span> <span class="toc-text">Windows Exploit Suggester</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PowerShell-%E4%B8%AD%E7%9A%84-Sherlock-%E8%84%9A%E6%9C%AC"><span class="toc-number">1.4.</span> <span class="toc-text">PowerShell 中的 Sherlock 脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="toc-number">2.</span> <span class="toc-text">系统配置错误</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="toc-number">2.1.</span> <span class="toc-text">系统服务权限配置错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E9%94%AEAlwaysInstallElevated"><span class="toc-number">2.2.</span> <span class="toc-text">注册表键AlwaysInstallElevated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E4%BF%A1%E4%BB%BB%E6%9C%8D%E5%8A%A1%E8%B7%AF%E5%BE%84%E6%BC%8F%E6%B4%9E%EF%BC%88Trusted-Service-Paths%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">可信任服务路径漏洞（Trusted Service Paths）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">自动安装配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.5.</span> <span class="toc-text">计划任务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%84%E7%AD%96%E7%95%A5%E9%A6%96%E9%80%89%E9%A1%B9%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.</span> <span class="toc-text">组策略首选项提权漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%95%E8%BF%87UAC%E6%8F%90%E6%9D%83"><span class="toc-number">4.</span> <span class="toc-text">绕过UAC提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#bypassuac%E6%A8%A1%E5%9D%97"><span class="toc-number">4.1.</span> <span class="toc-text">bypassuac模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RunAs%E6%A8%A1%E5%9D%97"><span class="toc-number">4.2.</span> <span class="toc-text">RunAs模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nishang%E4%B8%AD%E7%9A%84Invoke-PsUACme%E6%A8%A1%E5%9D%97"><span class="toc-number">4.3.</span> <span class="toc-text">Nishang中的Invoke-PsUACme模块</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96%E5%88%86%E6%9E%90"><span class="toc-number">5.</span> <span class="toc-text">令牌窃取分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E7%AA%83%E5%8F%96"><span class="toc-number">5.1.</span> <span class="toc-text">令牌窃取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rotten-Potato%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E5%88%86%E6%9E%90"><span class="toc-number">5.2.</span> <span class="toc-text">Rotten Potato本地提权分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%9F%9F%E7%AE%A1%E7%90%86%E5%91%98"><span class="toc-number">5.3.</span> <span class="toc-text">添加域管理员</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E5%87%AD%E8%AF%81%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%9A%84%E6%9D%83%E9%99%90%E8%8E%B7%E5%8F%96"><span class="toc-number">6.</span> <span class="toc-text">无凭证条件下的权限获取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LLMNR%E5%92%8CNetBIOS%E6%AC%BA%E9%AA%97%E6%94%BB%E5%87%BB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">6.1.</span> <span class="toc-text">LLMNR和NetBIOS欺骗攻击的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LLMNR%E5%8D%8F%E8%AE%AE"><span class="toc-number">6.1.1.</span> <span class="toc-text">LLMNR协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NetBIOS%E5%8D%8F%E8%AE%AE"><span class="toc-number">6.1.2.</span> <span class="toc-text">NetBIOS协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Net-NTLM-Hash"><span class="toc-number">6.1.3.</span> <span class="toc-text">Net-NTLM Hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LLMNR%E5%92%8CNetBIOS%E6%AC%BA%E9%AA%97%E6%94%BB%E5%87%BB%E5%88%86%E6%9E%90"><span class="toc-number">6.2.</span> <span class="toc-text">LLMNR和NetBIOS欺骗攻击分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Responder%E5%B7%A5%E5%85%B7"><span class="toc-number">6.2.1.</span> <span class="toc-text">Responder工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.2.2.</span> <span class="toc-text">监听模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="toc-number">6.2.3.</span> <span class="toc-text">渗透测试</span></a></li></ol></li></ol></li></ol>
       </div>
     
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&text=权限提升分析及防御"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&is_video=false&description=权限提升分析及防御"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=权限提升分析及防御&body=Check out this article: https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&title=权限提升分析及防御"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&name=权限提升分析及防御&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/&t=权限提升分析及防御"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
   </div>
-
-
-
-
-<footer>
-<div class="site-footer">
-  <div class="social-container">
-    
-      
-        <a href="https://github.com/" target="_blank">
-          <i class="icon icon-github"></i>
-        </a>
-      
-    
-      
-        <a href="https://twitter.com/" target="_blank">
-          <i class="icon icon-twitter"></i>
-        </a>
-      
-    
-      
-    
-      
-    
-      
-    
-  </div>
-  
-    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
-  
-  
-  
-  
-  
-  
 </div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
 </footer>
 
-
-      </div>
-      
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jquery.fancybox.min.js"></script>
+    </div>
+    <!-- styles -->
 
 
-<script id="hexo-configurations">
-    window.theme_config = {"image":{"lazyload_enable":false}};
-    window.is_post = true;
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
   </script>
+
 
 <script src="/js/main.js"></script>
 
+<!-- search -->
 
+<!-- Baidu Analytics -->
 
+<!-- Cloudflare Analytics -->
 
+<!-- Disqus Comments -->
 
-    </div>
-  </body>
+<!-- utterances Comments -->
+
+</body>
 </html>
-

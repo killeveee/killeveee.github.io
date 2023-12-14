@@ -1,99 +1,175 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-  <head>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="文件上传漏洞学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传">
+<meta property="og:url" content="https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="文件上传漏洞学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://killeveee.github.io/images/xd3.png">
+<meta property="article:published_time" content="2021-11-30T05:10:33.000Z">
+<meta property="article:modified_time" content="2023-01-15T07:49:24.061Z">
+<meta property="article:author" content="killeveee">
+<meta property="article:tag" content="web安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://killeveee.github.io/images/xd3.png">
     
-
-<script>!function(){var e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,t=localStorage.getItem("use-color-scheme")||"auto";("dark"===t||e&&"light"!==t)&&document.documentElement.classList.toggle("dark",!0)}()</script>
-
-<meta charset="utf-8" >
-
-<title>文件上传</title>
-<meta name="keywords" content="文件上传, killeveee">
-<meta name="description" content="文件上传漏洞学习">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<link rel="shortcut icon" href="/favicon.ico">
-<link rel="stylesheet" href="/style/main.css">
-
-
-<link rel="stylesheet" href="/style/jquery.fancybox.min.css">
-
-
-
-
-    <link rel="stylesheet" href="/style/prism.css"/>
-
-
-
-
-  <meta name="generator" content="Hexo 6.1.0"></head>
-  <body>
-    <div id="app" class="main">
-
-<div class="site-header-container">
-  <div class="site-header">
-    <div class="left">
-      <a href="https://killeveee.github.io/archives">
-        <img class="avatar" src="/images/avatar.png" alt="logo" width="32px" height="32px">
-      </a>
-      <a href="https://killeveee.github.io/archives">
-        <h1 class="site-title">killeveee</h1>
-      </a>
-    </div>
-    <div class="right">
-        <i class="icon menu-switch icon-menu-outline" ></i>
-    </div>
-  </div>
-</div>
-
-<div class="menu-container" style="height: 0;opacity: 0;">
-<nav class="menu-list">
-  
     
-      <a href="/archives" class="menu purple-link">
-        Index
-      </a>
-    
-  
-    
-      <a href="/tags" class="menu purple-link">
-        Tags
-      </a>
-    
-  
-    
-      <a href="/about" class="menu purple-link">
-        About
-      </a>
-    
-  
-</nav>
-</div>
-
-
-
-  <div class="content-container">
-    <div class="post-detail">
       
-      <h2 class="post-title">文件上传</h2>
-      <div class="post-info post-detail-info">
-        <span><i class="icon icon-calendar-outline"></i> 2021-11-30</span>
         
-          <span>
-          <i class="icon icon-pricetags-outline"></i>
-            
-              <a href="/tags/web%E5%AE%89%E5%85%A8/">
-              web安全
-                
-              </a>
-            
-          </span>
+          <link rel="shortcut icon" href="/images/favicon.ico">
         
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>文件上传</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2021/12/08/XSS/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2021/11/23/sql%E6%B3%A8%E5%85%A5/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&text=文件上传"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&is_video=false&description=文件上传"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=文件上传&body=Check out this article: https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&name=文件上传&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&t=文件上传"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">初识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">利用思路：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%B1%BB"><span class="toc-number">1.1.1.</span> <span class="toc-text">常规类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS%E7%B1%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">CMS类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%B1%BB"><span class="toc-number">1.1.3.</span> <span class="toc-text">编辑器类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%B1%BB-x2F-CVE"><span class="toc-number">1.1.4.</span> <span class="toc-text">其他类&#x2F;CVE</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81-x2F-%E7%BB%95%E8%BF%87"><span class="toc-number">2.</span> <span class="toc-text">验证&#x2F;绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%9F%BA%E7%A1%80-FILES"><span class="toc-number">2.1.</span> <span class="toc-text">源码基础$_FILES[]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF"><span class="toc-number">2.2.</span> <span class="toc-text">前端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="toc-number">2.3.</span> <span class="toc-text">后端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-number">2.3.1.</span> <span class="toc-text">黑名单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E8%A7%A3%E6%9E%90%E5%90%8E%E7%BC%80"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">特殊解析后缀</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#htaccess%E8%A7%A3%E6%9E%90"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">.htaccess解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#user-ini%E8%A7%A3%E6%9E%90"><span class="toc-number">2.3.1.3.</span> <span class="toc-text">.user.ini解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.4.</span> <span class="toc-text">大小写绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%82%B9%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.5.</span> <span class="toc-text">点绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.6.</span> <span class="toc-text">空格绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DATA%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.7.</span> <span class="toc-text">::$DATA绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E5%90%88%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.3.1.8.</span> <span class="toc-text">配合解析漏洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E5%90%8E%E7%BC%80%E5%90%8D%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.9.</span> <span class="toc-text">双后缀名绕过</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MIME%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">MIME绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#00%E6%88%AA%E6%96%AD"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">%00截断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x00%E6%88%AA%E6%96%AD"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">0x00截断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x0a%E6%88%AA%E6%96%AD"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">0x0a截断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="toc-number">2.3.3.</span> <span class="toc-text">内容及其他</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4%E6%A3%80%E6%B5%8B"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">文件头检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B8%B2%E6%9F%93"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">二次渲染</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">条件竞争</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%81%E7%A0%B4getimagesize"><span class="toc-number">2.3.3.4.</span> <span class="toc-text">突破getimagesize</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%81%E7%A0%B4exif-imagetype"><span class="toc-number">2.3.3.5.</span> <span class="toc-text">突破exif_imagetype</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E6%9C%AB%E5%B0%BE%E6%9C%A8%E9%A9%AC"><span class="toc-number">2.3.3.6.</span> <span class="toc-text">删除文件末尾木马</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E-x2F-%E4%BF%AE%E5%A4%8D"><span class="toc-number">3.</span> <span class="toc-text">漏洞&#x2F;修复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.1.</span> <span class="toc-text">解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IIS6-x2F-7-x"><span class="toc-number">3.1.1.</span> <span class="toc-text">IIS6&#x2F;7.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache"><span class="toc-number">3.1.2.</span> <span class="toc-text">Apache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx"><span class="toc-number">3.1.3.</span> <span class="toc-text">Nginx</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.2.</span> <span class="toc-text">CMS漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.3.</span> <span class="toc-text">其他漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.3.1.</span> <span class="toc-text">编辑器漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ckeditor"><span class="toc-number">3.3.1.1.</span> <span class="toc-text">ckeditor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fckeditor"><span class="toc-number">3.3.1.2.</span> <span class="toc-text">fckeditor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kindeditor"><span class="toc-number">3.3.1.3.</span> <span class="toc-text">kindeditor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ewebeditor"><span class="toc-number">3.3.1.4.</span> <span class="toc-text">ewebeditor</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CVE%E7%AD%89%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.3.2.</span> <span class="toc-text">CVE等漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CVE-2015-2348"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">CVE-2015-2348</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CVE-2017-12615"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">CVE-2017-12615</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CVE-2019-2618"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">CVE-2019-2618</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="toc-number">4.</span> <span class="toc-text">WAF绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%85%E5%88%86%E6%9E%90"><span class="toc-number">4.1.</span> <span class="toc-text">数据包分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E7%8B%97-%E9%98%B2%E5%8C%B9%E9%85%8D"><span class="toc-number">4.2.</span> <span class="toc-text">安全狗-防匹配</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%A2%E5%87%BA"><span class="toc-number">4.2.1.</span> <span class="toc-text">数据溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%A6%E5%8F%B7%E5%8F%98%E5%BC%82"><span class="toc-number">4.2.2.</span> <span class="toc-text">符号变异</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%88%AA%E6%96%AD"><span class="toc-number">4.2.3.</span> <span class="toc-text">数据截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE"><span class="toc-number">4.2.4.</span> <span class="toc-text">重复数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9D%E5%A1%94"><span class="toc-number">4.3.</span> <span class="toc-text">宝塔</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4"><span class="toc-number">5.</span> <span class="toc-text">防护</span></a></li></ol>
       </div>
-      <div class="post-content-wrapper">
-        <div class="post-content">
-          <h1 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h1><ol>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        文件上传
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-11-30T05:10:33.000Z" class="dt-published" itemprop="datePublished">2021-11-30</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h1><ol>
 <li><p>什么是文件上传漏洞</p>
 <p>有文件上传就可以测试是否有漏洞，关键看代码是否完备。</p>
 </li>
@@ -294,80 +370,147 @@ p"
 <p>自定义函数过滤</p>
 <p>WAF防护产品：宝塔、云盾、安全公司产品………</p>
 
-        </div>
-        <div class="top-div">
-          <ol class="top-box"><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E5%88%9D%E8%AF%86"><span class="top-box-text">初识</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="top-box-text">利用思路：</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E5%B8%B8%E8%A7%84%E7%B1%BB"><span class="top-box-text">常规类</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#CMS%E7%B1%BB"><span class="top-box-text">CMS类</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%B1%BB"><span class="top-box-text">编辑器类</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E5%85%B6%E4%BB%96%E7%B1%BB-x2F-CVE"><span class="top-box-text">其他类&#x2F;CVE</span></a></li></ol></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E9%AA%8C%E8%AF%81-x2F-%E7%BB%95%E8%BF%87"><span class="top-box-text">验证&#x2F;绕过</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E6%BA%90%E7%A0%81%E5%9F%BA%E7%A1%80-FILES"><span class="top-box-text">源码基础$_FILES[]</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%89%8D%E7%AB%AF"><span class="top-box-text">前端</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%90%8E%E7%AB%AF"><span class="top-box-text">后端</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="top-box-text">黑名单</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="top-box-text">白名单</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E5%86%85%E5%AE%B9%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="top-box-text">内容及其他</span></a></li></ol></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E6%BC%8F%E6%B4%9E-x2F-%E4%BF%AE%E5%A4%8D"><span class="top-box-text">漏洞&#x2F;修复</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="top-box-text">解析漏洞</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#IIS6-x2F-7-x"><span class="top-box-text">IIS6&#x2F;7.x</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#Apache"><span class="top-box-text">Apache</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#Nginx"><span class="top-box-text">Nginx</span></a></li></ol></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#CMS%E6%BC%8F%E6%B4%9E"><span class="top-box-text">CMS漏洞</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%85%B6%E4%BB%96%E6%BC%8F%E6%B4%9E"><span class="top-box-text">其他漏洞</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E"><span class="top-box-text">编辑器漏洞</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#CVE%E7%AD%89%E6%BC%8F%E6%B4%9E"><span class="top-box-text">CVE等漏洞</span></a></li></ol></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="top-box-text">WAF绕过</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%85%E5%88%86%E6%9E%90"><span class="top-box-text">数据包分析</span></a></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%AE%89%E5%85%A8%E7%8B%97-%E9%98%B2%E5%8C%B9%E9%85%8D"><span class="top-box-text">安全狗-防匹配</span></a><ol class="top-box-child"><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%A2%E5%87%BA"><span class="top-box-text">数据溢出</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E7%AC%A6%E5%8F%B7%E5%8F%98%E5%BC%82"><span class="top-box-text">符号变异</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E6%95%B0%E6%8D%AE%E6%88%AA%E6%96%AD"><span class="top-box-text">数据截断</span></a></li><li class="top-box-item top-box-level-3"><a class="top-box-link" href="#%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE"><span class="top-box-text">重复数据</span></a></li></ol></li><li class="top-box-item top-box-level-2"><a class="top-box-link" href="#%E5%AE%9D%E5%A1%94"><span class="top-box-text">宝塔</span></a></li></ol></li><li class="top-box-item top-box-level-1"><a class="top-box-link" href="#%E9%98%B2%E6%8A%A4"><span class="top-box-text">防护</span></a></li></ol>
-        </div>
-      </div>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/tags/">Tags</a></li>
+        
+      </ul>
     </div>
 
     
-      <div class="next-post">
-        <a class="purple-link" href="/2021/11/23/sql%E6%B3%A8%E5%85%A5/">
-          <h3 class="post-title">
-            下一篇：SQL注入
-          </h3>
-        </a>
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">初识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">利用思路：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%B1%BB"><span class="toc-number">1.1.1.</span> <span class="toc-text">常规类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CMS%E7%B1%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">CMS类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E7%B1%BB"><span class="toc-number">1.1.3.</span> <span class="toc-text">编辑器类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%B1%BB-x2F-CVE"><span class="toc-number">1.1.4.</span> <span class="toc-text">其他类&#x2F;CVE</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81-x2F-%E7%BB%95%E8%BF%87"><span class="toc-number">2.</span> <span class="toc-text">验证&#x2F;绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%9F%BA%E7%A1%80-FILES"><span class="toc-number">2.1.</span> <span class="toc-text">源码基础$_FILES[]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF"><span class="toc-number">2.2.</span> <span class="toc-text">前端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="toc-number">2.3.</span> <span class="toc-text">后端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-number">2.3.1.</span> <span class="toc-text">黑名单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E8%A7%A3%E6%9E%90%E5%90%8E%E7%BC%80"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">特殊解析后缀</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#htaccess%E8%A7%A3%E6%9E%90"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">.htaccess解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#user-ini%E8%A7%A3%E6%9E%90"><span class="toc-number">2.3.1.3.</span> <span class="toc-text">.user.ini解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.4.</span> <span class="toc-text">大小写绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%82%B9%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.5.</span> <span class="toc-text">点绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.6.</span> <span class="toc-text">空格绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DATA%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.7.</span> <span class="toc-text">::$DATA绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E5%90%88%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.3.1.8.</span> <span class="toc-text">配合解析漏洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8C%E5%90%8E%E7%BC%80%E5%90%8D%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.1.9.</span> <span class="toc-text">双后缀名绕过</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MIME%E7%BB%95%E8%BF%87"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">MIME绕过</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#00%E6%88%AA%E6%96%AD"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">%00截断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x00%E6%88%AA%E6%96%AD"><span class="toc-number">2.3.2.3.</span> <span class="toc-text">0x00截断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#0x0a%E6%88%AA%E6%96%AD"><span class="toc-number">2.3.2.4.</span> <span class="toc-text">0x0a截断</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E5%8F%8A%E5%85%B6%E4%BB%96"><span class="toc-number">2.3.3.</span> <span class="toc-text">内容及其他</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4%E6%A3%80%E6%B5%8B"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">文件头检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B8%B2%E6%9F%93"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">二次渲染</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">条件竞争</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%81%E7%A0%B4getimagesize"><span class="toc-number">2.3.3.4.</span> <span class="toc-text">突破getimagesize</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AA%81%E7%A0%B4exif-imagetype"><span class="toc-number">2.3.3.5.</span> <span class="toc-text">突破exif_imagetype</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E6%9C%AB%E5%B0%BE%E6%9C%A8%E9%A9%AC"><span class="toc-number">2.3.3.6.</span> <span class="toc-text">删除文件末尾木马</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E-x2F-%E4%BF%AE%E5%A4%8D"><span class="toc-number">3.</span> <span class="toc-text">漏洞&#x2F;修复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.1.</span> <span class="toc-text">解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IIS6-x2F-7-x"><span class="toc-number">3.1.1.</span> <span class="toc-text">IIS6&#x2F;7.x</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Apache"><span class="toc-number">3.1.2.</span> <span class="toc-text">Apache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx"><span class="toc-number">3.1.3.</span> <span class="toc-text">Nginx</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CMS%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.2.</span> <span class="toc-text">CMS漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.3.</span> <span class="toc-text">其他漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.3.1.</span> <span class="toc-text">编辑器漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ckeditor"><span class="toc-number">3.3.1.1.</span> <span class="toc-text">ckeditor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fckeditor"><span class="toc-number">3.3.1.2.</span> <span class="toc-text">fckeditor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kindeditor"><span class="toc-number">3.3.1.3.</span> <span class="toc-text">kindeditor</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ewebeditor"><span class="toc-number">3.3.1.4.</span> <span class="toc-text">ewebeditor</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CVE%E7%AD%89%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.3.2.</span> <span class="toc-text">CVE等漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CVE-2015-2348"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">CVE-2015-2348</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CVE-2017-12615"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">CVE-2017-12615</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CVE-2019-2618"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">CVE-2019-2618</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="toc-number">4.</span> <span class="toc-text">WAF绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%85%E5%88%86%E6%9E%90"><span class="toc-number">4.1.</span> <span class="toc-text">数据包分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E7%8B%97-%E9%98%B2%E5%8C%B9%E9%85%8D"><span class="toc-number">4.2.</span> <span class="toc-text">安全狗-防匹配</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%A2%E5%87%BA"><span class="toc-number">4.2.1.</span> <span class="toc-text">数据溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%A6%E5%8F%B7%E5%8F%98%E5%BC%82"><span class="toc-number">4.2.2.</span> <span class="toc-text">符号变异</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%88%AA%E6%96%AD"><span class="toc-number">4.2.3.</span> <span class="toc-text">数据截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE"><span class="toc-number">4.2.4.</span> <span class="toc-text">重复数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9D%E5%A1%94"><span class="toc-number">4.3.</span> <span class="toc-text">宝塔</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%B2%E6%8A%A4"><span class="toc-number">5.</span> <span class="toc-text">防护</span></a></li></ol>
       </div>
     
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&text=文件上传"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&is_video=false&description=文件上传"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=文件上传&body=Check out this article: https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&title=文件上传"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&name=文件上传&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2021/11/30/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/&t=文件上传"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
   </div>
-
-
-
-
-<footer>
-<div class="site-footer">
-  <div class="social-container">
-    
-      
-        <a href="https://github.com/" target="_blank">
-          <i class="icon icon-github"></i>
-        </a>
-      
-    
-      
-        <a href="https://twitter.com/" target="_blank">
-          <i class="icon icon-twitter"></i>
-        </a>
-      
-    
-      
-    
-      
-    
-      
-    
-  </div>
-  
-    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> <a href="https://github.com/f-dong/hexo-theme-minimalism" target="_blank">Theme</a>
-  
-  
-  
-  
-  
-  
 </div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
 </footer>
 
-
-      </div>
-      
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jquery.fancybox.min.js"></script>
+    </div>
+    <!-- styles -->
 
 
-<script id="hexo-configurations">
-    window.theme_config = {"image":{"lazyload_enable":false}};
-    window.is_post = true;
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
   </script>
+
 
 <script src="/js/main.js"></script>
 
+<!-- search -->
 
+<!-- Baidu Analytics -->
 
+<!-- Cloudflare Analytics -->
 
+<!-- Disqus Comments -->
 
-    </div>
-  </body>
+<!-- utterances Comments -->
+
+</body>
 </html>
-

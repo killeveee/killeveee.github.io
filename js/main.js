@@ -1,158 +1,113 @@
-/* global $, window, document */
-'use strict';
+/**
+ * Sets up Justified Gallery.
+ */
+if (!!$.prototype.justifiedGallery) {
+  var options = {
+    rowHeight: 140,
+    margins: 4,
+    lastRow: "justify"
+  };
+  $(".article-gallery").justifiedGallery(options);
+}
 
-// 菜单
-$('.menu-switch').click(function() {
-  if ($(this).hasClass('icon-menu-outline')) {
-    $(this).removeClass(' icon-menu-outline ').addClass('icon-close-outline');
-    $('.menu-container').css('opacity', '1').css('height', 'auto');
-  } else {
-    $(this).addClass(' icon-menu-outline ').removeClass('icon-close-outline');
-    $('.menu-container').css('opacity', '0');
+$(document).ready(function() {
 
-    const that = $(this);
-    setTimeout(() => { that.hasClass('icon-menu-outline') && $('.menu-container').css('height', '0'); }, 600);
+  /**
+   * Shows the responsive navigation menu on mobile.
+   */
+  $("#header > #nav > ul > .icon").click(function() {
+    $("#header > #nav > ul").toggleClass("responsive");
+  });
+
+
+  /**
+   * Controls the different versions of  the menu in blog post articles 
+   * for Desktop, tablet and mobile.
+   */
+  if ($(".post").length) {
+    var menu = $("#menu");
+    var nav = $("#menu > #nav");
+    var menuIcon = $("#menu-icon, #menu-icon-tablet");
+
+    /**
+     * Display the menu on hi-res laptops and desktops.
+     */
+    if ($(document).width() >= 1440) {
+      menu.show();
+      menuIcon.addClass("active");
+    }
+
+    /**
+     * Display the menu if the menu icon is clicked.
+     */
+    menuIcon.click(function() {
+      if (menu.is(":hidden")) {
+        menu.show();
+        menuIcon.addClass("active");
+      } else {
+        menu.hide();
+        menuIcon.removeClass("active");
+      }
+      return false;
+    });
+
+    /**
+     * Add a scroll listener to the menu to hide/show the navigation links.
+     */
+    if (menu.length) {
+      $(window).on("scroll", function() {
+        var topDistance = menu.offset().top;
+
+        // hide only the navigation links on desktop
+        if (!nav.is(":visible") && topDistance < 50) {
+          nav.show();
+        } else if (nav.is(":visible") && topDistance > 100) {
+          nav.hide();
+        }
+
+        // on tablet, hide the navigation icon as well and show a "scroll to top
+        // icon" instead
+        if ( ! $( "#menu-icon" ).is(":visible") && topDistance < 50 ) {
+          $("#menu-icon-tablet").show();
+          $("#top-icon-tablet").hide();
+        } else if (! $( "#menu-icon" ).is(":visible") && topDistance > 100) {
+          $("#menu-icon-tablet").hide();
+          $("#top-icon-tablet").show();
+        }
+      });
+    }
+
+    /**
+     * Show mobile navigation menu after scrolling upwards,
+     * hide it again after scrolling downwards.
+     */
+    if ($( "#footer-post").length) {
+      var lastScrollTop = 0;
+      $(window).on("scroll", function() {
+        var topDistance = $(window).scrollTop();
+
+        if (topDistance > lastScrollTop){
+          // downscroll -> show menu
+          $("#footer-post").hide();
+        } else {
+          // upscroll -> hide menu
+          $("#footer-post").show();
+        }
+        lastScrollTop = topDistance;
+
+        // close all submenu"s on scroll
+        $("#nav-footer").hide();
+        $("#toc-footer").hide();
+        $("#share-footer").hide();
+
+        // show a "navigation" icon when close to the top of the page, 
+        // otherwise show a "scroll to the top" icon
+        if (topDistance < 50) {
+          $("#actions-footer > #top").hide();
+        } else if (topDistance > 100) {
+          $("#actions-footer > #top").show();
+        }
+      });
+    }
   }
 });
-
-if (window.is_post) {
-  // 图片放大
-  // $(".post-detail img").each(function() {
-  //     var currentImage = $(this);
-  //     currentImage.wrap("<a href='" + currentImage.attr("src") + "' data-fancybox='lightbox' data-caption='" + currentImage.attr("alt") + "'></a>");
-  // });
-
-  // 代码复制
-  const $copyIcon = $('<i class="fa-solid icon icon-copy copy-code" title="复制代码"></i>');
-  $('.post-detail figure').append($copyIcon);
-  $('.post-detail pre[class*=language-].line-numbers').append($copyIcon);
-  $('.post-detail .copy-code').on('click', function() {
-    const selection = window.getSelection();
-    const range = document.createRange();
-    const table = $(this).prev('table');
-    if (table.length) {
-      range.selectNodeContents($(this).prev('table').find('.code').find('pre')[0]);
-    } else {
-      console.log($(this).prev('code')[0]);
-      range.selectNodeContents($(this).prev('code')[0]);
-    }
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-    selection.toString();
-    document.execCommand('copy');
-    selection.removeAllRanges();
-
-    $(this).html('<span class="copy-success"> 复制成功</span>');
-    setTimeout(() => {
-      $(this).html('');
-    }, 2500);
-  });
-
-  // 代码语言
-  $(() => {
-    $('code').each(function() {
-      const code_language = $(this).attr('class');
-
-      if (!code_language) {
-        return true;
-      }
-      const lang_name = code_language.replace('line-numbers', '').trim().replace('highlight', '').trim().replace('language-', '').trim();
-
-      $(this).attr('data-content-after', lang_name || 'CODE');
-    });
-    $('.highlight').each(function() {
-      const code_language = $(this).attr('class');
-
-      if (!code_language) {
-        return true;
-      }
-      const lang_name = code_language.replace('highlight', '').trim();
-
-      $(this).attr('data-content-after', lang_name || 'CODE');
-    });
-  });
-
-  // 文章详情侧边目录
-  const mainNavLinks = document.querySelectorAll('.top-box a');
-  window.addEventListener('scroll', () => {
-    const fromTop = window.scrollY + 100;
-
-    mainNavLinks.forEach((link, index) => {
-      const section = document.getElementById(decodeURI(link.hash).substring(1));
-      let nextSection = null;
-      if (mainNavLinks[index + 1]) {
-        nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
-      }
-      if (section.offsetTop <= fromTop) {
-        if (nextSection) {
-          if (nextSection.offsetTop > fromTop) {
-            link.classList.add('current');
-          } else {
-            link.classList.remove('current');
-          }
-        } else {
-          link.classList.add('current');
-        }
-      } else {
-        link.classList.remove('current');
-      }
-    });
-  });
-
-  // 点击锚点滚动条偏移
-  $('.top-box-link').click(() => {
-    setTimeout(() => {
-      $(window).scrollTop($(window).scrollTop() - 54);
-      console.log($(window).scrollTop() - 54, '滚动条位置');
-    }, 0);
-  });
-}
-
-function lazyload(imgs, data) {
-  data.now = Date.now();
-  data.needLoad = Array.from(imgs).some(i => i.hasAttribute('lazyload'));
-
-  const h = window.innerHeight;
-  const s = document.documentElement.scrollTop || document.body.scrollTop;
-
-  imgs.forEach(img => {
-    if (img.hasAttribute('lazyload') && !img.hasAttribute('loading')) {
-
-      if ((h + s) > img.offsetTop) {
-        img.setAttribute('loading', true);
-        const loadImageTimeout = setTimeout(() => {
-          // eslint-disable-next-line no-undef
-          const temp = new Image();
-          const src = img.getAttribute('data-src');
-          temp.src = src;
-          temp.onload = () => {
-            img.src = src;
-            img.removeAttribute('lazyload');
-            img.removeAttribute('loading');
-            clearTimeout(loadImageTimeout);
-          };
-        }, 500);
-      }
-    }
-  });
-}
-
-// 图片懒加载
-if (window.theme_config.image && window.theme_config.image.lazyload_enable) {
-  const imgs = document.querySelectorAll('img');
-
-  const data = {
-    now: Date.now(),
-    needLoad: true
-  };
-
-
-  lazyload(imgs, data);
-
-  window.onscroll = () => {
-    if (Date.now() - data.now > 50 && data.needLoad) {
-      lazyload(imgs, data);
-    }
-  };
-}
