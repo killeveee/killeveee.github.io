@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="域、活动目录、访问控制、组策略">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网基础知识">
+<meta property="og:url" content="https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="域、活动目录、访问控制、组策略">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-20T07:11:33.000Z">
+<meta property="article:modified_time" content="2023-12-20T14:10:28.558Z">
+<meta property="article:author" content="killeveee">
+<meta property="article:tag" content="内网">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>内网基础知识</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/11/28/%E4%BA%A4%E4%BA%92%E5%BC%8Fshell/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&text=内网基础知识"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&is_video=false&description=内网基础知识"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网基础知识&body=Check out this article: https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&name=内网基础知识&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&t=内网基础知识"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">工作组和域</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">活动目录与LDAP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">ntds.dit文件和SAM文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">活动目录的访问</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">活动目录分区</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">活动目录的查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">域用户与机器用户</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">访问控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">访问控制列表ACL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">组策略对象GPO</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        内网基础知识
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-20T07:11:33.000Z" class="dt-published" itemprop="datePublished">2023-12-20</time>
+        
+      
+    </div>
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E5%86%85%E7%BD%91/" rel="tag">内网</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1><span id="工作组和域">工作组和域</span></h1><p>工作组：将不同的计算机按照功能或部门分别置于不同的组。使整个组织的网络变得具有层次性。<br>域：统一的管理和集中的身份验证，比工作组更高级的计算机资源管理模式。</p>
+<ul>
+<li>单域</li>
+<li>父域和子域</li>
+<li>域树（域管理员只能管理本域，若两个域之间要互相访问，需要建立信任关系）</li>
+<li>域林</li>
+</ul>
+<p>域控制器DC（域控）：“中控枢纽”。包含一个活动目录数据库（存储着整个域的账号密码计算机信息）。</p>
+<h1><span id="活动目录与ldap">活动目录与LDAP</span></h1><p>活动目录AD：提供集中式目录管理服务。是一种目录服务数据库。<br>目录服务数据库是什么？在目录服务数据库中，数据通常以树状结构进行组织：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">- 根DC
+  - 组织单位OU：公司A
+    - 用户CN：Alice
+    - 用户CN：Bob
+  - 组织单位OU：公司B
+    - 用户CN：Charlie
+    - 用户CN：David<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>跟MySQL等关系型数据库相比：关系型数据库以表格的形式存储数据，其中每个表格都由行和列组成。<br>关系型数据库的结构是扁平的，而不是层次结构。<br>目录服务数据库更适合表示层次关系。<br>LDAP（轻量级目录访问协议）：是一种协议，用于访问和维护目录服务数据库。<br>LDAP定义了客户端和服务器之间进行目录查询和更新的通信规则。<br>在描述 Active Directory 中对象的位置时，我们使用 LDAP 的名称路径（通常是对象的DN）来指定对象在整个目录树中的确切位置。<br>LDAP提供了一种层次结构化的方式，让我们能够清晰地了解和表达 Active Directory 中各个对象的相对位置。<br>DN（绝对可辨识名称）：指向一个LDAP对象的完整路径。DN由对象本体开始向上延伸到根。<br>下面是一个DN：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">CN</span><span class="token operator">=</span>John Doe,OU<span class="token operator">=</span>Users,DC<span class="token operator">=</span>example,DC<span class="token operator">=</span>com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>CN：通用名。</li>
+<li>OU：组织单位。</li>
+<li>DC：域组件。</li>
+</ul>
+<p>那么这个DN其含义就是：John Doe对象在example.com域的Users组织单元中。<br>RDN（相对可辨识名称）：用于指向一个LDAP对象的相对路径。<br>例如：（RDN举例说明）在给定的<code>DN (CN=John Doe,OU=Users,DC=example,DC=com)</code> 中：</p>
+<ul>
+<li>CN&#x3D;John Doe 是第一个相对独特名称 (RDN)</li>
+<li>OU&#x3D;Users 是第二个 RDN</li>
+<li>DC&#x3D;example 是第三个 RDN</li>
+<li>DC&#x3D;com 是最后一个 RDN</li>
+</ul>
+<p>每个相对独特名称 (RDN) 在整个 DN 中都是相对唯一的，但是整个 DN 才是用来唯一标识目录树中对象的。<br>所以，在 (CN&#x3D;John Doe,OU&#x3D;Users,DC&#x3D;example,DC&#x3D;com) 中，OU&#x3D;Users 只是其中的一个组成部分，用于构建整个 DN。</p>
+<h1><span id="ntdsdit文件和sam文件">ntds.dit文件和SAM文件</span></h1><p>目录数据存储在域控的ntds.dit文件中。<br>ntds.dit：是域控上保存的一个二进制文件，是主要的活动目录数据库。</p>
+<ul>
+<li>文件路径：<code>%SystemRoot%\ntds\ntds.dit</code></li>
+<li>文件内容：有关域用户、用户密码哈希散列值、用户组组成员身份和组策略。</li>
+<li>加密方式：使用存储在系统SYSTEM文件的密钥对这些哈希值进行加密。</li>
+</ul>
+<p>SAM文件：工作组环境下，用户的登录凭据等信息存储在本地SAM文件。</p>
+<ul>
+<li><p>文件路径：<code>C:\Windows\System32\config\SAM</code></p>
+<h1><span id="活动目录的访问">活动目录的访问</span></h1><p>使用<code>AD Explorer</code>工具连接域控制器来访问活动目录。<br><code>AD Explorer</code>也是属于microsoft的sysinternals套件里的一款工具。<br>链接：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/sysinternals/">https://learn.microsoft.com/zh-cn/sysinternals/</a><br>PsExec也是属于这个套件里的。</p>
+<h1><span id="活动目录分区">活动目录分区</span></h1><p>微软将活动目录数据库划分为多个分区，这些分区称为 上下文命名（NC）。<br>1、域分区（Domain NC）<br><code>DC=hack-my, DC=com</code>就是hack-my.com域的域分区。</p>
+</li>
+<li><p><code>CN=Builtin</code>内置了本地域组的安全组的容器</p>
+</li>
+</ul>
+<p>2、配置分区（Configuration NC）<br><code>CN=Configuration, DC=hack-my, DC=com</code>就是配置分区。</p>
+<p>3、架构分区（Schema NC）</p>
+<h1><span id="活动目录的查询">活动目录的查询</span></h1><p>1、LDAP<br>2、AdFind</p>
+<h1><span id="域用户与机器用户">域用户与机器用户</span></h1><p>域用户有的属性，机器用户都有。<br>在域环境下，本地用户System对应域中的机器用户。</p>
+<p>域用户组的分类：通讯组(发消息组内都能收到)、安全组(安全权限)<br>安全组分为：域本地组、通用组、全局组<br>（域树域林中）</p>
+<h1><span id="访问控制">访问控制</span></h1><p>Windows访问控制模型分为：</p>
+<ul>
+<li><p>访问令牌：如果身份验证通过则会创建一个访问令牌（包括一些特权列表）。</p>
+</li>
+<li><p>安全描述符：SID+ACL。（谁能访问，怎么访问）</p>
+<h1><span id="访问控制列表acl">访问控制列表ACL</span></h1><p>访问控制列表ACL 里面有很多 访问控制项ACE。<br>ACL分类：</p>
+</li>
+<li><p>DACL：自主访问控制列表</p>
+</li>
+<li><p>SACL：系统访问控制列表</p>
+</li>
+</ul>
+<p><code>icacls</code>命令可以查看文件的ACL</p>
+<blockquote>
+<p>F，完全访问</p>
+</blockquote>
+<h1><span id="组策略对象gpo">组策略对象GPO</span></h1><p>组策略是管理账户的一种手段。<br>组策略对象GPO 是组策略设置的集合。只需将组策略对象<strong>链接</strong>到指定站点域组织单位OU即可。<br>GPO组成：</p>
+<ul>
+<li>组策略容器GPC：存在活动目录分区</li>
+<li>组策略模板GPT：存在<code>%SYSTEMROOT%\SYSVOL\sysvol\domain\Policies</code></li>
+</ul>
+<p>组策略配置时：</p>
+<ul>
+<li>策略配置 是强制的。</li>
+<li>首选项配置 不强制，用户可自行更改。</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/tags/">Tags</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">工作组和域</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">活动目录与LDAP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">ntds.dit文件和SAM文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">活动目录的访问</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">活动目录分区</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">活动目录的查询</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">域用户与机器用户</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">访问控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">访问控制列表ACL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">组策略对象GPO</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&text=内网基础知识"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&is_video=false&description=内网基础知识"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网基础知识&body=Check out this article: https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&title=内网基础知识"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&name=内网基础知识&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/20/%E5%9F%BA%E7%A1%80/&t=内网基础知识"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tags</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
