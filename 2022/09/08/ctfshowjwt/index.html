@@ -14,9 +14,8 @@
 <meta property="og:description" content="jwt学习">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-08T13:10:33.000Z">
-<meta property="article:modified_time" content="2022-09-11T14:19:26.551Z">
+<meta property="article:modified_time" content="2023-12-24T05:47:36.289Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
     
     
@@ -70,13 +69,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -117,7 +114,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web345"><span class="toc-number">1.</span> <span class="toc-text">web345</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web346"><span class="toc-number">2.</span> <span class="toc-text">web346</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web347"><span class="toc-number">3.</span> <span class="toc-text">web347</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web348"><span class="toc-number">4.</span> <span class="toc-text">web348</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web349"><span class="toc-number">5.</span> <span class="toc-text">web349</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web350"><span class="toc-number">6.</span> <span class="toc-text">web350</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">web345</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web346</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web347</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web348</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web349</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web350</span></a></li></ol>
       </div>
     
   </span>
@@ -155,11 +152,6 @@
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/CTF/" rel="tag">CTF</a>
-    </div>
-
 
     </div>
   </header>
@@ -172,11 +164,11 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/solitudi/article/details/112525267">CTFSHOW_JWT_Y4tacker的博客-CSDN博客</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vU4y187HE?spm_id_from=333.999.0.0">CTFshow-web入门-JWT_哔哩哔哩_bilibili</a></li>
 </ul>
-<h1 id="web345"><a href="#web345" class="headerlink" title="web345"></a>web345</h1><p>cookie值是base64，直接base64解密，把user改为admin，然后再base64加密，放入cookie。</p>
+<h1><span id="web345">web345</span></h1><p>cookie值是base64，直接base64解密，把user改为admin，然后再base64加密，放入cookie。</p>
 <p>然后访问<code>/admin/</code></p>
-<h1 id="web346"><a href="#web346" class="headerlink" title="web346"></a>web346</h1><p><a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a></p>
+<h1><span id="web346">web346</span></h1><p><a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a></p>
 <p>把cookie值放到上面的网站里解码，把user改为admin，然后猜测秘钥是123456，把之后的base64的jwt传入cookie，然后访问&#x2F;admin&#x2F;</p>
-<h1 id="web347"><a href="#web347" class="headerlink" title="web347"></a>web347</h1><p>使用<a target="_blank" rel="noopener" href="https://github.com/LandGrey/pydictor">pydictor</a>，生成6位数字的字典</p>
+<h1><span id="web347">web347</span></h1><p>使用<a target="_blank" rel="noopener" href="https://github.com/LandGrey/pydictor">pydictor</a>，生成6位数字的字典</p>
 <pre class="line-numbers language-none"><code class="language-none">python .\pydictor.py -base d --len 1 6 -o nums.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>然后跑脚本：</p>
@@ -214,12 +206,12 @@
     runblasting<span class="token punctuation">(</span><span class="token string">'nums.txt'</span><span class="token punctuation">,</span><span class="token string">'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTYyNzg3NjQ4MCwiZXhwIjoxNjI3ODgzNjgwLCJuYmYiOjE2Mjc4NzY0ODAsInN1YiI6InVzZXIiLCJqdGkiOiJjMGYzODkwMmE1ODE4ZjhlMjM5Yzg3N2EwNzZmNmU5MCJ9.o68KTTbu7V2enU4dXXASeJs6rJbNbVbLtoEqC_WMqBo'</span><span class="token punctuation">,</span><span class="token string">'HS256'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>得到key是123456，在 <a target="_blank" rel="noopener" href="https://jwt.io/">https://jwt.io/</a> 改admin，输入秘钥123456，然后发送cookie，访问&#x2F;admin&#x2F; </p>
-<h1 id="web348"><a href="#web348" class="headerlink" title="web348"></a>web348</h1><p>生成1~4位的小写字母字典</p>
+<h1><span id="web348">web348</span></h1><p>生成1~4位的小写字母字典</p>
 <pre class="line-numbers language-none"><code class="language-none">python .\pydictor.py -base L --len 1 4 -o keys.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>用上面的脚本，爆破得秘钥<code>aaab</code></p>
 <p>然后在网站换admin</p>
-<h1 id="web349"><a href="#web349" class="headerlink" title="web349"></a>web349</h1><p>利用私钥生成jwt，利用公钥解密jwt，所以我们只要有<strong>私钥</strong>然后自己重新生成就可以了。<br>访问 &#x2F;private.key 得到私钥<br>运行下面的js代码生成jwt (需要安装jsonwebtoken库 npm install jsonwebtoken –save)</p>
+<h1><span id="web349">web349</span></h1><p>利用私钥生成jwt，利用公钥解密jwt，所以我们只要有<strong>私钥</strong>然后自己重新生成就可以了。<br>访问 &#x2F;private.key 得到私钥<br>运行下面的js代码生成jwt (需要安装jsonwebtoken库 npm install jsonwebtoken –save)</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> jwt <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'jsonwebtoken'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">var</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">var</span> privateKey <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span><span class="token string">'private.key'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -235,7 +227,7 @@ payload<span class="token operator">=</span><span class="token punctuation">&#12
 
 
 
-<h1 id="web350"><a href="#web350" class="headerlink" title="web350"></a>web350</h1><p>访问&#x2F;public.key获得公钥</p>
+<h1><span id="web350">web350</span></h1><p>访问&#x2F;public.key获得公钥</p>
 <p><strong>将RS256算法改为HS256（非对称密码算法&#x3D;&gt;对称密码算法）</strong></p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> jwt <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'jsonwebtoken'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">var</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -259,13 +251,11 @@ console<span class="token punctuation">.</span><span class="token function">log<
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -273,7 +263,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web345"><span class="toc-number">1.</span> <span class="toc-text">web345</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web346"><span class="toc-number">2.</span> <span class="toc-text">web346</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web347"><span class="toc-number">3.</span> <span class="toc-text">web347</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web348"><span class="toc-number">4.</span> <span class="toc-text">web348</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web349"><span class="toc-number">5.</span> <span class="toc-text">web349</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web350"><span class="toc-number">6.</span> <span class="toc-text">web350</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">web345</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web346</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web347</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web348</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web349</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web350</span></a></li></ol>
       </div>
     
 
@@ -321,13 +311,11 @@ console<span class="token punctuation">.</span><span class="token function">log<
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>

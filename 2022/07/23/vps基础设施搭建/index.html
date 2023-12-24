@@ -6,18 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="折腾">
+    <meta name="description" content="防火墙相关命令觉得麻烦可以直接把防火墙关咯。 启动： systemctl start firewalld 查看状态： systemctl status firewalld  禁用，禁止开机启动： systemctl disable firewalld 停止运行： systemctl stop firewalld 打开端口：firewall-cmd --zone&#x3D;public --add-">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vps基础设施搭建">
-<meta property="og:url" content="https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:url" content="https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="killeveee">
-<meta property="og:description" content="折腾">
+<meta property="og:description" content="防火墙相关命令觉得麻烦可以直接把防火墙关咯。 启动： systemctl start firewalld 查看状态： systemctl status firewalld  禁用，禁止开机启动： systemctl disable firewalld 停止运行： systemctl stop firewalld 打开端口：firewall-cmd --zone&#x3D;public --add-">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://killeveee.github.io/images/frp.png">
 <meta property="article:published_time" content="2022-07-23T03:11:33.000Z">
-<meta property="article:modified_time" content="2023-01-15T07:48:28.593Z">
+<meta property="article:modified_time" content="2023-12-24T05:50:29.588Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="内网">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://killeveee.github.io/images/frp.png">
     
@@ -72,13 +71,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -102,24 +99,24 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&text=vps基础设施搭建"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&is_video=false&description=vps基础设施搭建"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=vps基础设施搭建&body=Check out this article: https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&name=vps基础设施搭建&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&t=vps基础设施搭建"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&text=vps基础设施搭建"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&is_video=false&description=vps基础设施搭建"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=vps基础设施搭建&body=Check out this article: https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&name=vps基础设施搭建&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&t=vps基础设施搭建"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">防火墙相关命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Centos7%E6%90%AD%E5%BB%BAAWS"><span class="toc-number">2.</span> <span class="toc-text">Centos7搭建AWS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cobalstrike"><span class="toc-number">3.</span> <span class="toc-text">Cobalstrike</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%92%93%E9%B1%BC%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA"><span class="toc-number">4.</span> <span class="toc-text">钓鱼平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA"><span class="toc-number">5.</span> <span class="toc-text">XSS平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B0%B4%E6%B3%BD%E6%90%AD%E5%BB%BA"><span class="toc-number">6.</span> <span class="toc-text">水泽搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#frp%E6%90%AD%E5%BB%BA"><span class="toc-number">7.</span> <span class="toc-text">frp搭建</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">防火墙相关命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Centos7搭建AWS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Cobalstrike</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">钓鱼平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">XSS平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">水泽搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">frp搭建</span></a></li></ol>
       </div>
     
   </span>
@@ -152,23 +149,18 @@
       
     <div class="article-category">
         <i class="fa-solid fa-archive"></i>
-        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+        <a class="category-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
     </div>
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/%E5%86%85%E7%BD%91/" rel="tag">内网</a>
-    </div>
-
 
     </div>
   </header>
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="防火墙相关命令"><a href="#防火墙相关命令" class="headerlink" title="防火墙相关命令"></a>防火墙相关命令</h1><p>觉得麻烦可以直接把防火墙关咯。</p>
+    <h1><span id="防火墙相关命令">防火墙相关命令</span></h1><p>觉得麻烦可以直接把防火墙关咯。</p>
 <pre class="line-numbers language-none"><code class="language-none">启动： systemctl start firewalld
 查看状态： systemctl status firewalld 
 禁用，禁止开机启动： systemctl disable firewalld
@@ -176,7 +168,7 @@
 打开端口：firewall-cmd --zone&#x3D;public --add-port&#x3D;80&#x2F;tcp --permanent
 关闭端口：firewall-cmd --zone&#x3D;public --remove-port&#x3D;80&#x2F;tcp --permanent<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h1 id="Centos7搭建AWS"><a href="#Centos7搭建AWS" class="headerlink" title="Centos7搭建AWS"></a>Centos7搭建AWS</h1><pre class="line-numbers language-none"><code class="language-none">yum install -y docker								#安装docker
+<h1><span id="centos7搭建aws">Centos7搭建AWS</span></h1><pre class="line-numbers language-none"><code class="language-none">yum install -y docker								#安装docker
 systemctl start docker								#启动docker
 docker pull secfa&#x2F;docker-awvs						#安装awvs
 docker run -it -d -p 13443:3443 secfa&#x2F;docker-awvs	#端口映射
@@ -191,11 +183,11 @@ systemctl restart  docker    &#x2F;&#x2F;重启docker
 docker restart id     		 &#x2F;&#x2F;容器id，重启容器<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>如果还是无法访问，那就是网络原因，换节点试试。</p>
-<h1 id="Cobalstrike"><a href="#Cobalstrike" class="headerlink" title="Cobalstrike"></a>Cobalstrike</h1><p>网上有很多。</p>
+<h1><span id="cobalstrike">Cobalstrike</span></h1><p>网上有很多。</p>
 <p>下载之后进入其文件夹。</p>
 <pre class="line-numbers language-none"><code class="language-none">.&#x2F;teamserver ip 密码		#启动命令<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h1 id="钓鱼平台搭建"><a href="#钓鱼平台搭建" class="headerlink" title="钓鱼平台搭建"></a>钓鱼平台搭建</h1><p>这里我是随便找的一个qq邮箱钓鱼。</p>
+<h1><span id="钓鱼平台搭建">钓鱼平台搭建</span></h1><p>这里我是随便找的一个qq邮箱钓鱼。</p>
 <p>先要安装docker，上面有。</p>
 <pre class="line-numbers language-none"><code class="language-none">git clone https:&#x2F;&#x2F;github.com&#x2F;Cl0udG0d&#x2F;QQFishing
 cd QQFishing
@@ -206,14 +198,14 @@ docker-compose up -d			#启动<span aria-hidden="true" class="line-numbers-rows"
 <pre class="line-numbers language-none"><code class="language-none">docker ps						#查看容器信息命令
 docker exec -it id &#x2F;bin&#x2F;bash	#进入docker容器方法<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h1 id="XSS平台搭建"><a href="#XSS平台搭建" class="headerlink" title="XSS平台搭建"></a>XSS平台搭建</h1><p>蓝莲花的：<a target="_blank" rel="noopener" href="https://github.com/trysec/BlueLotus_XSSReceiver">github : https://github.com/trysec/BlueLotus_XSSReceiver</a></p>
-<h1 id="水泽搭建"><a href="#水泽搭建" class="headerlink" title="水泽搭建"></a>水泽搭建</h1><pre class="line-numbers language-none"><code class="language-none">git clone https:&#x2F;&#x2F;github.com&#x2F;0x727&#x2F;ShuiZe_0x727
+<h1><span id="xss平台搭建">XSS平台搭建</span></h1><p>蓝莲花的：<a target="_blank" rel="noopener" href="https://github.com/trysec/BlueLotus_XSSReceiver">github : https://github.com/trysec/BlueLotus_XSSReceiver</a></p>
+<h1><span id="水泽搭建">水泽搭建</span></h1><pre class="line-numbers language-none"><code class="language-none">git clone https:&#x2F;&#x2F;github.com&#x2F;0x727&#x2F;ShuiZe_0x727
 cd ShuiZe_0x727
 chmod +x build.sh
 .&#x2F;build.sh
 python3 ShuiZe.py -d domain		#使用<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h1 id="frp搭建"><a href="#frp搭建" class="headerlink" title="frp搭建"></a>frp搭建</h1><p>vps和本地kali都要下载。</p>
+<h1><span id="frp搭建">frp搭建</span></h1><p>vps和本地kali都要下载。</p>
 <pre class="line-numbers language-none"><code class="language-none">wget https:&#x2F;&#x2F;github.com&#x2F;fatedier&#x2F;frp&#x2F;releases&#x2F;download&#x2F;v0.43.0&#x2F;frp_0.43.0_linux_386.tar.gz
 tar zxf frp_0.43.0_linux_386.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
@@ -255,13 +247,11 @@ kali上
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -269,23 +259,23 @@ kali上
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">防火墙相关命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Centos7%E6%90%AD%E5%BB%BAAWS"><span class="toc-number">2.</span> <span class="toc-text">Centos7搭建AWS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cobalstrike"><span class="toc-number">3.</span> <span class="toc-text">Cobalstrike</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%92%93%E9%B1%BC%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA"><span class="toc-number">4.</span> <span class="toc-text">钓鱼平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA"><span class="toc-number">5.</span> <span class="toc-text">XSS平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B0%B4%E6%B3%BD%E6%90%AD%E5%BB%BA"><span class="toc-number">6.</span> <span class="toc-text">水泽搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#frp%E6%90%AD%E5%BB%BA"><span class="toc-number">7.</span> <span class="toc-text">frp搭建</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">防火墙相关命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Centos7搭建AWS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Cobalstrike</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">钓鱼平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">XSS平台搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">水泽搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">frp搭建</span></a></li></ol>
       </div>
     
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&text=vps基础设施搭建"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&is_video=false&description=vps基础设施搭建"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=vps基础设施搭建&body=Check out this article: https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&name=vps基础设施搭建&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/07/23/%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&t=vps基础设施搭建"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&text=vps基础设施搭建"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&is_video=false&description=vps基础设施搭建"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=vps基础设施搭建&body=Check out this article: https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&title=vps基础设施搭建"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&name=vps基础设施搭建&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/07/23/vps%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD%E6%90%AD%E5%BB%BA/&t=vps基础设施搭建"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -317,13 +307,11 @@ kali上
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>

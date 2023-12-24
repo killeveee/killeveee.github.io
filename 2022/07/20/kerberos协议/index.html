@@ -16,9 +16,8 @@
 <meta property="og:image" content="https://killeveee.github.io/images/kb1.png">
 <meta property="og:image" content="https://killeveee.github.io/images/kb2.png">
 <meta property="article:published_time" content="2022-07-20T05:10:33.000Z">
-<meta property="article:modified_time" content="2023-01-15T07:50:08.474Z">
+<meta property="article:modified_time" content="2023-12-24T05:48:14.408Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="内网">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://killeveee.github.io/images/kb1.png">
     
@@ -73,13 +72,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -120,7 +117,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows%E6%9C%AC%E5%9C%B0%E8%AE%A4%E8%AF%81"><span class="toc-number">1.</span> <span class="toc-text">Windows本地认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-hash%E7%94%9F%E6%88%90%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">NTLM hash生成方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">本地认证流程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows%E7%BD%91%E7%BB%9C%E8%AE%A4%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">Windows网络认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.1.</span> <span class="toc-text">NTLM 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge-x2F-Response"><span class="toc-number">2.2.</span> <span class="toc-text">Challenge&#x2F;Response</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-v1%E4%B8%8ENTLM-v2"><span class="toc-number">2.3.</span> <span class="toc-text">NTLM v1与NTLM v2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pass-The-Hash"><span class="toc-number">3.</span> <span class="toc-text">Pass The Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%8A%93%E5%8F%96Hash"><span class="toc-number">4.</span> <span class="toc-text">本地抓取Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Kerberos"><span class="toc-number">5.</span> <span class="toc-text">Kerberos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Kerberos%E5%8D%8F%E8%AE%AE%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">Kerberos协议认证流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE"><span class="toc-number">7.</span> <span class="toc-text">白银票据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE"><span class="toc-number">8.</span> <span class="toc-text">黄金票据</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Windows本地认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">NTLM hash生成方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">本地认证流程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Windows网络认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">NTLM 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">Challenge&#x2F;Response</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">NTLM v1与NTLM v2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Pass The Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">本地抓取Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">Kerberos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">Kerberos协议认证流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">白银票据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">黄金票据</span></a></li></ol>
       </div>
     
   </span>
@@ -158,34 +155,29 @@
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/%E5%86%85%E7%BD%91/" rel="tag">内网</a>
-    </div>
-
 
     </div>
   </header>
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="Windows本地认证"><a href="#Windows本地认证" class="headerlink" title="Windows本地认证"></a>Windows本地认证</h1><p><code>NTLM Hash</code>是支持Net NTLM认证协议及本地认证过程的，其长度为32位，由数字字母组成。</p>
+    <h1><span id="windows本地认证">Windows本地认证</span></h1><p><code>NTLM Hash</code>是支持Net NTLM认证协议及本地认证过程的，其长度为32位，由数字字母组成。</p>
 <p>windows本身不存储用户的明文密码，它会将用户的明文密码经过加密算法后存储在<code>SAM</code>（C:\WINDOWS\system32\config）数据库中。</p>
 <p>当用户登录时，会将用户输入的明文密码也加密成NTLM Hash，与SAM数据库中的NTLM Hash进行比较。</p>
-<h2 id="NTLM-hash生成方法"><a href="#NTLM-hash生成方法" class="headerlink" title="NTLM hash生成方法"></a>NTLM hash生成方法</h2><p>该hash的生成方法：</p>
+<h2><span id="ntlm-hash生成方法">NTLM hash生成方法</span></h2><p>该hash的生成方法：</p>
 <ol>
 <li>将明文口令转换成<strong>十六进制</strong>的格式</li>
 <li>转换成<strong>Unicode</strong>格式，即在每个字节之后添加0x00</li>
 <li>对Unicode字符串作<strong>MD4</strong>加密，生成32位的十六进制数字串</li>
 </ol>
-<h2 id="本地认证流程"><a href="#本地认证流程" class="headerlink" title="本地认证流程"></a>本地认证流程</h2><p>登录时有两个重要进程：<code>winlogon.exe</code>和<code>lsass.exe</code>。</p>
+<h2><span id="本地认证流程">本地认证流程</span></h2><p>登录时有两个重要进程：<code>winlogon.exe</code>和<code>lsass.exe</code>。</p>
 <p><code>winlogon.exe</code>（Windows Logon Process）是用户的登录程序，用于管理用户登录和退出；<code>lsass.exe</code>是微软Windows系统的安全机制，用于本地安全和登录策略。</p>
 <p><code>winlogon.exe</code>接收用户输入的账号和密码，然后给<code>lsass.exe</code>。<code>lsass.exe</code>会进行<strong>缓存</strong>、加密密码获得<code>ntlm hash</code>，读取SAM文件与加密后的ntlm hash比较，若相同，则会将User SID和Group SID发送给<code>winlogon.exe</code>，准备登录界面；若不相同，则登录失败。</p>
 <p>在渗透测试中，通常可从Windows系统中的SAM文件和域控的NTDS.dit文件中获得所有用户的hash，通过<code>Mimikatz</code>读取lsass.exe进程能获得已登录用户的NTLM hash。</p>
 <p>Windows Vista和Windows Server 2008以前的系统还会使用LM hash，LM hash的生成方法本文暂不介绍，自Windows Vista和Windows Server 2008开始,Windows取消LM hash。</p>
-<h1 id="Windows网络认证"><a href="#Windows网络认证" class="headerlink" title="Windows网络认证"></a>Windows网络认证</h1><h2 id="NTLM-协议"><a href="#NTLM-协议" class="headerlink" title="NTLM 协议"></a>NTLM 协议</h2><p>NTLM是除Kerberos之外的一种网络认证协议，只支持Windows。它是一种基于质询&#x2F;应答 (Challenge&#x2F;Response)消息交换模式的认证机制， 常用于<strong>工作组</strong>和<strong>域环境</strong>下登录场景的身份认证。</p>
+<h1><span id="windows网络认证">Windows网络认证</span></h1><h2><span id="ntlm-协议">NTLM 协议</span></h2><p>NTLM是除Kerberos之外的一种网络认证协议，只支持Windows。它是一种基于质询&#x2F;应答 (Challenge&#x2F;Response)消息交换模式的认证机制， 常用于<strong>工作组</strong>和<strong>域环境</strong>下登录场景的身份认证。</p>
 <p>早期SMB协议（文件共享）在网络上传输的是明文口令进行身份验证，很不安全。后来出现LM验证机制，也是很简单容易被破解。于是微软提出了WindowsNT挑战&#x2F;响应验证机制，称之为NTLM协议。现在已经有了NTLM v2以及Kerberos验证体系。 </p>
-<h2 id="Challenge-x2F-Response"><a href="#Challenge-x2F-Response" class="headerlink" title="Challenge&#x2F;Response"></a>Challenge&#x2F;Response</h2><p>NTLM v2协议</p>
+<h2><span id="challengex2fresponse">Challenge&#x2F;Response</span></h2><p>NTLM v2协议</p>
 <p>第一步<strong>协商</strong>：客户端在这一步向服务器确认协议的版本，是v1还是v2……</p>
 <p>第二步<strong>质询</strong>：</p>
 <ol>
@@ -196,10 +188,10 @@
 <li>服务器将其加密的Challenge（在步骤4中）与客户端计算的response（在步骤3中）进行比较。如果它们相同则身份验证成功</li>
 </ol>
 <p>第三步<strong>验证</strong>：上面第5步就是。</p>
-<h2 id="NTLM-v1与NTLM-v2"><a href="#NTLM-v1与NTLM-v2" class="headerlink" title="NTLM v1与NTLM v2"></a>NTLM v1与NTLM v2</h2><p>NTLM v1与NTLM v2最显著的<strong>区别</strong>就是Chanllege与加密算法不同。<strong>共同点</strong>就是加密的原料都是NTLM Hash。</p>
+<h2><span id="ntlm-v1与ntlm-v2">NTLM v1与NTLM v2</span></h2><p>NTLM v1与NTLM v2最显著的<strong>区别</strong>就是Chanllege与加密算法不同。<strong>共同点</strong>就是加密的原料都是NTLM Hash。</p>
 <p>chanllege方面：NTLM v1的chanllege有8位；NTLM v2的chanllege有16位。</p>
 <p>加密算法方面：NTLM v1的主要加密算法是DES；NTLM v2的主要加密算法是HMAC_MD5。 </p>
-<h1 id="Pass-The-Hash"><a href="#Pass-The-Hash" class="headerlink" title="Pass The Hash"></a>Pass The Hash</h1><p>Pass The Hash，哈希传递，PTH</p>
+<h1><span id="pass-the-hash">Pass The Hash</span></h1><p>Pass The Hash，哈希传递，PTH</p>
 <p>原理：就是使用<strong>用户名</strong>对应的<strong>NTLM Hash</strong>将服务器给出的Chanllege加密，生成一个Response，来完成认证。就是说不需要明文密码就可以完成一整个NTLM协议的认证流程。</p>
 <p>必要条件：</p>
 <ul>
@@ -208,7 +200,7 @@
 <li>需要被传递认证用户的<strong>NTLM Hash</strong></li>
 </ul>
 <p>利用工具：<a target="_blank" rel="noopener" href="https://github.com/ShawnDEvans/smbmap">smbmap</a>、<a target="_blank" rel="noopener" href="https://github.com/Porchetta-Industries/CrackMapExec">CrackMapExec</a>、<code>Smbexec</code>、<code>Metasploit</code>、……</p>
-<h1 id="本地抓取Hash"><a href="#本地抓取Hash" class="headerlink" title="本地抓取Hash"></a>本地抓取Hash</h1><p>在渗透测试中，通常可从Windows系统中的SAM文件和域控的NTDS.dit文件中获得用户hash，通过读取lsass.exe进程能获得已登录用户的NTLM hash(因为lsass.exe有缓存)。但需要注意的是<strong>大部分本地抓取hash工具都需要管理员权限</strong>。</p>
+<h1><span id="本地抓取hash">本地抓取Hash</span></h1><p>在渗透测试中，通常可从Windows系统中的SAM文件和域控的NTDS.dit文件中获得用户hash，通过读取lsass.exe进程能获得已登录用户的NTLM hash(因为lsass.exe有缓存)。但需要注意的是<strong>大部分本地抓取hash工具都需要管理员权限</strong>。</p>
 <ul>
 <li><p><strong>Mimikatz</strong></p>
 <p>Mimikatz可以抓到本机的明文密码和其他用户的Hash密码，原因是因为其抓取本地lsass文件，lsass中有经过其它非Hash加密后的密码，此加密算法可逆因而得到明文密码；而得到其它用户Hash加密后的密码是因为ntds.dit中存储本来就是用户Hash加密后的密码</p>
@@ -224,7 +216,7 @@ Mimikatz破解lsass
 sekurlsa::minidump lsass.dmp
 sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
-<h1 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h1><p>Kerberos 是一种<strong>网络认证协议</strong>，其设计目标是通过<strong>密钥系统</strong>为客户机 &#x2F; 服务器应用程序提供强大的认证服务。 该认证过程的实现不依赖于主机操作系统的认证，无需基于主机地址的信任，不要求网络上所有主机的物理安全，并假定网络上传送的数据包可以被任意地读取、修改和插入数据，有效防范了中间人攻击。</p>
+<h1><span id="kerberos">Kerberos</span></h1><p>Kerberos 是一种<strong>网络认证协议</strong>，其设计目标是通过<strong>密钥系统</strong>为客户机 &#x2F; 服务器应用程序提供强大的认证服务。 该认证过程的实现不依赖于主机操作系统的认证，无需基于主机地址的信任，不要求网络上所有主机的物理安全，并假定网络上传送的数据包可以被任意地读取、修改和插入数据，有效防范了中间人攻击。</p>
 <p>在Kerberos协议中主要是有三个角色的存在：</p>
 <ol>
 <li><p>访问服务的<strong>Client</strong></p>
@@ -242,7 +234,7 @@ sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span
 <p>其中KDC服务默认会安装在一个域的<strong>域控</strong>中，而Client和Server为<strong>域内</strong>的用户或服务。</p>
 <p>域控(DC)的AD(account database)：存储所有client的白名单，只有存在于白名单的client才能顺利申请到TGT。</p>
 <p>在Kerberos中Client<strong>是否有权限访问Server端的服务</strong>由KDC发放的票据来决定。</p>
-<h1 id="Kerberos协议认证流程"><a href="#Kerberos协议认证流程" class="headerlink" title="Kerberos协议认证流程"></a>Kerberos协议认证流程</h1><p><img src="/images/kb1.png" alt="kb1"></p>
+<h1><span id="kerberos协议认证流程">Kerberos协议认证流程</span></h1><p><img src="/images/kb1.png" alt="kb1"></p>
 <p><strong>粗略流程</strong>：</p>
 <ol>
 <li><p>client向 kerberos 服务请求，希望获取访问 server 的权限。kerberos 得到了这个消息，首先得判断 client 是否是可信赖的，也就是白名单黑名单。这就是 AS 服务完成的工作，通过在 AD 中存储黑名单和白名单来区分 client 。成功后，返回 AS 返包 TGT 给 client。</p>
@@ -278,7 +270,7 @@ sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span
 </li>
 </ol>
 <p>注意两个重要名称：<strong>TGT里包含的是session key，Ticket里包含的是server session key。</strong></p>
-<h1 id="白银票据"><a href="#白银票据" class="headerlink" title="白银票据"></a>白银票据</h1><p>特点：</p>
+<h1><span id="白银票据">白银票据</span></h1><p>特点：</p>
 <ul>
 <li>不需要与KDC进行交互</li>
 <li>需要目标<strong>服务的NTLM Hash</strong></li>
@@ -289,7 +281,7 @@ sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span
 <p>当拥有Server Hash（服务端 NTLM hash）时，我们就可以<strong>伪造一个不经过KDC认证的Ticket</strong>。</p>
 <p>Tips：Server session key在未发送Ticket之前，服务器是不知道server session key是什么的，所以我们可以伪造server session key。</p>
 <p><strong>一切凭据都来源于Server hash</strong>。</p>
-<h1 id="黄金票据"><a href="#黄金票据" class="headerlink" title="黄金票据"></a>黄金票据</h1><p>特点：</p>
+<h1><span id="黄金票据">黄金票据</span></h1><p>特点：</p>
 <ul>
 <li>需要与DC通信</li>
 <li>需要krbtgt用户的hash（KDC NTLM Hash）</li>
@@ -317,13 +309,11 @@ sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -331,7 +321,7 @@ sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows%E6%9C%AC%E5%9C%B0%E8%AE%A4%E8%AF%81"><span class="toc-number">1.</span> <span class="toc-text">Windows本地认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-hash%E7%94%9F%E6%88%90%E6%96%B9%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">NTLM hash生成方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">本地认证流程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows%E7%BD%91%E7%BB%9C%E8%AE%A4%E8%AF%81"><span class="toc-number">2.</span> <span class="toc-text">Windows网络认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.1.</span> <span class="toc-text">NTLM 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Challenge-x2F-Response"><span class="toc-number">2.2.</span> <span class="toc-text">Challenge&#x2F;Response</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NTLM-v1%E4%B8%8ENTLM-v2"><span class="toc-number">2.3.</span> <span class="toc-text">NTLM v1与NTLM v2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pass-The-Hash"><span class="toc-number">3.</span> <span class="toc-text">Pass The Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%8A%93%E5%8F%96Hash"><span class="toc-number">4.</span> <span class="toc-text">本地抓取Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Kerberos"><span class="toc-number">5.</span> <span class="toc-text">Kerberos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Kerberos%E5%8D%8F%E8%AE%AE%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">Kerberos协议认证流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE"><span class="toc-number">7.</span> <span class="toc-text">白银票据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE"><span class="toc-number">8.</span> <span class="toc-text">黄金票据</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Windows本地认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">NTLM hash生成方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">本地认证流程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Windows网络认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">NTLM 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">Challenge&#x2F;Response</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">NTLM v1与NTLM v2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Pass The Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">本地抓取Hash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">Kerberos</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">Kerberos协议认证流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">白银票据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">黄金票据</span></a></li></ol>
       </div>
     
 
@@ -379,13 +369,11 @@ sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>

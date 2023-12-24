@@ -41,9 +41,8 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/99ed006063714fbe9e1dd1f00cb76f98.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/4c14ea7c5f6d4f82be9caedd41e4cd8c.png">
 <meta property="article:published_time" content="2022-09-20T15:20:33.000Z">
-<meta property="article:modified_time" content="2023-01-15T07:52:57.539Z">
+<meta property="article:modified_time" content="2023-12-24T05:49:30.565Z">
 <meta property="article:author" content="killeveee">
-<meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/3c0fc26fc6cd4f6d8cfe489a6476d791.png">
     
@@ -98,13 +97,11 @@
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </span>
@@ -145,7 +142,7 @@
     
     
       <div id="toc">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%93%BE%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">链子</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B7%E7%82%B9destruct"><span class="toc-number">2.1.</span> <span class="toc-text">起点destruct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%B3%E6%9D%BFtostring"><span class="toc-number">2.2.</span> <span class="toc-text">跳板tostring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8Ecall"><span class="toc-number">2.3.</span> <span class="toc-text">最后call</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#POP%E9%93%BE"><span class="toc-number">3.</span> <span class="toc-text">POP链</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#POC"><span class="toc-number">4.</span> <span class="toc-text">POC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E4%B8%8B%E7%9A%84poc-%E6%B3%A8%E9%87%8A%E7%89%88"><span class="toc-number">4.1.</span> <span class="toc-text">linux下的poc(注释版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E4%B8%8B%E7%9A%84poc-%E5%B9%B2%E5%87%80%E5%8D%AB%E7%94%9F%E7%89%88"><span class="toc-number">4.2.</span> <span class="toc-text">linux下的poc(干净卫生版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#win-linux%E9%80%9A%E7%94%A8poc"><span class="toc-number">4.3.</span> <span class="toc-text">win,linux通用poc</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">链子</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">起点destruct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">跳板tostring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">最后call</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">POP链</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">POC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">linux下的poc(注释版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">linux下的poc(干净卫生版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">win,linux通用poc</span></a></li></ol></li></ol>
       </div>
     
   </span>
@@ -183,18 +180,13 @@
 
 
       
-    <div class="article-tag">
-        <i class="fa-solid fa-tag"></i>
-        <a class="p-category" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag">代码审计</a>
-    </div>
-
 
     </div>
   </header>
   
 
   <div class="content e-content" itemprop="articleBody">
-    <h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>thinkphp安装:</p>
+    <h1><span id="环境搭建">环境搭建</span></h1><p>thinkphp安装:</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">composer</span> create-project topthink/think<span class="token operator">=</span><span class="token number">5.0</span>.* thinkphp5.0 --prefer-dist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>在<code>application/index/controller/Index.php</code>添加漏洞测试代码：</p>
@@ -218,13 +210,13 @@ url访问:		http:&#x2F;&#x2F;127.0.0.1&#x2F;code_audit&#x2F;thinkphp5.0&#x2F;pub
 
 
 
-<h1 id="链子"><a href="#链子" class="headerlink" title="链子"></a>链子</h1><h2 id="起点destruct"><a href="#起点destruct" class="headerlink" title="起点destruct"></a>起点destruct</h2><p>直接<code>Ctrl+Shift+F</code>搜索<code>__destruct(</code><br><img src="https://img-blog.csdnimg.cn/3c0fc26fc6cd4f6d8cfe489a6476d791.png" alt="在这里插入图片描述"></p>
+<h1><span id="链子">链子</span></h1><h2><span id="起点destruct">起点destruct</span></h2><p>直接<code>Ctrl+Shift+F</code>搜索<code>__destruct(</code><br><img src="https://img-blog.csdnimg.cn/3c0fc26fc6cd4f6d8cfe489a6476d791.png" alt="在这里插入图片描述"></p>
 <p>这里跟的是Windows类。</p>
 <p>发现它调用了<code>removeFiles()</code>方法，继续跟进。</p>
 <p><img src="https://img-blog.csdnimg.cn/37c62768c98241f08da4d06a7abc4264.png" alt="tp5.01.png"></p>
 <p>发现removeFiles()函数使用了 file_exists 方法。并且file_exists 方法的参数$filename的值我们是可以通过序列化捏造的，也就是可控的。</p>
 <p>我们看看file_exists是个啥函数。<br><img src="https://img-blog.csdnimg.cn/6e6e4600a5c54d90a5a2b411893b996d.png" alt="在这里插入图片描述"><br>查看 file_exists 的定义可以知道，$filename会被当做字符串处理，那么$filename-&gt;__toString()方法就会被调用。</p>
-<h2 id="跳板tostring"><a href="#跳板tostring" class="headerlink" title="跳板tostring"></a>跳板tostring</h2><p>下面就要寻找一个实现了__toString()方法的对象来作为跳板。<br><img src="https://img-blog.csdnimg.cn/ce96344c7bdd44cfac05b474397d4555.png"><br>此处think\Model.php存在跳板可能。</p>
+<h2><span id="跳板tostring">跳板tostring</span></h2><p>下面就要寻找一个实现了__toString()方法的对象来作为跳板。<br><img src="https://img-blog.csdnimg.cn/ce96344c7bdd44cfac05b474397d4555.png"><br>此处think\Model.php存在跳板可能。</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#123;</span>
     <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">toJson</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -278,7 +270,7 @@ url访问:		http:&#x2F;&#x2F;127.0.0.1&#x2F;code_audit&#x2F;thinkphp5.0&#x2F;pub
 <p><img src="https://img-blog.csdnimg.cn/2814f2a6a0cd40ed836fc566343ec666.png"></p>
 <p>由于$this-&gt;bindAttr可控，因此我们也能满足第二个if条件。</p>
 <p>我们往下跟进，发现$attr变量由$bindAttr决定，且$attr变量用于912行的$value-&gt;getAttr()中，因此<code>$value-&gt;getAttr($attr)</code>可控，所以我们可以根据$value-&gt;getAttr($attr)调用__call()方法。</p>
-<h2 id="最后call"><a href="#最后call" class="headerlink" title="最后call"></a>最后call</h2><p>此时我们需要寻找能写webshell的__call()方法，在这里选择的是think\console\Output类<br><img src="https://img-blog.csdnimg.cn/e3a132ff7d8c4c91b9074fc4eeb51063.png" alt="在这里插入图片描述"></p>
+<h2><span id="最后call">最后call</span></h2><p>此时我们需要寻找能写webshell的__call()方法，在这里选择的是think\console\Output类<br><img src="https://img-blog.csdnimg.cn/e3a132ff7d8c4c91b9074fc4eeb51063.png" alt="在这里插入图片描述"></p>
 <p>我们看一下 in_array 方法:</p>
 <p><img src="https://img-blog.csdnimg.cn/0b01b51c7ae24faaa0b020fedcf4b9b3.png" alt="在这里插入图片描述"></p>
 <p><code>if(in_array($method,$this-&gt;styles))</code> 里的$method是getAttr，且$this-&gt;styles是可控的。只要在styles数组里加一个getAttr即可。所以可以顺利进入第一个if。</p>
@@ -300,7 +292,7 @@ url访问:		http:&#x2F;&#x2F;127.0.0.1&#x2F;code_audit&#x2F;thinkphp5.0&#x2F;pub
 <p>继续往下看，发现有个setTagItem()函数，跟进该函数看看。<br><img src="https://img-blog.csdnimg.cn/4c14ea7c5f6d4f82be9caedd41e4cd8c.png" alt="在这里插入图片描述"></p>
 <p>我们可以看到在setTagItem()函数中又一次调用了set()函数，并且这次的$key是可控的，$value由之前的$filename决定，这也意味着我们可以通过setTagItem()再一次的写入php文件进行getshell。</p>
 <p>到这里整个pop链已经梳理完了，接下来我们看看如何利用这条pop链进行getshell。</p>
-<h1 id="POP链"><a href="#POP链" class="headerlink" title="POP链"></a>POP链</h1><p>利用的时候我们首先需要绕过exit()的限制，因为利用file_put_contents()写入文件时内容有exit()函数并且在比较靠前的位置，如果执行到了exit()函数就会自动退出，不会执行我们写入的shell，所以我们需要绕过这个函数，这里用到php的伪协议编码进行绕过。</p>
+<h1><span id="pop链">POP链</span></h1><p>利用的时候我们首先需要绕过exit()的限制，因为利用file_put_contents()写入文件时内容有exit()函数并且在比较靠前的位置，如果执行到了exit()函数就会自动退出，不会执行我们写入的shell，所以我们需要绕过这个函数，这里用到php的伪协议编码进行绕过。</p>
 <blockquote>
 <p>也就是说我们只需要在文件名中使用伪协议即可对exit()函数进行绕过</p>
 </blockquote>
@@ -308,7 +300,7 @@ url访问:		http:&#x2F;&#x2F;127.0.0.1&#x2F;code_audit&#x2F;thinkphp5.0&#x2F;pub
 <p>先梳理一下链子：</p>
 <pre class="line-numbers language-none"><code class="language-none">Windows类的__destruct()--&gt;removeFiles()--&gt;Model类的__tostring()--&gt;toJson()--&gt;toArray()--&gt;Output类的__call()--&gt;block()--&gt;writeln()--&gt;write()--&gt;Memcache类的write()--&gt;File类的set()--&gt;Driver类的setTagItem()--&gt;File类的set()--&gt;file_put_contents写入shell<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h1 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h1><h2 id="linux下的poc-注释版"><a href="#linux下的poc-注释版" class="headerlink" title="linux下的poc(注释版"></a>linux下的poc(注释版</h2><p>linux下的tp5.0反序列化的poc编写（有详细注释版）：</p>
+<h1><span id="poc">POC</span></h1><h2><span id="linux下的poc注释版">linux下的poc(注释版</span></h2><p>linux下的tp5.0反序列化的poc编写（有详细注释版）：</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token comment">/*
 反序列化的起点是Windows类里的__destruct方法，所以把Windows类抄过来。
@@ -469,7 +461,7 @@ http://xxxxx/public/?s=/index/index/test&amp;c=序列化后的结果
 http://xxxxx/public/%3C%3Fcuc%20%40riny(%24_CBFG%5B'pzq'%5D)%3B%3F%3E9eb29dfe314054b3d7d41b9c9b3e938c.php
 POST：cmd=phpinfo();
 */</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="linux下的poc-干净卫生版"><a href="#linux下的poc-干净卫生版" class="headerlink" title="linux下的poc(干净卫生版"></a>linux下的poc(干净卫生版</h2><p>linux下的tp5.0反序列化利用poc（干净卫生版）:</p>
+<h2><span id="linux下的poc干净卫生版">linux下的poc(干净卫生版</span></h2><p>linux下的tp5.0反序列化利用poc（干净卫生版）:</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>Pivot</span><span class="token punctuation">;</span>
@@ -569,7 +561,7 @@ POST：cmd=phpinfo();
 
 <p>为什么windows还不行呢，因为windows<strong>文件名</strong>不能包含“&lt;”、“?”、“&gt;”等字符，但我们在使用伪协议时使用了这几个字符，所以我们想在windows下利用这条pop链的话还需要想一些其他的办法，此时我们就需要寻找其他的地方去赋值文件名。</p>
 <p>在这里我们找的是think\cache\driver\Memcached的set()方法，即当程序走到Memcache.php中的write方法时我们不直接赋予$this-&gt;handle为File对象，而是赋值为cache中的Memcached对象。</p>
-<h2 id="win-linux通用poc"><a href="#win-linux通用poc" class="headerlink" title="win,linux通用poc"></a>win,linux通用poc</h2><p>Windows（linux、Win通用）下的tp5.0反序列化利用poc：</p>
+<h2><span id="winlinux通用poc">win,linux通用poc</span></h2><p>Windows（linux、Win通用）下的tp5.0反序列化利用poc：</p>
 <pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token keyword">namespace</span> <span class="token package">think<span class="token punctuation">\</span>process<span class="token punctuation">\</span>pipes</span><span class="token punctuation">;</span>
 <span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>model<span class="token punctuation">\</span>Pivot</span><span class="token punctuation">;</span>
@@ -713,13 +705,11 @@ POST：cmd=phpinfo();
         
           <li><a href="/">首页</a></li>
         
-          <li><a href="/about/">关于</a></li>
-        
           <li><a href="/archives/">归档</a></li>
         
           <li><a href="/categories/">分类</a></li>
         
-          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">关于</a></li>
         
       </ul>
     </div>
@@ -727,7 +717,7 @@ POST：cmd=phpinfo();
     
     
       <div id="toc-footer" style="display: none">
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%93%BE%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">链子</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%B7%E7%82%B9destruct"><span class="toc-number">2.1.</span> <span class="toc-text">起点destruct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%B3%E6%9D%BFtostring"><span class="toc-number">2.2.</span> <span class="toc-text">跳板tostring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8Ecall"><span class="toc-number">2.3.</span> <span class="toc-text">最后call</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#POP%E9%93%BE"><span class="toc-number">3.</span> <span class="toc-text">POP链</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#POC"><span class="toc-number">4.</span> <span class="toc-text">POC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E4%B8%8B%E7%9A%84poc-%E6%B3%A8%E9%87%8A%E7%89%88"><span class="toc-number">4.1.</span> <span class="toc-text">linux下的poc(注释版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux%E4%B8%8B%E7%9A%84poc-%E5%B9%B2%E5%87%80%E5%8D%AB%E7%94%9F%E7%89%88"><span class="toc-number">4.2.</span> <span class="toc-text">linux下的poc(干净卫生版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#win-linux%E9%80%9A%E7%94%A8poc"><span class="toc-number">4.3.</span> <span class="toc-text">win,linux通用poc</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">链子</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.1.</span> <span class="toc-text">起点destruct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.2.</span> <span class="toc-text">跳板tostring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.3.</span> <span class="toc-text">最后call</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">POP链</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">POC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">linux下的poc(注释版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">linux下的poc(干净卫生版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">win,linux通用poc</span></a></li></ol></li></ol>
       </div>
     
 
@@ -775,13 +765,11 @@ POST：cmd=phpinfo();
         <!--
        --><li><a href="/">首页</a></li><!--
      --><!--
-       --><li><a href="/about/">关于</a></li><!--
-     --><!--
        --><li><a href="/archives/">归档</a></li><!--
      --><!--
        --><li><a href="/categories/">分类</a></li><!--
      --><!--
-       --><li><a href="/tags/">Tags</a></li><!--
+       --><li><a href="/about/">关于</a></li><!--
      -->
       </ul>
     </nav>
