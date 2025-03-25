@@ -5,7 +5,7 @@
 // @match        https://x.com/*
 // @updateURL    https://killeveee.github.io/RunTimer.js
 // @downloadURL  https://killeveee.github.io/RunTimer.js
-// @require      https://killeveee.github.io/x_timer_second.js
+// @require      https://killeveee.github.io/x_timer_second.js#md5=c5c171ac0413ba22a675888977025c5f
 // @grant        GM_xmlhttpRequest
 // @grant        GM_download
 // @connect      *
