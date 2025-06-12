@@ -9,13 +9,13 @@
     <meta name="description" content="HTTP请求走私 - FreeBuf网络安全行业门户 由Roarctf Easy Calc引起对http走私和分块传输绕过waf的思考 请求走私漏洞成因  前端服务器(CDN)和后端服务器接收数据不同步，引起对客户端传入的数据理解不一致，从而导致漏洞的产生。  攻击者使前端请求的一部分请求被后端服务器解释为下一个请求的开始。它实际上是在下一个请求之前，因此会干扰应用程序处理该请求的方式。这是请求走">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HTTP请求走私">
-<meta property="og:url" content="https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/index.html">
-<meta property="og:site_name" content="killeveee">
+<meta property="og:url" content="https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/index.html">
+<meta property="og:site_name" content="itsbefore">
 <meta property="og:description" content="HTTP请求走私 - FreeBuf网络安全行业门户 由Roarctf Easy Calc引起对http走私和分块传输绕过waf的思考 请求走私漏洞成因  前端服务器(CDN)和后端服务器接收数据不同步，引起对客户端传入的数据理解不一致，从而导致漏洞的产生。  攻击者使前端请求的一部分请求被后端服务器解释为下一个请求的开始。它实际上是在下一个请求之前，因此会干扰应用程序处理该请求的方式。这是请求走">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-12-12T07:35:25.000Z">
 <meta property="article:modified_time" content="2023-12-24T06:40:37.774Z">
-<meta property="article:author" content="killeveee">
+<meta property="article:author" content="itsbefore">
 <meta name="twitter:card" content="summary">
     
     
@@ -97,17 +97,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&text=HTTP请求走私"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&is_video=false&description=HTTP请求走私"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=HTTP请求走私&body=Check out this article: https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&name=HTTP请求走私&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&t=HTTP请求走私"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&text=HTTP请求走私"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&is_video=false&description=HTTP请求走私"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTTP请求走私&body=Check out this article: https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&name=HTTP请求走私&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&t=HTTP请求走私"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -134,7 +134,7 @@
 
     <div class="meta">
       <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span class="p-name" itemprop="name">killeveee</span>
+        <span class="p-name" itemprop="name">itsbefore</span>
       </span>
       
     <div class="postdate">
@@ -278,17 +278,17 @@ x&#x3D;1\r\n
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&text=HTTP请求走私"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&is_video=false&description=HTTP请求走私"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=HTTP请求走私&body=Check out this article: https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&name=HTTP请求走私&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&t=HTTP请求走私"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&text=HTTP请求走私"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&is_video=false&description=HTTP请求走私"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTTP请求走私&body=Check out this article: https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&title=HTTP请求走私"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&name=HTTP请求走私&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://itsbefore.github.io/archives/2022/12/12/HTTP%E8%AF%B7%E6%B1%82%E8%B5%B0%E7%A7%81/&t=HTTP请求走私"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -312,7 +312,7 @@ x&#x3D;1\r\n
     
     
     2021-2025
-    killeveee
+    itsbefore
   </div>
   <div class="footer-right">
     <nav>

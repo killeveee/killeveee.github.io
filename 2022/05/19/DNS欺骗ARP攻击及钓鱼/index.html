@@ -9,26 +9,26 @@
     <meta name="description" content="记一次利用DNS欺骗、ARP攻击及钓鱼">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DNS欺骗、ARP攻击及钓鱼">
-<meta property="og:url" content="https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/index.html">
-<meta property="og:site_name" content="killeveee">
+<meta property="og:url" content="https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/index.html">
+<meta property="og:site_name" content="itsbefore">
 <meta property="og:description" content="记一次利用DNS欺骗、ARP攻击及钓鱼">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://killeveee.github.io/images/dy1.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy2.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy3.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy4.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy5.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy6.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy7.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy8.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy9.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy10.png">
-<meta property="og:image" content="https://killeveee.github.io/images/dy11.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy1.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy2.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy3.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy4.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy5.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy6.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy7.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy8.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy9.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy10.png">
+<meta property="og:image" content="https://itsbefore.github.io/images/dy11.png">
 <meta property="article:published_time" content="2022-05-19T04:23:18.000Z">
 <meta property="article:modified_time" content="2023-12-24T05:47:57.045Z">
-<meta property="article:author" content="killeveee">
+<meta property="article:author" content="itsbefore">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://killeveee.github.io/images/dy1.png">
+<meta name="twitter:image" content="https://itsbefore.github.io/images/dy1.png">
     
     
       
@@ -109,17 +109,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&text=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&is_video=false&description=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=DNS欺骗、ARP攻击及钓鱼&body=Check out this article: https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&name=DNS欺骗、ARP攻击及钓鱼&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&t=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&text=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&is_video=false&description=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DNS欺骗、ARP攻击及钓鱼&body=Check out this article: https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&name=DNS欺骗、ARP攻击及钓鱼&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&t=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -146,7 +146,7 @@
 
     <div class="meta">
       <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span class="p-name" itemprop="name">killeveee</span>
+        <span class="p-name" itemprop="name">itsbefore</span>
       </span>
       
     <div class="postdate">
@@ -307,17 +307,17 @@ $filed &#x3D; @fopen(&quot;1.txt&quot;, &quot;a+&quot;);
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&text=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&is_video=false&description=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=DNS欺骗、ARP攻击及钓鱼&body=Check out this article: https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&name=DNS欺骗、ARP攻击及钓鱼&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://killeveee.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&t=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&text=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&is_video=false&description=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=DNS欺骗、ARP攻击及钓鱼&body=Check out this article: https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&title=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&name=DNS欺骗、ARP攻击及钓鱼&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://itsbefore.github.io/archives/2022/05/19/DNS%E6%AC%BA%E9%AA%97ARP%E6%94%BB%E5%87%BB%E5%8F%8A%E9%92%93%E9%B1%BC/&t=DNS欺骗、ARP攻击及钓鱼"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -341,7 +341,7 @@ $filed &#x3D; @fopen(&quot;1.txt&quot;, &quot;a+&quot;);
     
     
     2021-2025
-    killeveee
+    itsbefore
   </div>
   <div class="footer-right">
     <nav>
